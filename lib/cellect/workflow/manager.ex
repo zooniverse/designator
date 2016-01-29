@@ -1,4 +1,4 @@
-defmodule Cellect.WorkflowManager do
+defmodule Cellect.Workflow.Manager do
   def start_link do
     Agent.start_link(fn -> %{} end)
   end
@@ -8,7 +8,7 @@ defmodule Cellect.WorkflowManager do
 
     case worker_pid do
       nil ->
-        {:ok, worker_pid} = Cellect.WorkflowWorker.start_link(workflow_id)
+        {:ok, worker_pid} = Cellect.Workflow.Worker.start_link(workflow_id)
         Agent.update(pid, fn pids -> Map.put(pids, workflow_id, worker_pid) end)
         worker_pid
       _ ->

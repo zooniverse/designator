@@ -12,7 +12,7 @@ defmodule Cellect do
       # Start the Ecto repository
       supervisor(Cellect.Repo, []),
 
-      supervisor(Cellect.UserSeenSupervisor, [])
+      supervisor(Cellect.UserSeen.Supervisor, [])
       # Here you could define other workers and supervisors as children
       # worker(Cellect.Worker, [arg1, arg2, arg3]),
     ]

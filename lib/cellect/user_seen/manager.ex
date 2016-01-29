@@ -1,4 +1,4 @@
-defmodule Cellect.UserSeenManager do
+defmodule Cellect.UserSeen.Manager do
   use GenServer
 
   def start_link do
@@ -24,7 +24,7 @@ defmodule Cellect.UserSeenManager do
       {:ok, pid} = Map.fetch(pids, key)
       {:reply, pid, state}
     else
-      {:ok, pid} = Cellect.UserSeenSupervisor.start_worker(workflow_id, user_id)
+      {:ok, pid} = Cellect.UserSeen.Supervisor.start_worker(workflow_id, user_id)
       ref = Process.monitor(pid)
       refs = Map.put(refs, ref, key)
       pids = Map.put(pids, key, pid)

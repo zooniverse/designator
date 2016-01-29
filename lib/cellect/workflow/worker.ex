@@ -1,4 +1,4 @@
-defmodule Cellect.WorkflowWorker do
+defmodule Cellect.Workflow.Worker do
   use GenServer
 
   def start_link(workflow_id) do

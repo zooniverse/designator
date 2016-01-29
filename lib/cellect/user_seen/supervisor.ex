@@ -1,7 +1,7 @@
-defmodule Cellect.UserSeenSupervisor do
+defmodule Cellect.UserSeen.Supervisor do
   use Supervisor
 
-  @name Cellect.UserSeenSupervisor
+  @name Cellect.UserSeen.Supervisor
 
   def start_link() do
     Supervisor.start_link(__MODULE__, :ok, name: @name)
@@ -13,7 +13,7 @@ defmodule Cellect.UserSeenSupervisor do
 
   def init(:ok) do
     children = [
-      worker(Cellect.UserSeenWorker, [], restart: :temporary)
+      worker(Cellect.UserSeen.Worker, [], restart: :temporary)
     ]
 
     supervise(children, strategy: :simple_one_for_one)
