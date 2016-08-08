@@ -4,7 +4,7 @@ defmodule Cellect.Mixfile do
   def project do
     [app: :cellect,
      version: "0.0.1",
-     elixir: "~> 1.0",
+     elixir: "~> 1.3",
      elixirc_paths: elixirc_paths(Mix.env),
      compilers: [:phoenix, :gettext] ++ Mix.compilers,
      build_embedded: Mix.env == :prod,
@@ -18,7 +18,7 @@ defmodule Cellect.Mixfile do
   # Type `mix help compile.app` for more information.
   def application do
     [mod: {Cellect, []},
-     applications: [:phoenix, :cowboy, :logger, :gettext,
+     applications: [:phoenix, :phoenix_pubsub, :cowboy, :logger, :gettext,
                     :phoenix_ecto, :postgrex]]
   end
 
@@ -30,12 +30,13 @@ defmodule Cellect.Mixfile do
   #
   # Type `mix help deps` for examples and options.
   defp deps do
-    [{:phoenix, "~> 1.1.4"},
+    [{:phoenix, "~> 1.2.0"},
+     {:phoenix_pubsub, "~> 1.0"},
      {:postgrex, ">= 0.0.0"},
-     {:phoenix_ecto, "~> 2.0"},
+     {:phoenix_ecto, "~> 3.0-rc"},
      {:gettext, "~> 0.9"},
      {:cowboy, "~> 1.0"},
-     {:array, "~> 1.0.1"}]
+     {:array, git: "https://github.com/mhib/elixir-array.git"}]
   end
 
   # Aliases are shortcut or tasks specific to the current project.
@@ -46,6 +47,7 @@ defmodule Cellect.Mixfile do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     ["ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
-     "ecto.reset": ["ecto.drop", "ecto.setup"]]
+     "ecto.reset": ["ecto.drop", "ecto.setup"],
+     "test":       ["ecto.create --quiet", "ecto.migrate", "test"]]
   end
 end

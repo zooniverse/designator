@@ -14,6 +14,10 @@ config :cellect, Cellect.Endpoint,
   pubsub: [name: Cellect.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
+config :cellect,
+  namespace: Cellect,
+  ecto_repos: [Cellect.Repo]
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
@@ -27,3 +31,4 @@ import_config "#{Mix.env}.exs"
 config :phoenix, :generators,
   migration: true,
   binary_id: false
+

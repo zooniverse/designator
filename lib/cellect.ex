@@ -7,12 +7,14 @@ defmodule Cellect do
     import Supervisor.Spec, warn: false
 
     children = [
-      # Start the endpoint when the application starts
       supervisor(Cellect.Endpoint, []),
-      # Start the Ecto repository
       supervisor(Cellect.Repo, []),
+      # worker(Cellect.Registry, [])
 
-      supervisor(Cellect.UserSeen.Supervisor, [])
+      # supervisor(Cellect.Workflow.Supervisor, [])
+      # supervisor(Cellect.UserSeen.Supervisor, [])
+      # supervisor(Cellect.SubjectSets.Supervisor, [])
+      # supervisor(Cellect.Retireds.Supervisor, [])
       # Here you could define other workers and supervisors as children
       # worker(Cellect.Worker, [arg1, arg2, arg3]),
     ]

@@ -1,7 +1,7 @@
 defmodule Cellect.Endpoint do
   use Phoenix.Endpoint, otp_app: :cellect
 
-  socket "/socket", Cellect.UserSocket
+  # socket "/socket", Cellect.UserSocket
 
   # Serve at "/" the static files from "priv/static" directory.
   #
