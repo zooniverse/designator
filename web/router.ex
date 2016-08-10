@@ -8,6 +8,6 @@ defmodule Cellect.Router do
   scope "/api", Cellect do
     pipe_through :api
 
-    resources "/subjects", SubjectsController, only: [:index]
+    get "/subjects", SubjectsController, :index
   end
 end

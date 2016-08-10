@@ -36,7 +36,8 @@ defmodule Cellect.Mixfile do
      {:phoenix_ecto, "~> 3.0-rc"},
      {:gettext, "~> 0.9"},
      {:cowboy, "~> 1.0"},
-     {:array, git: "https://github.com/mhib/elixir-array.git"}]
+     {:array, git: "https://github.com/mhib/elixir-array.git"},
+     {:exactor, "~> 2.2.1", warn_missing: false}]
   end
 
   # Aliases are shortcut or tasks specific to the current project.
