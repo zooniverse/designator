@@ -1,33 +1,44 @@
 defmodule Cellect.Selection do
   def select("uniform", workflow_id, user_id) do
-    Cellect.Workflow.subject_ids(workflow_id)
-    |> randomly_pick
-    |> deduplicate
-    |> unretired
-    |> unseen
-    |> Enum.take(5)
+    select("uniform", workflow_id, user_id, 5)
   end
 
-  def randomly_pick(enumerable) do
-    Stream.repeatedly(fn -> Enum.random(enumerable) end)
+  def select("uniform", workflow_id, user_id, amount) do
+    Cellect.Workflow.subject_set_ids(workflow_id)
+    |> Enum.map(&(Cellect.Workflow.subject_ids(workflow_id, &1)))
+    |> Enum.map(&uniform_chances/1)
+    |> do_select(workflow_id, user_id, amount)
+  end
+
+  def do_select(streams, workflow_id, user_id, amount) do
+    streams
+    |> Cellect.StreamTools.interleave
+    |> deduplicate
+    |> reject_recently_retired
+    |> reject_recently_selected
+    |> reject_seen_subjects(workflow_id, user_id)
+    |> Enum.take(amount)
+  end
+
+  def uniform_chances(ids) do
+    stream = Stream.repeatedly(fn -> Enum.random(ids) end)
+    %{stream: stream, chance: Enum.count(ids)}
   end
 
   def deduplicate(stream) do
     Stream.uniq(stream)
   end
 
-  def unretired(stream) do
+  def reject_recently_retired(stream) do
     stream
   end
 
-  def unseen(stream) do
+  def reject_recently_selected(stream) do
     stream
   end
 
-  # def select_randomly(workflow, user_seen) do
-  #   {subject_ids, retired_ids} = Cellect.Workflow.Worker.get(workflow)
-  #   seen_ids = Cellect.UserSeen.Worker.get(user_seen)
-
-  #   Cellect.RandomSelection.sample(subject_ids, HashSet.union(seen_ids, retired_ids), 10)
-  # end
+  def reject_seen_subjects(stream, workflow_id, user_id) do
+    seen_subject_ids = Cellect.User.seen_subject_ids(workflow_id, user_id) |> Enum.into(MapSet.new)
+    Stream.reject(stream, fn x -> MapSet.member?(seen_subject_ids, x) end)
+  end
 end
