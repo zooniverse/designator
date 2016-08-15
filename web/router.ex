@@ -8,6 +8,8 @@ defmodule Cellect.Router do
   scope "/api", Cellect do
     pipe_through :api
 
-    get "/subjects", SubjectsController, :index
+    get  "/workflows/:workflow_id", WorkflowsController, :index
+    post "/workflows/:workflow_id/reload", WorkflowsController, :reload
+    put  "/workflows/:workflow_id/remove", WorkflowsController, :retire
   end
 end

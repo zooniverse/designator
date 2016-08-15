@@ -1,7 +1,7 @@
-defmodule Cellect.SubjectsView do
+defmodule Cellect.WorkflowsView do
   use Cellect.Web, :view
 
   def render("index.json", %{subjects: subjects}) do
-    %{subjects: subjects}
+    subjects
   end
 end

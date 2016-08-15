@@ -14,6 +14,6 @@ config :cellect, Cellect.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "marten",
   password: "",
-  database: "cellect_test",
+  database: "panoptes_development",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox

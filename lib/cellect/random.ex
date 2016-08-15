@@ -3,6 +3,14 @@ defmodule Cellect.Random do
     :rand.seed(:exs1024, seed)
   end
 
+  def element(%Array{} = enumerable) do
+    size  = Array.size enumerable
+    index = :rand.uniform(size) - 1
+    element = Array.get(enumerable, index)
+
+    { index, element }
+  end
+
   def element(enumerable) do
     size = Enum.count(enumerable)
     index = :rand.uniform(size) - 1

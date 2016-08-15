@@ -1,5 +1,14 @@
 defmodule Cellect.Workflow do
+  use Ecto.Schema
   import Ecto.Query, only: [from: 2]
+
+  schema "workflows" do
+    field :configuration, :map
+  end
+
+  def find(workflow_id) do
+    __MODULE__ |> Cellect.Repo.get(workflow_id)
+  end
 
   def subject_set_ids(workflow_id) do
     query = from ssw in "subject_sets_workflows",
