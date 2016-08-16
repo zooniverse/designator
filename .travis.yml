@@ -5,6 +5,7 @@ services:
 
 before_install:
   - docker-compose build
+  - docker-compose run -e MIX_ENV=test cellect_ex mix deps.get
 
 script:
   - docker-compose run -e MIX_ENV=test cellect_ex mix test
