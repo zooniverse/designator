@@ -24,8 +24,8 @@ config :phoenix, :stacktrace_depth, 20
 # Configure your database
 config :cellect, Cellect.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "marten",
-  password: "",
-  database: "panoptes_development",
-  hostname: "localhost",
+  username: System.get_env("POSTGRES_USER") || "marten",
+  password: System.get_env("POSTGRES_PASS") || "",
+  database: System.get_env("POSTGRES_DB")   || "panoptes_development",
+  hostname: System.get_env("POSTGRES_HOST") || "localhost",
   pool_size: 10

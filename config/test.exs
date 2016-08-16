@@ -12,8 +12,8 @@ config :logger, level: :warn
 # Configure your database
 config :cellect, Cellect.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "marten",
-  password: "",
-  database: "panoptes_development",
-  hostname: "localhost",
+  username: System.get_env("POSTGRES_USER") || "marten",
+  password: System.get_env("POSTGRES_PASS") || "",
+  database: System.get_env("POSTGRES_DB")   || "panoptes_test",
+  hostname: System.get_env("POSTGRES_HOST") || "localhost",
   pool: Ecto.Adapters.SQL.Sandbox

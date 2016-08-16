@@ -1,0 +1,21 @@
+postgres:
+  image: postgres:9.4
+  environment:
+    - "POSTGRES_USER=cellect_ex"
+    - "POSTGRES_PASSWORD=cellect_ex"
+
+cellect_ex:
+  dockerfile: Dockerfile
+  build: ./
+  volumes:
+    - ./:/app
+  ports:
+    - "4000:4000"
+  environment:
+    - "MIX_ENV=dev"
+    - "POSTGRES_USER=cellect_ex"
+    - "POSTGRES_PASS=cellect_ex"
+    - "POSTGRES_HOST=pg"
+    - "SECRET_KEY_BASE=secret"
+  links:
+    - postgres:pg
