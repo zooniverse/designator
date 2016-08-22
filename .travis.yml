@@ -1,17 +1,14 @@
 sudo: required
-
 services:
-  - docker
-
+- docker
 before_install:
-  - docker-compose build
-  - docker-compose run -e MIX_ENV=test web mix deps.get
-
+- docker-compose build
+- docker-compose run -e MIX_ENV=test web mix deps.get
 script:
-  - docker-compose run -e MIX_ENV=test test mix test
-
+- docker-compose run -e MIX_ENV=test test mix test
 after_success:
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then
-    docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-    docker push web zooniverse/cellect_ex;
-    fi
+- if [ "$TRAVIS_BRANCH" == "master" ]; then docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+  docker push zooniverse/cellect_ex; fi
+env:
+  global:
+    secure: RBaqpYxaZC+FOMFNndHAY3YsPC3PBTUhvxcnvv3LGbc5i1ivDP7HfiyvCIabFj7glxfQZVKUgG/OQN17eGSFyfOjISpJNGVlprwRQsg10JGV9QYuGZQYQJLnp07TqHvNTZuYAo/VWmRMbJ80VRkT8ocVp4Vt7yuTwq6V/anZKgvX+0PxQHJ/dHlS+ONTQASeUdW51rXejghbYIUi3Qsd6R59j5MA7jKP4sAt7czBXqroiknXLXPlfkt4sNMTeVbQ+wTA2gIEuoWMRspJ8DHjVVG3WAW7nTcIec++iwzoo2Ydg0262SoccscbckGC57osyYCHVKQ0VZcI6KL4f1Oiioim8fxlkRK+PipoluRLz4ia0w/Aj0lfO8arzYFDwe4NTjljuKgn6a0epP7k8Ut4W80Dl97pCZmxMO11W0O4rIVB1Bd0NlQ33Kr1sJ5KxdhzGcAKwLc8YJyEyq0lu5yCvZNqDhgUagWqYC/7HDrmERiWoYrwg19pLQiqJo2OxEnqS+aUTGlOtwtO9WbDJlOuirOsc1+/d7QsqlEw/zPDSfWBU5lMLSE1c5RvakhUM0O/0DJ8YZ8KNRA8zO5Od6Wwet7KiErvIrESlDVc/V7Fjudyz+cJg9seEgjkancy+BK5THgIuKCEliu6IIBArjnfs2dkRWpulN9LngO2WA51nh8=
