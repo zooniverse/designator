@@ -5,13 +5,13 @@ services:
 
 before_install:
   - docker-compose build
-  - docker-compose run -e MIX_ENV=test cellect_ex mix deps.get
+  - docker-compose run -e MIX_ENV=test web mix deps.get
 
 script:
-  - docker-compose run -e MIX_ENV=test cellect_ex mix test
+  - docker-compose run -e MIX_ENV=test test mix test
 
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
     docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-    docker push zooniverse/cellect_ex
+    docker push web zooniverse/cellect_ex
     fi
