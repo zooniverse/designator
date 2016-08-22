@@ -35,7 +35,7 @@ defmodule Cellect.Random do
     end
   end
 
-  def do_weighted([], choice, index) do
+  def do_weighted([], _, _) do
     throw :table
   end
 end

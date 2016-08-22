@@ -32,8 +32,10 @@ defmodule Cellect.ChannelCase do
   end
 
   setup tags do
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Cellect.Repo)
+
     unless tags[:async] do
-      Ecto.Adapters.SQL.restart_test_transaction(Cellect.Repo, [])
+      Ecto.Adapters.SQL.Sandbox.mode(Cellect.Repo, {:shared, self()})
     end
 
     :ok

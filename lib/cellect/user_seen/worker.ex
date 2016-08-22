@@ -13,7 +13,7 @@ defmodule Cellect.UserSeen.Worker do
   end
 
   def add(pid, seen_id) do
-    GenServer.cast pid, :add, seen_id
+    GenServer.cast pid, {:add, seen_id}
   end
 
   ####
