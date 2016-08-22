@@ -1,0 +1,36 @@
+version: '2'
+
+services:
+  postgres:
+    image: postgres:9.4
+    environment:
+      - "POSTGRES_USER=cellect_ex"
+      - "POSTGRES_PASSWORD=cellect_ex"
+
+  web:
+    build: ./
+    image: zooniverse/cellect_ex
+    volumes:
+      - ./:/app
+    ports:
+      - "4000:4000"
+    environment:
+      - "MIX_ENV=dev"
+      - "POSTGRES_USER=cellect_ex"
+      - "POSTGRES_PASS=cellect_ex"
+      - "POSTGRES_HOST=pg"
+      - "SECRET_KEY_BASE=secret"
+    links:
+      - postgres:pg
+
+  test:
+    image: zooniverse/cellect_ex
+    volumes:
+      - ./:/app
+    environment:
+      - "MIX_ENV=test"
+      - "POSTGRES_USER=cellect_ex"
+      - "POSTGRES_PASS=cellect_ex"
+      - "POSTGRES_HOST=pg"
+    links:
+      - postgres:pg

@@ -19,6 +19,18 @@ config :cellect, Cellect.Endpoint,
 # Do not print debug messages in production
 config :logger, level: :info
 
+config :cellect, Cellect.Endpoint,
+  secret_key_base: System.get_env("SECRET_KEY_BASE")
+
+# Configure your database
+config :cellect, Cellect.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  username: System.get_env("POSTGRES_USER"),
+  password: System.get_env("POSTGRES_PASS"),
+  database: System.get_env("POSTGRES_DB"),
+  hostname: System.get_env("POSTGRES_HOST"),
+  pool_size: 20
+
 # ## SSL Support
 #
 # To get SSL working, you will need to add the `https` key
@@ -60,6 +72,3 @@ config :logger, level: :info
 #
 #     config :cellect, Cellect.Endpoint, root: "."
 
-# Finally import the config/prod.secret.exs
-# which should be versioned separately.
-import_config "prod.secret.exs"
