@@ -4,7 +4,7 @@ postgres:
     - "POSTGRES_USER=cellect_ex"
     - "POSTGRES_PASSWORD=cellect_ex"
 
-cellect_ex:
+web:
   dockerfile: Dockerfile
   build: ./
   volumes:
@@ -17,5 +17,17 @@ cellect_ex:
     - "POSTGRES_PASS=cellect_ex"
     - "POSTGRES_HOST=pg"
     - "SECRET_KEY_BASE=secret"
+  links:
+    - postgres:pg
+
+test:
+  image: cellectex_web
+  volumes:
+    - ./:/app
+  environment:
+    - "MIX_ENV=test"
+    - "POSTGRES_USER=cellect_ex"
+    - "POSTGRES_PASS=cellect_ex"
+    - "POSTGRES_HOST=pg"
   links:
     - postgres:pg

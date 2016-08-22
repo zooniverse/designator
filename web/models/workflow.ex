@@ -2,8 +2,12 @@ defmodule Cellect.Workflow do
   use Ecto.Schema
   import Ecto.Query, only: [from: 2]
 
+  use Cellect.Web, :model
+
   schema "workflows" do
     field :configuration, :map
+
+    timestamps inserted_at: :created_at
   end
 
   def find(workflow_id) do
@@ -27,4 +31,10 @@ defmodule Cellect.Workflow do
       select: s.id
     Cellect.Repo.all(query)
   end
+
+  def changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, [:id, :configuration])
+  end
+
 end
