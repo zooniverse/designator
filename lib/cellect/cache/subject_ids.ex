@@ -1,20 +1,26 @@
 defmodule Cellect.Cache.SubjectIds do
   use ExActor.GenServer, export: :subject_ids_cache
 
-  defstart start_link(workflow_id) do
-    initial_state %{workflow_id: workflow_id, subject_ids: %{}}
+  defstart start_link() do
+    initial_state %{}
   end
 
-  defcall get, state: %{subject_ids: ids} do
-    if Enum.empty?(ids), do: reload_async()
-    reply(ids)
+  defcall get(workflow_id), state: state do
+    case state[workflow_id] do
+      nil ->
+        reload_async(workflow_id)
+        reply([])
+      ids ->
+        if Enum.empty?(ids), do: reload_async(workflow_id)
+        reply(ids)
+    end
   end
 
-  defcast set(ids), state: state do
-    new_state Map.put(state, :subject_ids, ids)
+  defcast set(workflow_id, ids), state: state do
+    new_state Map.put(state, workflow_id, ids)
   end
 
-  defcast reload_async(), state: %{workflow_id: workflow_id} do
+  defcast reload_async(workflow_id), state: state do
     converter = fn subject_set_id ->
       {
         subject_set_id,
@@ -22,10 +28,11 @@ defmodule Cellect.Cache.SubjectIds do
       }
     end
 
-    Cellect.Workflow.subject_set_ids(workflow_id)
+    ids = Cellect.Workflow.subject_set_ids(workflow_id)
     |> Enum.map(converter)
     |> Map.new
-    |> set
+
+    set(workflow_id, ids)
 
     noreply
   end

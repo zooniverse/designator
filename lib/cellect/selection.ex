@@ -5,7 +5,7 @@ defmodule Cellect.Selection do
   def select(style, workflow_id, user_id), do: select(style, workflow_id, user_id, 5)
 
   def select("uniform", workflow_id, user_id, amount) do
-    streams = Cellect.Cache.SubjectIds.get |> Enum.map(&Cellect.SubjectStream.build/1)
+    streams = Cellect.Cache.SubjectIds.get(workflow_id) |> Enum.map(&Cellect.SubjectStream.build/1)
     seen_subject_ids = Cellect.User.seen_subject_ids(workflow_id, user_id) |> Enum.into(MapSet.new)
 
     do_select(streams, seen_subject_ids, amount)
@@ -18,7 +18,7 @@ defmodule Cellect.Selection do
         seen_subject_ids = Cellect.User.seen_subject_ids(workflow_id, user_id) |> Enum.into(MapSet.new)
         gold_standard_set_ids = workflow.configuration["gold_standard_sets"]
 
-        streams = Cellect.Cache.SubjectIds.get |> Enum.map(&Cellect.SubjectStream.build/1)
+        streams = Cellect.Cache.SubjectIds.get(workflow_id) |> Enum.map(&Cellect.SubjectStream.build/1)
         gold_stream = Enum.filter(streams, &Enum.member?(gold_standard_set_ids, &1.subject_set_id)) |> StreamTools.interleave
         test_stream = Enum.reject(streams, &Enum.member?(gold_standard_set_ids, &1.subject_set_id)) |> StreamTools.interleave
 

@@ -13,13 +13,13 @@ defmodule Cellect.WorkflowsController do
   end
 
   def reload(conn, %{"workflow_id" => workflow_id}) do
-    Cellect.Cache.SubjectIds.reload_async()
+    Cellect.Cache.SubjectIds.reload_async(workflow_id)
     send_resp(conn, 204, [])
   end
 
   def retire(conn, %{"workflow_id" => workflow_id, "subject_id" => subject_id}) do
     # TODO: If this is too slow, implement a temporary in-memory list
-    Cellect.Cache.SubjectIds.reload_async()
+    Cellect.Cache.SubjectIds.reload_async(workflow_id)
     send_resp(conn, 204, [])
   end
 
