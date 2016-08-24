@@ -30,4 +30,9 @@ defmodule Cellect.SelectionTest do
 
     assert Selection.select("weighted", 338, 1, 4) == [4, 2, 1, 3]
   end
+
+  test "workflow that does not exist" do
+    assert Selection.select("uniform", 404, 1, 4) == []
+    assert Selection.select("weighted", 404, 1, 4) == []
+  end
 end
