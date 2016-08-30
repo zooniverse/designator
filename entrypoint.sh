@@ -7,8 +7,8 @@ then
     -nodes \
     -x509 \
     -subj "/C=NA/ST=NA/L=NA/O=NA/CN=$(hostname)" \
-    -keyout config/ssl_key.pem \
-    -out config/ssl_cert.pem
+    -keyout /app/config/ssl_key.pem \
+    -out /app/config/ssl_cert.pem
 fi
 
 exec mix phoenix.server
