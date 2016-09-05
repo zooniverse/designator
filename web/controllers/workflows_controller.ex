@@ -24,11 +24,13 @@ defmodule Cellect.WorkflowsController do
   end
 
   defp get_integer_param(params, key, default) do
-    if Map.has_key?(params, key) do
-      {value, _} = Integer.parse(Map.get(params, key))
-      value
-    else
-      default
+    case Map.get(params, key) do
+      nil -> default
+      value -> 
+        {int, _} = Integer.parse(value)
+        int
+      _ ->
+        default
     end
   end
 end
