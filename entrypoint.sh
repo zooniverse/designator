@@ -11,4 +11,4 @@ then
     -out /app/config/ssl_cert.pem
 fi
 
-exec elixir --name cellectex@127.0.0.1 -S mix phoenix.server
+exec elixir --name cellectex@127.0.0.1 --cookie $SECRET_KEY_BASE -S mix phoenix.server
