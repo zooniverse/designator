@@ -9,6 +9,7 @@ defmodule Cellect do
     children = [
       supervisor(Cellect.Endpoint, []),
       supervisor(Cellect.Repo, []),
+      worker(Cellect.Cache.Reloader, []),
       worker(Cellect.Cache.SubjectIds, [])
 
       # supervisor(Cellect.Workflow.Supervisor, [])

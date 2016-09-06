@@ -17,23 +17,15 @@ defmodule Cellect.Cache.SubjectIds do
   end
 
   defcast set(workflow_id, ids), state: state do
-    new_state Map.put(state, workflow_id, ids)
+    new_state Map.merge(state, %{workflow_id => ids, reloading: false})
   end
 
   defcast reload_async(workflow_id), state: state do
-    converter = fn subject_set_id ->
-      {
-        subject_set_id,
-        Enum.into(Cellect.Workflow.subject_ids(workflow_id, subject_set_id), Array.new)
-      }
+    if state[:reloading] do
+      noreply
+    else
+      Cellect.Cache.Reloader.reload_workflow(__MODULE__, workflow_id)
+      new_state Map.put(state, :reloading, true)
     end
-
-    ids = Cellect.Workflow.subject_set_ids(workflow_id)
-    |> Enum.map(converter)
-    |> Map.new
-
-    set(workflow_id, ids)
-
-    noreply
   end
 end
