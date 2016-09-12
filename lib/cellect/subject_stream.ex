@@ -17,11 +17,11 @@ defmodule Cellect.SubjectStream do
     end
   end
 
-  defp get_size(%Array{} = subject_ids) do
+  def get_size(%Array{} = subject_ids) do
     Array.size(subject_ids)
   end
 
-  defp get_size(subject_ids) do
+  def get_size(subject_ids) do
     Enum.count(subject_ids)
   end
 end
