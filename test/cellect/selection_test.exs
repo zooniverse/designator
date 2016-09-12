@@ -35,4 +35,12 @@ defmodule Cellect.SelectionTest do
     assert Selection.select("uniform", 404, 1, 4) == []
     assert Selection.select("weighted", 404, 1, 4) == []
   end
+
+  test "empty subject set" do
+    Cellect.Random.seed({123, 123534, 345345})
+    Cellect.Workflow.changeset(%Workflow{}, %{id: 338, configuration: %{gold_standard_sets: [681, 1706]}}) |> Repo.insert!
+    Cellect.Cache.SubjectIds.set(338, [{681, []}, {1706, []}, {1682, [3]}, {1681, [4]}])
+
+    assert Selection.select("weighted", 338, 1, 2) == [4, 3]
+  end
 end

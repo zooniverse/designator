@@ -4,11 +4,13 @@ defmodule Cellect.Random do
   end
 
   def element(%Array{} = enumerable) do
-    size  = Array.size enumerable
-    index = :rand.uniform(size) - 1
-    element = Array.get(enumerable, index)
-
-    { index, element }
+    case Array.size enumerable do
+      0 -> nil
+      size -> 
+        index = :rand.uniform(size) - 1
+        element = Array.get(enumerable, index)
+        { index, element }
+    end
   end
 
   def element(enumerable) do
