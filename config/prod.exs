@@ -31,7 +31,7 @@ config :cellect, Cellect.Repo,
   password: System.get_env("POSTGRES_PASS"),
   database: System.get_env("POSTGRES_DB"),
   hostname: System.get_env("POSTGRES_HOST"),
-  pool_size: 20,
+  pool_size: 5,
   ssl: true
 
 # ## SSL Support
