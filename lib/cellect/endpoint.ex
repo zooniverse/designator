@@ -33,6 +33,5 @@ defmodule Cellect.Endpoint do
     key: "_cellect_key",
     signing_salt: "icsXy9AG"
 
-  use Appsignal.Phoenix
   plug Cellect.Router
 end
