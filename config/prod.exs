@@ -16,7 +16,8 @@ config :cellect, Cellect.Endpoint,
   https: [port: {:system, "PORT"},
           keyfile: "/app/config/ssl_key.pem",
           certfile: "/app/config/ssl_cert.pem"],
-  cache_static_manifest: "priv/static/manifest.json"
+  cache_static_manifest: "priv/static/manifest.json",
+  instrumenters: [Appsignal.Phoenix.Instrumenter]
 
 # Do not print debug messages in production
 config :logger, level: :debug
@@ -27,6 +28,7 @@ config :cellect, Cellect.Endpoint,
 # Configure your database
 config :cellect, Cellect.Repo,
   adapter: Ecto.Adapters.Postgres,
+  loggers: [Appsignal.Ecto],
   username: System.get_env("POSTGRES_USER"),
   password: System.get_env("POSTGRES_PASS"),
   database: System.get_env("POSTGRES_DB"),
