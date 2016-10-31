@@ -21,7 +21,6 @@ defmodule Cellect.StreamToolsTest do
     assert result == [2,2,1,1,2,1]
   end
 
-
   test "reading past the end" do
     stream1 = [1,1,1]
     stream2 = [2,2,2]

@@ -6,9 +6,10 @@ defmodule Cellect.Selection do
 
   def select("uniform", workflow_id, user_id, amount) do
     streams = Cellect.Cache.SubjectIds.get(workflow_id) |> reject_empty_sets |> Enum.map(&Cellect.SubjectStream.build/1)
+    size = Enum.sum(Enum.map(streams, &Cellect.SubjectStream.get_size(&1)))
     seen_subject_ids = Cellect.User.seen_subject_ids(workflow_id, user_id) |> Enum.into(MapSet.new)
 
-    do_select(streams, seen_subject_ids, amount)
+    do_select(streams, size, seen_subject_ids, amount)
   end
 
   def select("weighted", workflow_id, user_id, amount) do
@@ -19,17 +20,22 @@ defmodule Cellect.Selection do
         gold_standard_set_ids = workflow.configuration["gold_standard_sets"]
 
         streams = Cellect.Cache.SubjectIds.get(workflow_id) |> reject_empty_sets |> Enum.map(&Cellect.SubjectStream.build/1)
+        amount = Enum.sum(Enum.map(streams, fn stream -> stream.amount end))
         gold_stream = Enum.filter(streams, &Enum.member?(gold_standard_set_ids, &1.subject_set_id)) |> StreamTools.interleave
         test_stream = Enum.reject(streams, &Enum.member?(gold_standard_set_ids, &1.subject_set_id)) |> StreamTools.interleave
 
         gold = %SubjectStream{stream: gold_stream, chance: gold_chance(Enum.count(seen_subject_ids))}
         test = %SubjectStream{stream: test_stream, chance: 1-gold_chance(Enum.count(seen_subject_ids))}
 
-        do_select([gold, test], seen_subject_ids, amount)
+        do_select([gold, test], amount, seen_subject_ids, amount)
     end
   end
 
-  def do_select(streams, seen_subject_ids, amount) do
+  def do_select(streams, stream_amount, seen_subject_ids, amount) do
+    seen_size = Enum.count(seen_subject_ids)
+    max_streamable = stream_amount - seen_size
+    amount = min(max_streamable, amount)
+
     streams
     |> Cellect.StreamTools.interleave
     |> deduplicate
@@ -49,7 +55,7 @@ defmodule Cellect.Selection do
   end
 
   def reject_empty_sets(sets) do
-    Enum.filter(sets, fn({_, subject_ids}) -> Cellect.SubjectStream.get_size(subject_ids) > 0 end)
+    Enum.filter(sets, fn({_, subject_ids}) -> Cellect.SubjectStream.get_amount(subject_ids) > 0 end)
   end
 
   def reject_recently_retired(stream) do

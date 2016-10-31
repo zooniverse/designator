@@ -1,11 +1,11 @@
 defmodule Cellect.SubjectStream do
-  defstruct [:subject_set_id, :stream, :size, :chance]
+  defstruct [:subject_set_id, :stream, :amount, :chance]
 
   def build({subject_set_id, subject_ids}), do: build(subject_set_id, subject_ids)
 
   def build(subject_set_id, subject_ids) do
-    size = get_size(subject_ids)
-    %Cellect.SubjectStream{subject_set_id: subject_set_id, stream: build_stream(subject_ids), size: size, chance: size}
+    amount = get_amount(subject_ids)
+    %Cellect.SubjectStream{subject_set_id: subject_set_id, stream: build_stream(subject_ids), amount: amount, chance: amount}
   end
 
   ###
@@ -17,11 +17,11 @@ defmodule Cellect.SubjectStream do
     end
   end
 
-  def get_size(%Array{} = subject_ids) do
-    Array.size(subject_ids)
+  def get_amount(%Array{} = subject_ids) do
+    Array.amount(subject_ids)
   end
 
-  def get_size(subject_ids) do
+  def get_amount(subject_ids) do
     Enum.count(subject_ids)
   end
 end
