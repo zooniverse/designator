@@ -24,12 +24,24 @@ defmodule Cellect.SelectionTest do
     assert Selection.gold_chance(1200) == 0.1
   end
 
-  test "weighed selection" do
+  test "gold standard weighting" do
     Cellect.Random.seed({123, 123534, 345345})
     Cellect.Workflow.changeset(%Workflow{}, %{id: 338, configuration: %{gold_standard_sets: [681, 1706]}}) |> Repo.insert!
-    Cellect.Cache.SubjectIds.set(338, [{681, [1]}, {1706, [2]}, {1682, [3]}, {1681, [4]}])
+    Cellect.Cache.SubjectIds.set(338, [{681, [1]}, {1706, [2]}, {1682, [3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3]}, {1681, [4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4]}])
 
     assert Selection.select("weighted", 338, 1, 4) == [4, 2, 1, 3]
+  end
+
+  test "weighed selection for normal sets" do
+    Cellect.Random.seed({123, 100020, 345345})
+    Cellect.Workflow.changeset(%Workflow{}, %{id: 338,
+                                              configuration: %{subject_set_weights: %{"1000" => 900,
+                                                                                      "1001" => 99,
+                                                                                      "1002" => 9.9,
+                                                                                      "1003" => 0.1}}}) |> Repo.insert!
+    Cellect.Cache.SubjectIds.set(338, [{1000, [1, 2, 3]}, {1001, [4]}, {1002, [5]}, {1003, [6]}])
+
+    assert Selection.select("weighted", 338, 1, 6) == [1, 3, 2, 4, 5, 6]
   end
 
   @tag timeout: 1000
