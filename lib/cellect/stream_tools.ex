@@ -28,7 +28,7 @@ defmodule Cellect.StreamTools do
   end
 
   defp do_interleave(interleaves, {:cont, acc}, callback) do
-    {idx, elm} = Cellect.Random.element(interleaves)
+    {idx, {elm, chance}} = Cellect.Random.weighted(Enum.map(interleaves, fn interleave -> {interleave, interleave.chance} end))
 
     case elm[:fun].({ :cont, elm[:acc] }) do
       { :suspended, [i | next_fun_acc], next_fun } ->
