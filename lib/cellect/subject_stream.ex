@@ -18,7 +18,7 @@ defmodule Cellect.SubjectStream do
   end
 
   def get_amount(%Array{} = subject_ids) do
-    Array.amount(subject_ids)
+    Array.size(subject_ids)
   end
 
   def get_amount(subject_ids) do
