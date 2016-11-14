@@ -31,7 +31,7 @@ config :cellect, Cellect.Repo,
   password: System.get_env("POSTGRES_PASS"),
   database: System.get_env("POSTGRES_DB"),
   hostname: System.get_env("POSTGRES_HOST"),
-  pool_size: 5,
+  pool_size: System.get_env("POSTGRES_POOL_SIZE"),
   ssl: true
 
 # ## SSL Support
@@ -74,4 +74,3 @@ config :cellect, Cellect.Repo,
 # for the new static assets to be served after a hot upgrade:
 #
 #     config :cellect, Cellect.Endpoint, root: "."
-
