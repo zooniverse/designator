@@ -28,4 +28,4 @@ config :cellect, Cellect.Repo,
   password: System.get_env("POSTGRES_PASS") || "",
   database: System.get_env("POSTGRES_DB")   || "cellect_ex_development",
   hostname: System.get_env("POSTGRES_HOST") || "localhost",
-  pool_size: 10
+  pool_size: System.get_env("POSTGRES_POOL_SIZE") || 10
