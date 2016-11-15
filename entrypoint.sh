@@ -11,4 +11,4 @@ then
     -out /app/config/ssl_cert.pem
 fi
 
-exec elixir --name cellectex@misc.panoptes.zooniverse.org --cookie $SECRET_KEY_BASE --erl "-kernel inet_dist_listen_min 9001 inet_dist_listen_max 9001" -S mix phoenix.server
+exec elixir --name cellectex@misc.panoptes.zooniverse.org --cookie $SECRET_KEY_BASE --erl "-smp enable -kernel inet_dist_listen_min 9001 inet_dist_listen_max 9001" -S mix phoenix.server
