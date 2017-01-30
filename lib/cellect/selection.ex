@@ -6,7 +6,7 @@ defmodule Cellect.Selection do
 
   def select("uniform", workflow_id, user_id, amount) do
     streams = Cellect.Cache.SubjectIds.get(workflow_id) |> reject_empty_sets |> Enum.map(&Cellect.SubjectStream.build/1)
-    size = Enum.sum(Enum.map(streams, &Cellect.SubjectStream.get_size(&1)))
+    size = Enum.sum(Enum.map(streams, fn stream -> stream.amount end))
     seen_subject_ids = Cellect.User.seen_subject_ids(workflow_id, user_id) |> Enum.into(MapSet.new)
 
     do_select(streams, size, seen_subject_ids, amount)

@@ -19,7 +19,7 @@ config :cellect, Cellect.Endpoint,
   cache_static_manifest: "priv/static/manifest.json"
 
 # Do not print debug messages in production
-config :logger, level: :debug
+config :logger, level: :info
 
 config :cellect, Cellect.Endpoint,
   secret_key_base: System.get_env("SECRET_KEY_BASE")
