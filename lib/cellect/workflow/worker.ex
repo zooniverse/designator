@@ -2,7 +2,7 @@ defmodule Cellect.Workflow.Worker do
   use GenServer
 
   def start_link(workflow_id) do
-    subject_ids = Cellect.Subject.unretired_ids(workflow_id) |> Enum.into(Array.new)
+    subject_ids = workflow_id |> Cellect.Subject.unretired_ids |> Enum.into(Array.new)
     retired_ids = HashSet.new
 
     GenServer.start_link __MODULE__, {subject_ids, retired_ids}

@@ -12,7 +12,7 @@ defmodule Cellect.SubjectStream do
 
   defp build_stream(subject_ids) do
     Stream.repeatedly fn ->
-      { _, element} = Cellect.Random.element(subject_ids)
+      {_, element} = Cellect.Random.element(subject_ids)
       element
     end
   end

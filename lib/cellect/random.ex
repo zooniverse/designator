@@ -6,10 +6,10 @@ defmodule Cellect.Random do
   def element(%Array{} = enumerable) do
     case Array.size enumerable do
       0 -> nil
-      size -> 
+      size ->
         index = :rand.uniform(size) - 1
         element = Array.get(enumerable, index)
-        { index, element }
+        {index, element}
     end
   end
 
@@ -18,7 +18,7 @@ defmodule Cellect.Random do
     index = :rand.uniform(size) - 1
     element = Enum.at(enumerable, index)
 
-    { index, element }
+    {index, element}
   end
 
   def weighted(enumerable) do
