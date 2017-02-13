@@ -58,7 +58,11 @@ defmodule Cellect.Selection do
       {:ok, selected_ids} ->
         selected_ids
       :nil ->
-        Rollbax.report(:throw, :selection_timeout, System.stacktrace())
+        Rollbax.report(:throw, :selection_timeout, System.stacktrace(),
+          %{subject_set_ids: Enum.map(streams, &(&1.subject_set_id)),
+            stream_amount: stream_amount,
+            seen_size: seen_size})
+
         []
     end
   end
