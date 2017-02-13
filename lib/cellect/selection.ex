@@ -55,8 +55,11 @@ defmodule Cellect.Selection do
     end)
 
     case Task.yield(task, 1000) || Task.shutdown(task) do
-      {:ok, selected_ids} -> selected_ids
-      :nil -> []
+      {:ok, selected_ids} ->
+        selected_ids
+      :nil ->
+        Rollbax.report(:throw, :selection_timeout, System.stacktrace())
+        []
     end
   end
 
