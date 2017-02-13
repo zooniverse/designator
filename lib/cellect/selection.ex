@@ -43,7 +43,7 @@ defmodule Cellect.Selection do
     random_state = Process.get(:rand_seed)
 
     task = Task.async(fn ->
-      Process.put(:rand_seed, random_state)
+      if random_state, do: Process.put(:rand_seed, random_state)
 
       streams
       |> Cellect.StreamTools.interleave
