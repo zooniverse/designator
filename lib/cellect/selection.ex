@@ -40,7 +40,11 @@ defmodule Cellect.Selection do
     max_streamable = stream_amount - seen_size
     amount = min(max_streamable, amount)
 
+    random_state = Process.get(:rand_seed)
+
     task = Task.async(fn ->
+      Process.put(:rand_seed, random_state)
+
       streams
       |> Cellect.StreamTools.interleave
       |> deduplicate
