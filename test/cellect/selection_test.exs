@@ -5,8 +5,6 @@ defmodule Cellect.SelectionTest do
   alias Cellect.Workflow
   alias Cellect.UserSeenSubject
 
-  require IEx
-
   test "gold chance" do
     assert Selection.gold_chance(0) == 0.4
     assert Selection.gold_chance(1) == 0.4
