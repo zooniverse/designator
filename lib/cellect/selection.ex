@@ -54,7 +54,7 @@ defmodule Cellect.Selection do
       |> Enum.take(amount) # TODO: Breaks if not enough match
     end)
 
-    case Task.yield(task, 200) || Task.shutdown(task) do
+    case Task.yield(task, 1000) || Task.shutdown(task) do
       {:ok, selected_ids} -> selected_ids
       :nil -> []
     end
