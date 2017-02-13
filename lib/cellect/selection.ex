@@ -23,11 +23,11 @@ defmodule Cellect.Selection do
         amount = Enum.sum(Enum.map(streams, fn stream -> stream.amount end))
 
         if Enum.count(gold_standard_set_ids) > 0 do
-          gold_stream = Enum.filter(streams, &Enum.member?(gold_standard_set_ids, &1.subject_set_id)) |> StreamTools.interleave
-          test_stream = Enum.reject(streams, &Enum.member?(gold_standard_set_ids, &1.subject_set_id)) |> StreamTools.interleave
+          gold_stream = streams |> Enum.filter(&Enum.member?(gold_standard_set_ids, &1.subject_set_id)) |> StreamTools.interleave
+          test_stream = streams |> Enum.reject(&Enum.member?(gold_standard_set_ids, &1.subject_set_id)) |> StreamTools.interleave
 
           gold = %SubjectStream{stream: gold_stream, chance: gold_chance(Enum.count(seen_subject_ids))}
-          test = %SubjectStream{stream: test_stream, chance: 1-gold_chance(Enum.count(seen_subject_ids))}
+          test = %SubjectStream{stream: test_stream, chance: 1 - gold_chance(Enum.count(seen_subject_ids))}
           do_select([gold, test], amount, seen_subject_ids, limit)
         else
           do_select(streams, amount, seen_subject_ids, limit)
@@ -40,13 +40,24 @@ defmodule Cellect.Selection do
     max_streamable = stream_amount - seen_size
     amount = min(max_streamable, amount)
 
-    streams
-    |> Cellect.StreamTools.interleave
-    |> deduplicate
-    |> reject_recently_retired
-    |> reject_recently_selected
-    |> reject_seen_subjects(seen_subject_ids)
-    |> Enum.take(amount) # TODO: Breaks if not enough match
+    random_state = Process.get(:rand_seed)
+
+    task = Task.async(fn ->
+      Process.put(:rand_seed, random_state)
+
+      streams
+      |> Cellect.StreamTools.interleave
+      |> deduplicate
+      |> reject_recently_retired
+      |> reject_recently_selected
+      |> reject_seen_subjects(seen_subject_ids)
+      |> Enum.take(amount) # TODO: Breaks if not enough match
+    end)
+
+    case Task.yield(task, 1000) || Task.shutdown(task) do
+      {:ok, selected_ids} -> selected_ids
+      :nil -> []
+    end
   end
 
   def get_streams(workflow) do
