@@ -32,3 +32,13 @@ config :phoenix, :generators,
   migration: true,
   binary_id: false
 
+if System.get_env("ROLLBAR_ACCESS_TOKEN") do
+  config :rollbax,
+    access_token: System.get_env("ROLLBAR_ACCESS_TOKEN"),
+    environment: to_string(Mix.env)
+else
+    config :rollbax,
+      access_token: "",
+      environment: to_string(Mix.env),
+      enabled: :log
+end

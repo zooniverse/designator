@@ -43,7 +43,7 @@ defmodule Cellect.Selection do
     random_state = Process.get(:rand_seed)
 
     task = Task.async(fn ->
-      Process.put(:rand_seed, random_state)
+      if random_state, do: Process.put(:rand_seed, random_state)
 
       streams
       |> Cellect.StreamTools.interleave
@@ -55,8 +55,15 @@ defmodule Cellect.Selection do
     end)
 
     case Task.yield(task, 1000) || Task.shutdown(task) do
-      {:ok, selected_ids} -> selected_ids
-      :nil -> []
+      {:ok, selected_ids} ->
+        selected_ids
+      :nil ->
+        Rollbax.report(:throw, :selection_timeout, System.stacktrace(),
+          %{subject_set_ids: Enum.map(streams, &(&1.subject_set_id)),
+            stream_amount: stream_amount,
+            seen_size: seen_size})
+
+        []
     end
   end
 

@@ -19,7 +19,7 @@ defmodule Cellect.Mixfile do
   def application do
     [mod: {Cellect, []},
      applications: [:phoenix, :phoenix_pubsub, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex, :logster]]
+                    :phoenix_ecto, :postgrex, :logster, :rollbax]]
   end
 
   # Specifies which paths to compile per environment.
@@ -39,7 +39,8 @@ defmodule Cellect.Mixfile do
      {:array, git: "https://github.com/mhib/elixir-array.git"},
      {:exactor, "~> 2.2.1", warn_missing: false},
      {:logster, "~> 0.4"},
-     {:credo, "~> 0.6", only: [:dev, :test]}]
+     {:credo, "~> 0.6", only: [:dev, :test]},
+     {:rollbax, "~> 0.8"}]
   end
 
   # Aliases are shortcut or tasks specific to the current project.
