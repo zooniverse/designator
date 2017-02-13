@@ -41,7 +41,8 @@ defmodule Cellect.Mixfile do
      {:logster, "~> 0.4"},
      {:credo, "~> 0.6", only: [:dev, :test]},
      {:rollbax, "~> 0.8"},
-     {:mock, "~> 0.2.0", only: :test}]
+     {:mock, "~> 0.2.0", only: :test},
+     {:mix_test_watch, "~> 0.3", only: :dev, runtime: false}]
   end
 
   # Aliases are shortcut or tasks specific to the current project.

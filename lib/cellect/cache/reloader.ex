@@ -22,4 +22,9 @@ defmodule Cellect.Cache.Reloader do
     noreply
   end
 
+  defcast reload_user_seens(cache, workflow_id, user_id) do
+    seen_subject_ids = Cellect.User.seen_subject_ids(workflow_id, user_id) |> Enum.into(MapSet.new)
+    cache.set({workflow_id, user_id}, seen_subject_ids)
+    noreply
+  end
 end
