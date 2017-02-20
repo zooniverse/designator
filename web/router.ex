@@ -11,7 +11,7 @@ defmodule Cellect.Router do
 
     get  "/workflows/:workflow_id", WorkflowsController, :index
     post "/workflows/:workflow_id/reload", WorkflowsController, :reload
-    put  "/workflows/:workflow_id/remove", WorkflowsController, :retire
+    post "/workflows/:workflow_id/remove", WorkflowsController, :retire
   end
 
   defp handle_errors(conn, %{kind: kind, reason: reason, stack: stacktrace}) do
