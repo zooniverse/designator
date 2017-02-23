@@ -18,6 +18,12 @@ defmodule Cellect.WorkflowsController do
     send_resp(conn, 204, [])
   end
 
+  def unlock(conn, %{"workflow_id" => workflow_id}) do
+    {workflow_id, _} = Integer.parse(workflow_id)
+    Cellect.Cache.SubjectIds.unlock_reload(workflow_id)
+    send_resp(conn, 204, [])
+  end
+
   def retire(conn, %{"workflow_id" => workflow_id, "subject_id" => subject_id}) do
     # TODO: If this is too slow, implement a temporary in-memory list
     {workflow_id, _} = Integer.parse(workflow_id)
