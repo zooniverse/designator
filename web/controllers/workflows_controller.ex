@@ -2,13 +2,12 @@ defmodule Cellect.WorkflowsController do
   use Cellect.Web, :controller
 
   def index(conn, %{"workflow_id" => workflow_id} = params) do
-
     {workflow_id, _} = Integer.parse(workflow_id)
     user_id = get_integer_param(params, "user_id", nil)
     strategy = Map.get(params, "strategy", "uniform")
     limit = get_integer_param(params, "limit", 5)
 
-    subjects = Cellect.Selection.select(strategy, workflow_id, user_id)
+    subjects = Cellect.Selection.select(strategy, workflow_id, user_id, limit)
     render conn, "index.json", subjects: subjects
   end
 
