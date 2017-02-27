@@ -10,10 +10,11 @@ defmodule Cellect.Router do
     pipe_through :api
 
     get "/", StatusController, :index
-    get  "/workflows/:workflow_id", WorkflowsController, :index
-    post "/workflows/:workflow_id/reload", WorkflowsController, :reload
-    post "/workflows/:workflow_id/unlock", WorkflowsController, :unlock
-    post "/workflows/:workflow_id/remove", WorkflowsController, :reload
+    resources "/workflows", WorkflowController
+
+    post "/workflows/:id/reload", WorkflowController, :reload
+    post "/workflows/:id/unlock", WorkflowController, :unlock
+    post "/workflows/:id/remove", WorkflowController, :remove
   end
 
   defp handle_errors(conn, %{kind: kind, reason: reason, stack: stacktrace}) do
