@@ -29,6 +29,11 @@ defmodule Cellect.WorkflowController do
     Cellect.Cache.SubjectIds.reload_async(workflow_id)
     send_resp(conn, 204, [])
   end
+  def remove(conn, %{"id" => workflow_id}) do
+    {workflow_id, _} = Integer.parse(workflow_id)
+    Cellect.Cache.SubjectIds.reload_async(workflow_id)
+    send_resp(conn, 204, [])
+  end
 
   defp get_integer_param(params, key, default) do
     case Map.get(params, key) do
