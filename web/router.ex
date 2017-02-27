@@ -9,15 +9,17 @@ defmodule Cellect.Router do
   scope "/api", Cellect do
     pipe_through :api
 
+    get "/", StatusController, :index
     get  "/workflows/:workflow_id", WorkflowsController, :index
     post "/workflows/:workflow_id/reload", WorkflowsController, :reload
+    post "/workflows/:workflow_id/unlock", WorkflowsController, :unlock
     post "/workflows/:workflow_id/remove", WorkflowsController, :reload
   end
 
   defp handle_errors(conn, %{kind: kind, reason: reason, stack: stacktrace}) do
     Rollbax.report(kind, reason, stacktrace)
     case Poison.encode(%{kind: kind, reason: reason}) do
-      {:ok, json} -> 
+      {:ok, json} ->
         send_resp(conn, conn.status, json)
       _ ->
         send_resp(conn, conn.status, "Something went wrong")

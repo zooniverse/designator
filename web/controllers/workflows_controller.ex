@@ -2,19 +2,24 @@ defmodule Cellect.WorkflowsController do
   use Cellect.Web, :controller
 
   def index(conn, %{"workflow_id" => workflow_id} = params) do
-
     {workflow_id, _} = Integer.parse(workflow_id)
     user_id = get_integer_param(params, "user_id", nil)
     strategy = Map.get(params, "strategy", "uniform")
     limit = get_integer_param(params, "limit", 5)
 
-    subjects = Cellect.Selection.select(strategy, workflow_id, user_id)
+    subjects = Cellect.Selection.select(strategy, workflow_id, user_id, limit)
     render conn, "index.json", subjects: subjects
   end
 
   def reload(conn, %{"workflow_id" => workflow_id}) do
     {workflow_id, _} = Integer.parse(workflow_id)
     Cellect.Cache.SubjectIds.reload_async(workflow_id)
+    send_resp(conn, 204, [])
+  end
+
+  def unlock(conn, %{"workflow_id" => workflow_id}) do
+    {workflow_id, _} = Integer.parse(workflow_id)
+    Cellect.Cache.SubjectIds.unlock_reload(workflow_id)
     send_resp(conn, 204, [])
   end
 
