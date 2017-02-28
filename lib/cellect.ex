@@ -9,8 +9,8 @@ defmodule Cellect do
     children = [
       supervisor(Cellect.Endpoint, []),
       supervisor(Cellect.Repo, []),
-      supervisor(Registry, [:unique, :user_cache_registry]),
-      supervisor(Cellect.UserCacheSupervisor, []),
+      supervisor(Cellect.WorkflowCache, []),
+      supervisor(Cellect.UserCache, []),
       worker(Cellect.Cache.Reloader, []),
       worker(Cellect.Cache.SubjectIds, [])
 

@@ -19,7 +19,7 @@ defmodule Cellect.Mixfile do
   def application do
     [mod: {Cellect, []},
      applications: [:phoenix, :phoenix_pubsub, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex, :logster, :rollbax]]
+                    :phoenix_ecto, :postgrex, :logster, :rollbax, :con_cache]]
   end
 
   # Specifies which paths to compile per environment.
@@ -42,7 +42,8 @@ defmodule Cellect.Mixfile do
      {:credo, "~> 0.6", only: [:dev, :test]},
      {:rollbax, "~> 0.8"},
      {:mock, "~> 0.2.0", only: :test},
-     {:mix_test_watch, "~> 0.3", only: :dev, runtime: false}]
+     {:mix_test_watch, "~> 0.3", only: :dev, runtime: false},
+     {:con_cache, "~> 0.12.0"}]
   end
 
   # Aliases are shortcut or tasks specific to the current project.
