@@ -15,7 +15,7 @@ defmodule Cellect.Selection do
   end
 
   def select("weighted", workflow_id, user_id, limit) do
-    case Cellect.Workflow.find(workflow_id) do
+    case Cellect.WorkflowCache.get(workflow_id) do
       nil -> []
       workflow ->
         user_cache = Cellect.UserCache.get({workflow_id, user_id})
