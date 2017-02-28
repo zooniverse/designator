@@ -2,7 +2,7 @@ defmodule Cellect.UserCache do
   use GenServer
 
   @registry_name :user_cache_registry
-  @process_timeout 3_600_000 # 1 hour in milliseconds
+  @process_timeout 10000 # 3_600_000 # 1 hour in milliseconds
 
   defstruct [:workflow_id, :user_id, :seen_ids, :reloading]
 
@@ -31,19 +31,19 @@ defmodule Cellect.UserCache do
       workflow_id: workflow_id,
       user_id: user_id,
       seen_ids: seen_ids,
-      reloading: true
+      reloading: false
     }
 
     {:ok, state, @process_timeout}
   end
 
   def handle_call(:get, _from, state) do
-    {:reply, state, state}
+    {:reply, state, state, @process_timeout}
   end
 
   def handle_cast({:set_seen_ids, seen_ids}, state) do
     new_state = %__MODULE__{ state | seen_ids: seen_ids}
-    {:noreply, new_state}
+    {:noreply, new_state, @process_timeout}
   end
 
   def handle_info(:timeout, state) do

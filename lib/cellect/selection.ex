@@ -7,7 +7,10 @@ defmodule Cellect.Selection do
   def select("uniform", workflow_id, user_id, amount) do
     streams = Cellect.Cache.SubjectIds.get(workflow_id) |> reject_empty_sets |> Enum.map(&Cellect.SubjectStream.build/1)
     size = Enum.sum(Enum.map(streams, fn stream -> stream.amount end))
-    seen_subject_ids = Cellect.User.seen_subject_ids(workflow_id, user_id) |> Enum.into(MapSet.new)
+
+    {:ok, user_cache_pid} = Cellect.UserCacheSupervisor.find_or_create_process(workflow_id, user_id)
+    user_cache = Cellect.UserCache.get(user_cache_pid)
+    seen_subject_ids = user_cache.seen_ids
 
     do_select(streams, size, seen_subject_ids, amount)
   end
@@ -16,7 +19,10 @@ defmodule Cellect.Selection do
     case Cellect.Workflow.find(workflow_id) do
       nil -> []
       workflow ->
-        seen_subject_ids = Cellect.User.seen_subject_ids(workflow_id, user_id) |> Enum.into(MapSet.new)
+        {:ok, user_cache_pid} = Cellect.UserCacheSupervisor.find_or_create_process(workflow_id, user_id)
+        user_cache = Cellect.UserCache.get(user_cache_pid)
+        seen_subject_ids = user_cache.seen_ids
+        
         gold_standard_set_ids = workflow.configuration["gold_standard_sets"] || []
 
         streams = get_streams(workflow)
