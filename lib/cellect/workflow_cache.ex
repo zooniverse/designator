@@ -7,9 +7,9 @@ defmodule Cellect.WorkflowCache do
 
   def init([]) do
     children = [
-      supervisor(ConCache, [[ttl_check: :timer.seconds(1),
-                            ttl: :timer.seconds(5),
-                            touch_on_read: true],
+      supervisor(ConCache, [[ttl_check: :timer.seconds(5),
+                             ttl: :timer.minutes(15),
+                             touch_on_read: false],
                             [name: :workflow_cache]]),
     ]
 
@@ -18,9 +18,35 @@ defmodule Cellect.WorkflowCache do
 
   ### Public API
 
+  defstruct [:id, :subject_set_ids, :configuration]
+
   def get(workflow_id) do
     ConCache.get_or_store(:workflow_cache, workflow_id, fn() ->
-      Cellect.Workflow.find(workflow_id)
+      case Cellect.Workflow.find(workflow_id) do
+        nil ->
+          %__MODULE__{
+            id: workflow_id,
+            subject_set_ids: [],
+            configuration: %{}
+          }
+        workflow ->
+          %__MODULE__{
+            id: workflow_id,
+            subject_set_ids: Cellect.Workflow.subject_set_ids(workflow_id),
+            configuration: workflow.configuration
+          }
+      end
+    end)
+  end
+
+  def set(workflow_id, workflow) do
+    ConCache.update(:workflow_cache, workflow_id, fn(old_workflow) ->
+      case old_workflow do
+        nil -> 
+          {:ok , Map.merge(%__MODULE__{id: workflow_id}, workflow)}
+        w ->
+          {:ok, Map.merge(w, workflow)}
+      end
     end)
   end
 end

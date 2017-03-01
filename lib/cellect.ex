@@ -10,6 +10,7 @@ defmodule Cellect do
       supervisor(Cellect.Endpoint, []),
       supervisor(Cellect.Repo, []),
       supervisor(Cellect.WorkflowCache, []),
+      supervisor(Cellect.SubjectSetCache, []),
       supervisor(Cellect.UserCache, []),
       worker(Cellect.Cache.Reloader, []),
       worker(Cellect.Cache.SubjectIds, [])
