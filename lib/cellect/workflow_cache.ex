@@ -20,6 +20,17 @@ defmodule Cellect.WorkflowCache do
 
   defstruct [:id, :subject_set_ids, :configuration]
 
+  def status do
+    :workflow_cache
+    |> ConCache.ets
+    |> :ets.tab2list
+    |> Enum.map(fn({_, val}) ->
+      %{workflow_id: val.id,
+        subject_set_ids: val.subject_set_ids,
+        configuration: val.configuration}
+    end)
+  end
+
   def get(workflow_id) do
     ConCache.get_or_store(:workflow_cache, workflow_id, fn() ->
       fetch_workflow(workflow_id)

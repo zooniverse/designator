@@ -13,7 +13,6 @@ defmodule Cellect do
       supervisor(Cellect.SubjectSetCache, []),
       supervisor(Cellect.UserCache, []),
       worker(Cellect.Cache.Reloader, []),
-      worker(Cellect.Cache.SubjectIds, [])
 
       # supervisor(Cellect.Workflow.Supervisor, [])
       # supervisor(Cellect.UserSeen.Supervisor, [])

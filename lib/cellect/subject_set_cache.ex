@@ -20,6 +20,18 @@ defmodule Cellect.SubjectSetCache do
 
   defstruct [:workflow_id, :subject_set_id, :subject_ids, :reloading]
 
+  def status do
+    :subject_set_cache
+    |> ConCache.ets
+    |> :ets.tab2list
+    |> Enum.map(fn({_, val}) ->
+      %{workflow_id: val.workflow_id,
+        subject_set_id: val.subject_set_id,
+        available: Array.size(val.subject_ids)
+        }
+    end)
+  end
+
   def get({workflow_id, subject_set_id} = key) do
     subject_set = ConCache.get_or_store(:subject_set_cache, key, fn() ->
       %__MODULE__{
