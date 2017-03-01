@@ -22,20 +22,7 @@ defmodule Cellect.WorkflowCache do
 
   def get(workflow_id) do
     ConCache.get_or_store(:workflow_cache, workflow_id, fn() ->
-      case Cellect.Workflow.find(workflow_id) do
-        nil ->
-          %__MODULE__{
-            id: workflow_id,
-            subject_set_ids: [],
-            configuration: %{}
-          }
-        workflow ->
-          %__MODULE__{
-            id: workflow_id,
-            subject_set_ids: Cellect.Workflow.subject_set_ids(workflow_id),
-            configuration: workflow.configuration
-          }
-      end
+      fetch_workflow(workflow_id)
     end)
   end
 
@@ -48,5 +35,28 @@ defmodule Cellect.WorkflowCache do
           {:ok, Map.merge(w, workflow)}
       end
     end)
+  end
+
+  def reload(workflow_id) do
+    ConCache.update(:workflow_cache, workflow_id, fn(old_workflow) ->
+      {:ok, fetch_workflow(workflow_id)}
+    end)
+  end
+
+  defp fetch_workflow(workflow_id) do
+    case Cellect.Workflow.find(workflow_id) do
+      nil ->
+        %__MODULE__{
+          id: workflow_id,
+          subject_set_ids: [],
+          configuration: %{}
+        }
+      workflow ->
+        %__MODULE__{
+          id: workflow_id,
+          subject_set_ids: Cellect.Workflow.subject_set_ids(workflow_id),
+          configuration: workflow.configuration
+       }
+    end
   end
 end
