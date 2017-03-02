@@ -1,10 +1,10 @@
 defmodule Cellect.Reloader.Sync do
-  use ExActor.GenServer, export: :sync_reloader
+  use GenServer
 
   @behaviour Cellect.Reloader
 
-  defstart start_link() do
-    initial_state %{}
+  def start_link() do
+    GenServer.start_link(__MODULE__, {}, name: __MODULE__)
   end
 
   def reload_subject_set({workflow_id, subject_set_id}) do

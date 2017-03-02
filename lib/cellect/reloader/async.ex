@@ -1,15 +1,21 @@
 defmodule Cellect.Reloader.Async do
-  use ExActor.GenServer, export: :async_reloader
+  use GenServer
 
   @behaviour Cellect.Reloader
 
-  defstart start_link() do
-    initial_state %{}
+  def start_link do
+    GenServer.start_link __MODULE__, {}, name: __MODULE__
   end
 
-  defcast reload_subject_set({workflow_id, subject_set_id}), state: state do
+  def reload_subject_set({workflow_id, subject_set_id}) do
+    GenServer.cast(__MODULE__, {:reload_subject_set, workflow_id, subject_set_id})
+  end
+
+  # Server (callbacks)
+
+  def handle_cast({:reload_subject_set, workflow_id, subject_set_id}, state) do
     subject_ids = Cellect.Workflow.subject_ids(workflow_id, subject_set_id) |> Array.from_list
     Cellect.SubjectSetCache.set_subject_ids({workflow_id, subject_set_id}, subject_ids)
-    noreply()
+    {:noreply, state}
   end
 end
