@@ -13,25 +13,27 @@ defmodule Cellect.WorkflowController do
 
   def reload(conn, %{"id" => workflow_id}) do
     {workflow_id, _} = Integer.parse(workflow_id)
-    Cellect.Cache.SubjectIds.reload_async(workflow_id)
+    do_full_reload(workflow_id)
     send_resp(conn, 204, [])
   end
 
   def unlock(conn, %{"id" => workflow_id}) do
     {workflow_id, _} = Integer.parse(workflow_id)
-    Cellect.Cache.SubjectIds.unlock_reload(workflow_id)
+    Cellect.WorkflowCache.get(workflow_id).subject_set_ids
+    |> Enum.each(fn subject_set_id -> Cellect.SubjectSetCache.unlock({workflow_id, subject_set_id}) end)
     send_resp(conn, 204, [])
   end
 
-  def remove(conn, %{"id" => workflow_id, "subject_id" => subject_id}) do
+  def remove(conn, %{"id" => workflow_id, "subject_id" => _}) do
     # TODO: If this is too slow, implement a temporary in-memory list
     {workflow_id, _} = Integer.parse(workflow_id)
-    Cellect.Cache.SubjectIds.reload_async(workflow_id)
+    do_full_reload(workflow_id)
     send_resp(conn, 204, [])
   end
   def remove(conn, %{"id" => workflow_id}) do
+    # TODO: If this is too slow, implement a temporary in-memory list
     {workflow_id, _} = Integer.parse(workflow_id)
-    Cellect.Cache.SubjectIds.reload_async(workflow_id)
+    do_full_reload(workflow_id)
     send_resp(conn, 204, [])
   end
 
@@ -41,8 +43,12 @@ defmodule Cellect.WorkflowController do
       value ->
         {int, _} = Integer.parse(value)
         int
-      _ ->
-        default
     end
+  end
+
+  defp do_full_reload(workflow_id) do
+    Cellect.WorkflowCache.reload(workflow_id)
+    Cellect.WorkflowCache.get(workflow_id).subject_set_ids
+    |> Enum.each(fn subject_set_id -> Cellect.SubjectSetCache.reload({workflow_id, subject_set_id}) end)
   end
 end

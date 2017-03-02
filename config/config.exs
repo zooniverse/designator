@@ -16,7 +16,8 @@ config :cellect, Cellect.Endpoint,
 
 config :cellect,
   namespace: Cellect,
-  ecto_repos: [Cellect.Repo]
+  ecto_repos: [Cellect.Repo],
+  reloader: Cellect.Reloader.Async
 
 # Configures Elixir's Logger
 config :logger, :console,
@@ -42,3 +43,4 @@ else
       environment: to_string(Mix.env),
       enabled: :log
 end
+

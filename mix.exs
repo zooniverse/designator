@@ -7,10 +7,10 @@ defmodule Cellect.Mixfile do
      elixir: "~> 1.3",
      elixirc_paths: elixirc_paths(Mix.env),
      compilers: [:phoenix, :gettext] ++ Mix.compilers,
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     aliases: aliases,
-     deps: deps]
+     build_embedded: (Mix.env == :prod || Mix.env == :bench),
+     start_permanent: (Mix.env == :prod || Mix.env == :bench),
+     aliases: aliases(),
+     deps: deps()]
   end
 
   # Configuration for the OTP application.
@@ -19,7 +19,7 @@ defmodule Cellect.Mixfile do
   def application do
     [mod: {Cellect, []},
      applications: [:phoenix, :phoenix_pubsub, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex, :logster, :rollbax]]
+                    :phoenix_ecto, :postgrex, :logster, :rollbax, :con_cache]]
   end
 
   # Specifies which paths to compile per environment.
@@ -41,7 +41,9 @@ defmodule Cellect.Mixfile do
      {:logster, "~> 0.4"},
      {:credo, "~> 0.6", only: [:dev, :test]},
      {:rollbax, "~> 0.8"},
-     {:mock, "~> 0.2.0", only: :test}]
+     {:mock, "~> 0.2.0", only: :test},
+     {:mix_test_watch, "~> 0.3", only: :dev, runtime: false},
+     {:con_cache, "~> 0.12.0"}]
   end
 
   # Aliases are shortcut or tasks specific to the current project.
