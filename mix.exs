@@ -37,7 +37,6 @@ defmodule Cellect.Mixfile do
      {:gettext, "~> 0.9"},
      {:cowboy, "~> 1.0"},
      {:array, git: "https://github.com/mhib/elixir-array.git"},
-     {:exactor, "~> 2.2.1", warn_missing: false},
      {:logster, "~> 0.4"},
      {:credo, "~> 0.6", only: [:dev, :test]},
      {:rollbax, "~> 0.8"},
