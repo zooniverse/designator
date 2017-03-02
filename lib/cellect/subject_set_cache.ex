@@ -1,6 +1,8 @@
 defmodule Cellect.SubjectSetCache do
   use Supervisor
 
+  @reloader Application.get_env(:cellect, :reloader)
+
   def start_link do
     Supervisor.start_link(__MODULE__, [])
   end
@@ -57,7 +59,7 @@ defmodule Cellect.SubjectSetCache do
       {:ok, %__MODULE__{subject_set | reloading: true}}
     end)
 
-    Cellect.Cache.Reloader.reload_subject_set(key)
+    @reloader.reload_subject_set(key)
   end
 
   def unlock(key) do

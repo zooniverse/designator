@@ -1,6 +1,8 @@
 defmodule Cellect do
   use Application
 
+  @reloader Application.get_env(:cellect, :reloader)
+
   # See http://elixir-lang.org/docs/stable/elixir/Application.html
   # for more information on OTP Applications
   def start(_type, _args) do
@@ -12,7 +14,7 @@ defmodule Cellect do
       supervisor(Cellect.WorkflowCache, []),
       supervisor(Cellect.SubjectSetCache, []),
       supervisor(Cellect.UserCache, []),
-      worker(Cellect.Cache.Reloader, []),
+      worker(@reloader, []),
 
       # supervisor(Cellect.Workflow.Supervisor, [])
       # supervisor(Cellect.UserSeen.Supervisor, [])

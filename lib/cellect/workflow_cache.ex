@@ -40,7 +40,7 @@ defmodule Cellect.WorkflowCache do
   def set(workflow_id, workflow) do
     ConCache.update(:workflow_cache, workflow_id, fn(old_workflow) ->
       case old_workflow do
-        nil -> 
+        nil ->
           {:ok , Map.merge(%__MODULE__{id: workflow_id}, workflow)}
         w ->
           {:ok, Map.merge(w, workflow)}
@@ -49,7 +49,7 @@ defmodule Cellect.WorkflowCache do
   end
 
   def reload(workflow_id) do
-    ConCache.update(:workflow_cache, workflow_id, fn(old_workflow) ->
+    ConCache.update(:workflow_cache, workflow_id, fn(_old_workflow) ->
       {:ok, fetch_workflow(workflow_id)}
     end)
   end

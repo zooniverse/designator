@@ -1,5 +1,7 @@
-defmodule Cellect.Cache.Reloader do
-  use ExActor.GenServer, export: :reloader
+defmodule Cellect.Reloader.Async do
+  use ExActor.GenServer, export: :async_reloader
+
+  @behaviour Cellect.Reloader
 
   defstart start_link() do
     initial_state %{}
