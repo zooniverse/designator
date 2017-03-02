@@ -43,8 +43,6 @@ defmodule Cellect.WorkflowController do
       value ->
         {int, _} = Integer.parse(value)
         int
-      _ ->
-        default
     end
   end
 
