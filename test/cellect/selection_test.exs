@@ -3,7 +3,6 @@ defmodule Cellect.SelectionTest do
   use Cellect.CacheCase
   alias Cellect.Selection
   alias Cellect.Repo
-  alias Cellect.Workflow
   alias Cellect.UserSeenSubject
   alias Cellect.SubjectSetCache
 
@@ -50,7 +49,7 @@ defmodule Cellect.SelectionTest do
     SubjectSetCache.set({338, 1002}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1002, subject_ids: Array.from_list([5])})
     SubjectSetCache.set({338, 1003}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1003, subject_ids: Array.from_list([6])})
 
-    assert Selection.select("weighted", 338, 1, 6) == [5, 3, 6, 4, 1, 2] 
+    assert Selection.select("weighted", 338, 1, 6) == [5, 3, 6, 4, 1, 2]
   end
 
   @tag timeout: 1000

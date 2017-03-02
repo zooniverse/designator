@@ -7,10 +7,10 @@ defmodule Cellect.Mixfile do
      elixir: "~> 1.3",
      elixirc_paths: elixirc_paths(Mix.env),
      compilers: [:phoenix, :gettext] ++ Mix.compilers,
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     aliases: aliases,
-     deps: deps]
+     build_embedded: (Mix.env == :prod || Mix.env == :bench),
+     start_permanent: (Mix.env == :prod || Mix.env == :bench),
+     aliases: aliases(),
+     deps: deps()]
   end
 
   # Configuration for the OTP application.

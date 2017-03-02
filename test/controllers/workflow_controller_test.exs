@@ -4,8 +4,6 @@ defmodule Cellect.WorkflowControllerTest do
   import Mock
 
   alias Cellect.Workflow
-  @valid_attrs %{}
-  @invalid_attrs %{}
 
   setup %{conn: conn} do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
