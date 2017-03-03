@@ -55,11 +55,16 @@ defmodule Cellect.SubjectSetCache do
   end
 
   def reload(key) do
-    ConCache.update(:subject_set_cache, key, fn(subject_set) ->
-      {:ok, %__MODULE__{subject_set | reloading: true}}
+    ConCache.update_existing(:subject_set_cache, key, fn(subject_set) ->
+      case subject_set do
+        %{reloading: true} ->
+          {:error, :already_reloading}
+        val ->
+          @reloader.reload_subject_set(key)
+          {:ok, %__MODULE__{subject_set | reloading: true}}
+      end
     end)
 
-    @reloader.reload_subject_set(key)
   end
 
   def unlock(key) do
