@@ -1,8 +1,8 @@
-defmodule Cellect.SubjectSetCacheTest do
-  use Cellect.ConnCase
-  use Cellect.CacheCase
+defmodule Designator.SubjectSetCacheTest do
+  use Designator.ConnCase
+  use Designator.CacheCase
 
-  alias Cellect.SubjectSetCache
+  alias Designator.SubjectSetCache
 
   describe "reloading" do
     setup do
