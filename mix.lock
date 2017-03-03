@@ -1,4 +1,5 @@
 %{"array": {:git, "https://github.com/mhib/elixir-array.git", "a670d8ba8c89521216f397b7970477ccb21e23c0", []},
+  "basic_auth": {:hex, :basic_auth, "2.0.0", "13a79d699c8530a15d7de84d2d58dc178f1c940f9f52306669797508adbe52cd", [:mix], [{:cowboy, "~> 1.0", [hex: :cowboy, optional: false]}, {:plug, "~> 0.14 or ~> 1.0", [hex: :plug, optional: false]}]},
   "bunt": {:hex, :bunt, "0.2.0", "951c6e801e8b1d2cbe58ebbd3e616a869061ddadcc4863d0a2182541acae9a38", [:mix], []},
   "certifi": {:hex, :certifi, "0.7.0", "861a57f3808f7eb0c2d1802afeaae0fa5de813b0df0979153cbafcd853ababaf", [:rebar3], []},
   "con_cache": {:hex, :con_cache, "0.12.0", "2d961aec219aa5a914473873f348f5a6088292dc69d5192a9d25f8a1e13e9905", [:mix], [{:exactor, "~> 2.2.0", [hex: :exactor, optional: false]}]},

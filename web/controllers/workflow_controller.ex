@@ -1,6 +1,8 @@
 defmodule Designator.WorkflowController do
   use Designator.Web, :controller
 
+  plug BasicAuth, [use_config: {:designator, :api_auth}] when action in [:reload, :unlock, :remove]
+
   def show(conn, %{"id" => workflow_id} = params) do
     {workflow_id, _} = Integer.parse(workflow_id)
     user_id = get_integer_param(params, "user_id", nil)
