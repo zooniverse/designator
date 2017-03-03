@@ -1,19 +1,18 @@
 # Designator
 
-To start your Phoenix app:
+## Development guide
 
-  * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.create && mix ecto.migrate`
-  * Start Phoenix endpoint with `mix phoenix.server`
+Local installation:
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+  * `brew install elixir`
+  * `mix deps.get`
+  * `mix ecto.create && mix ecto.migrate`
+  * `mix test`
+  * `iex -S mix phoenix.server` and `curl http://localhost:4000/api`
+  
+Using Docker:
 
-Ready to run in production? Please [check our deployment guides](http://www.phoenixframework.org/docs/deployment).
-
-## Learn more
-
-  * Official website: http://www.phoenixframework.org/
-  * Guides: http://phoenixframework.org/docs/overview
-  * Docs: http://hexdocs.pm/phoenix
-  * Mailing list: http://groups.google.com/group/phoenix-talk
-  * Source: https://github.com/phoenixframework/phoenix
+  * `docker-compose build`
+  * `docker-compose run web mix ecto.create`
+  * `docker-compose run test mix test`
+  * `docker-compose up` and `curl http://localhost:4000/api`
