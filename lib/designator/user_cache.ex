@@ -1,4 +1,4 @@
-defmodule Cellect.UserCache do
+defmodule Designator.UserCache do
   use Supervisor
 
   def start_link do
@@ -45,7 +45,7 @@ defmodule Cellect.UserCache do
 
   def get({workflow_id, user_id} = workflow_user) do
     ConCache.get_or_store(:user_cache, workflow_user, fn() ->
-      seen_ids = Cellect.User.seen_subject_ids(workflow_id, user_id) |> Enum.into(MapSet.new)
+      seen_ids = Designator.User.seen_subject_ids(workflow_id, user_id) |> Enum.into(MapSet.new)
 
       %__MODULE__{
         workflow_id: workflow_id,

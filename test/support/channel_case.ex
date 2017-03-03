@@ -1,4 +1,4 @@
-defmodule Cellect.ChannelCase do
+defmodule Designator.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
   channel tests.
@@ -20,22 +20,22 @@ defmodule Cellect.ChannelCase do
       # Import conveniences for testing with channels
       use Phoenix.ChannelTest
 
-      alias Cellect.Repo
+      alias Designator.Repo
       import Ecto
       import Ecto.Changeset
       import Ecto.Query, only: [from: 1, from: 2]
 
 
       # The default endpoint for testing
-      @endpoint Cellect.Endpoint
+      @endpoint Designator.Endpoint
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Cellect.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Designator.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Cellect.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Designator.Repo, {:shared, self()})
     end
 
     :ok

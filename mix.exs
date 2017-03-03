@@ -1,8 +1,8 @@
-defmodule Cellect.Mixfile do
+defmodule Designator.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :cellect,
+    [app: :designator,
      version: "0.0.1",
      elixir: "~> 1.3",
      elixirc_paths: elixirc_paths(Mix.env),
@@ -17,7 +17,7 @@ defmodule Cellect.Mixfile do
   #
   # Type `mix help compile.app` for more information.
   def application do
-    [mod: {Cellect, []},
+    [mod: {Designator, []},
      applications: [:phoenix, :phoenix_pubsub, :cowboy, :logger, :gettext,
                     :phoenix_ecto, :postgrex, :logster, :rollbax, :con_cache]]
   end

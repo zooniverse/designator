@@ -4,8 +4,8 @@ services:
   postgres:
     image: postgres:9.4
     environment:
-      - "POSTGRES_USER=cellect_ex"
-      - "POSTGRES_PASSWORD=cellect_ex"
+      - "POSTGRES_USER=designator"
+      - "POSTGRES_PASSWORD=designator"
 
   web:
     build: ./
@@ -16,8 +16,8 @@ services:
       - "4000:4000"
     environment:
       - "MIX_ENV=dev"
-      - "POSTGRES_USER=cellect_ex"
-      - "POSTGRES_PASS=cellect_ex"
+      - "POSTGRES_USER=designator"
+      - "POSTGRES_PASS=designator"
       - "POSTGRES_HOST=pg"
       - "SECRET_KEY_BASE=secret"
     links:
@@ -29,8 +29,8 @@ services:
       - ./:/app
     environment:
       - "MIX_ENV=test"
-      - "POSTGRES_USER=cellect_ex"
-      - "POSTGRES_PASS=cellect_ex"
+      - "POSTGRES_USER=designator"
+      - "POSTGRES_PASS=designator"
       - "POSTGRES_HOST=pg"
     links:
       - postgres:pg

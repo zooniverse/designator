@@ -1,6 +1,6 @@
-defmodule Cellect.RandomTest do
+defmodule Designator.RandomTest do
   use ExUnit.Case
-  alias Cellect.Random
+  alias Designator.Random
 
   setup do
     Random.seed({123, 123534, 345345})

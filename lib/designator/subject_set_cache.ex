@@ -1,7 +1,7 @@
-defmodule Cellect.SubjectSetCache do
+defmodule Designator.SubjectSetCache do
   use Supervisor
 
-  @reloader Application.get_env(:cellect, :reloader)
+  @reloader Application.get_env(:designator, :reloader)
 
   def start_link do
     Supervisor.start_link(__MODULE__, [])

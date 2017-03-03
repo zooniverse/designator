@@ -1,4 +1,4 @@
-defmodule Cellect.User do
+defmodule Designator.User do
   import Ecto.Query, only: [from: 2]
 
   def seen_subject_ids(workflow_id, nil), do: []
@@ -7,6 +7,6 @@ defmodule Cellect.User do
       where: uss.workflow_id == ^workflow_id and uss.user_id == ^user_id,
       select: uss.subject_ids
 
-    Cellect.Repo.one(query) || []
+    Designator.Repo.one(query) || []
   end
 end

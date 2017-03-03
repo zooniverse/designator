@@ -1,4 +1,4 @@
-defmodule Cellect.ErrorHelpers do
+defmodule Designator.ErrorHelpers do
   @moduledoc """
   Conveniences for translating and building error messages.
   """

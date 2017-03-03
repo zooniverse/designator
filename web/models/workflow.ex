@@ -1,8 +1,8 @@
-defmodule Cellect.Workflow do
+defmodule Designator.Workflow do
   use Ecto.Schema
   import Ecto.Query, only: [from: 2]
 
-  use Cellect.Web, :model
+  use Designator.Web, :model
 
   schema "workflows" do
     field :configuration, :map
@@ -11,7 +11,7 @@ defmodule Cellect.Workflow do
   end
 
   def find(workflow_id) do
-    __MODULE__ |> Cellect.Repo.get(workflow_id)
+    __MODULE__ |> Designator.Repo.get(workflow_id)
   end
 
   def subject_set_ids(workflow_id) do
@@ -19,7 +19,7 @@ defmodule Cellect.Workflow do
       where: ssw.workflow_id == ^workflow_id,
       select: ssw.subject_set_id
 
-    Cellect.Repo.all(query)
+    Designator.Repo.all(query)
   end
 
   def subject_ids(workflow_id, subject_set_id) do
@@ -28,7 +28,7 @@ defmodule Cellect.Workflow do
       left_join: swc in "subject_workflow_counts", on: sms.subject_id == swc.subject_id,
       where: sw.workflow_id == ^workflow_id and (swc.workflow_id == ^workflow_id or is_nil(swc.workflow_id)) and sms.subject_set_id == ^subject_set_id and is_nil(swc.retired_at),
       select: sms.subject_id
-    Cellect.Repo.all(query)
+    Designator.Repo.all(query)
   end
 
   def changeset(struct, params \\ %{}) do

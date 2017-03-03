@@ -1,4 +1,4 @@
-defmodule Cellect.ConnCase do
+defmodule Designator.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -20,23 +20,23 @@ defmodule Cellect.ConnCase do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
 
-      alias Cellect.Repo
+      alias Designator.Repo
       import Ecto
       import Ecto.Changeset
       import Ecto.Query, only: [from: 1, from: 2]
 
-      import Cellect.Router.Helpers
+      import Designator.Router.Helpers
 
       # The default endpoint for testing
-      @endpoint Cellect.Endpoint
+      @endpoint Designator.Endpoint
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Cellect.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Designator.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Cellect.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Designator.Repo, {:shared, self()})
     end
 
     {:ok, conn: Phoenix.ConnTest.build_conn()}

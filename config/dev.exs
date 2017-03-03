@@ -6,7 +6,7 @@ use Mix.Config
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with brunch.io to recompile .js and .css sources.
-config :cellect, Cellect.Endpoint,
+config :designator, Designator.Endpoint,
   http: [port: 4000],
   debug_errors: true,
   code_reloader: true,
@@ -22,10 +22,10 @@ config :logger, :console, format: "[$level] $message\n"
 config :phoenix, :stacktrace_depth, 20
 
 # Configure your database
-config :cellect, Cellect.Repo,
+config :designator, Designator.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: System.get_env("POSTGRES_USER") || System.get_env("USER"),
   password: System.get_env("POSTGRES_PASS") || "",
-  database: System.get_env("POSTGRES_DB")   || "cellect_ex_development",
+  database: System.get_env("POSTGRES_DB")   || "designator_development",
   hostname: System.get_env("POSTGRES_HOST") || "localhost",
   pool_size: String.to_integer(System.get_env("POSTGRES_POOL_SIZE")|| "10")

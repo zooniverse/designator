@@ -1,4 +1,4 @@
-defmodule Cellect.CacheCase do
+defmodule Designator.CacheCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that interact with the caches.
@@ -11,11 +11,11 @@ defmodule Cellect.CacheCase do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
 
-      alias Cellect.Repo
-      alias Cellect.Workflow
-      alias Cellect.UserSeenSubject
-      alias Cellect.WorkflowCache
-      alias Cellect.SubjectSetCache
+      alias Designator.Repo
+      alias Designator.Workflow
+      alias Designator.UserSeenSubject
+      alias Designator.WorkflowCache
+      alias Designator.SubjectSetCache
 
       import Ecto
       import Ecto.Changeset

@@ -1,9 +1,9 @@
-defmodule Cellect.StreamToolsTest do
+defmodule Designator.StreamToolsTest do
   use ExUnit.Case
-  alias Cellect.StreamTools
+  alias Designator.StreamTools
 
   setup do
-    Cellect.Random.seed({123, 123534, 345345})
+    Designator.Random.seed({123, 123534, 345345})
     :ok
   end
 

@@ -1,6 +1,6 @@
-defmodule Cellect.WorkflowCacheTest do
-  use Cellect.ConnCase
-  use Cellect.CacheCase
+defmodule Designator.WorkflowCacheTest do
+  use Designator.ConnCase
+  use Designator.CacheCase
 
   describe "reloading" do
     test "reloads configuration" do

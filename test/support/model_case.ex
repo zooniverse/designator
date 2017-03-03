@@ -1,4 +1,4 @@
-defmodule Cellect.ModelCase do
+defmodule Designator.ModelCase do
   @moduledoc """
   This module defines the test case to be used by
   model tests.
@@ -16,20 +16,20 @@ defmodule Cellect.ModelCase do
 
   using do
     quote do
-      alias Cellect.Repo
+      alias Designator.Repo
 
       import Ecto
       import Ecto.Changeset
       import Ecto.Query, only: [from: 1, from: 2]
-      import Cellect.ModelCase
+      import Designator.ModelCase
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Cellect.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Designator.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Cellect.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Designator.Repo, {:shared, self()})
     end
 
     :ok
@@ -59,7 +59,7 @@ defmodule Cellect.ModelCase do
   """
   def errors_on(struct, data) do
     struct.__struct__.changeset(struct, data)
-    |> Ecto.Changeset.traverse_errors(&Cellect.ErrorHelpers.translate_error/1)
+    |> Ecto.Changeset.traverse_errors(&Designator.ErrorHelpers.translate_error/1)
     |> Enum.flat_map(fn {key, errors} -> for msg <- errors, do: {key, msg} end)
   end
 end

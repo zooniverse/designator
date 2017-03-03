@@ -1,18 +1,18 @@
-defmodule Cellect.SubjectStream do
+defmodule Designator.SubjectStream do
   defstruct [:subject_set_id, :stream, :amount, :chance]
 
   def build({subject_set_id, subject_ids}, configuration \\ %{}), do: build(subject_set_id, subject_ids, configuration)
 
   def build(subject_set_id, subject_ids, configuration) do
     amount = get_amount(subject_ids)
-    %Cellect.SubjectStream{subject_set_id: subject_set_id, stream: build_stream(subject_ids), amount: amount, chance: amount * get_weight(subject_set_id, configuration)}
+    %Designator.SubjectStream{subject_set_id: subject_set_id, stream: build_stream(subject_ids), amount: amount, chance: amount * get_weight(subject_set_id, configuration)}
   end
 
   ###
 
   defp build_stream(subject_ids) do
     Stream.repeatedly fn ->
-      {_, element} = Cellect.Random.element(subject_ids)
+      {_, element} = Designator.Random.element(subject_ids)
       element
     end
   end

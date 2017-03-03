@@ -1,19 +1,19 @@
-defmodule Cellect.Selection do
-  alias Cellect.StreamTools
-  alias Cellect.SubjectStream
+defmodule Designator.Selection do
+  alias Designator.StreamTools
+  alias Designator.SubjectStream
 
   def select(style, workflow_id, user_id), do: select(style, workflow_id, user_id, 5)
 
   def select("uniform", workflow_id, user_id, amount) do
-    workflow = Cellect.WorkflowCache.get(workflow_id)
-    user = Cellect.UserCache.get({workflow_id, user_id})
+    workflow = Designator.WorkflowCache.get(workflow_id)
+    user = Designator.UserCache.get({workflow_id, user_id})
     seen_subject_ids = user.seen_ids
 
     streams = workflow.subject_set_ids
-    |> Enum.map(fn subject_set_id -> Cellect.SubjectSetCache.get({workflow.id, subject_set_id}) end)
+    |> Enum.map(fn subject_set_id -> Designator.SubjectSetCache.get({workflow.id, subject_set_id}) end)
     |> Enum.map(fn subject_set -> {subject_set.subject_set_id, subject_set.subject_ids} end)
     |> reject_empty_sets
-    |> Enum.map(fn subject_set -> Cellect.SubjectStream.build(subject_set) end)
+    |> Enum.map(fn subject_set -> Designator.SubjectStream.build(subject_set) end)
 
     size = Enum.sum(Enum.map(streams, fn stream -> stream.amount end))
 
@@ -21,11 +21,11 @@ defmodule Cellect.Selection do
   end
 
   def select("weighted", workflow_id, user_id, limit) do
-    workflow = Cellect.WorkflowCache.get(workflow_id)
-    user = Cellect.UserCache.get({workflow_id, user_id})
+    workflow = Designator.WorkflowCache.get(workflow_id)
+    user = Designator.UserCache.get({workflow_id, user_id})
     seen_subject_ids = user.seen_ids
     gold_standard_set_ids = workflow.configuration["gold_standard_sets"] || []
-    
+
     streams = get_streams(workflow)
     amount = Enum.sum(Enum.map(streams, fn stream -> stream.amount end))
 
@@ -52,7 +52,7 @@ defmodule Cellect.Selection do
       if random_state, do: Process.put(:rand_seed, random_state)
 
       streams
-      |> Cellect.StreamTools.interleave
+      |> Designator.StreamTools.interleave
       |> deduplicate
       |> reject_recently_retired
       |> reject_recently_selected(user)
@@ -62,7 +62,7 @@ defmodule Cellect.Selection do
 
     case Task.yield(task, 1000) || Task.shutdown(task) do
       {:ok, selected_ids} ->
-        Cellect.UserCache.add_recently_selected(user, selected_ids)
+        Designator.UserCache.add_recently_selected(user, selected_ids)
         selected_ids
       :nil ->
         Rollbax.report(:throw, :selection_timeout, System.stacktrace(),
@@ -78,10 +78,10 @@ defmodule Cellect.Selection do
     configured_set_weights = workflow.configuration["subject_set_weights"] || %{}
 
     workflow.subject_set_ids
-    |> Enum.map(fn subject_set_id -> Cellect.SubjectSetCache.get({workflow.id, subject_set_id}) end)
+    |> Enum.map(fn subject_set_id -> Designator.SubjectSetCache.get({workflow.id, subject_set_id}) end)
     |> Enum.map(fn subject_set -> {subject_set.subject_set_id, subject_set.subject_ids} end)
     |> reject_empty_sets
-    |> Enum.map(fn subject_set -> Cellect.SubjectStream.build(subject_set, configured_set_weights) end)
+    |> Enum.map(fn subject_set -> Designator.SubjectStream.build(subject_set, configured_set_weights) end)
   end
 
   def gold_chance(n) when n in  0..20, do: 0.4
@@ -94,7 +94,7 @@ defmodule Cellect.Selection do
   end
 
   def reject_empty_sets(sets) do
-    Enum.filter(sets, fn({_, subject_ids}) -> Cellect.SubjectStream.get_amount(subject_ids) > 0 end)
+    Enum.filter(sets, fn({_, subject_ids}) -> Designator.SubjectStream.get_amount(subject_ids) > 0 end)
   end
 
   def reject_recently_retired(stream) do

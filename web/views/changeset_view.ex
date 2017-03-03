@@ -1,11 +1,11 @@
-defmodule Cellect.ChangesetView do
-  use Cellect.Web, :view
+defmodule Designator.ChangesetView do
+  use Designator.Web, :view
 
   @doc """
   Traverses and translates changeset errors.
 
   See `Ecto.Changeset.traverse_errors/2` and
-  `Cellect.ErrorHelpers.translate_error/1` for more details.
+  `Designator.ErrorHelpers.translate_error/1` for more details.
   """
   def translate_errors(changeset) do
     Ecto.Changeset.traverse_errors(changeset, &translate_error/1)
