@@ -1,7 +1,7 @@
-defmodule Cellect.WorkflowControllerTest do
-  use Cellect.ConnCase
+defmodule Designator.WorkflowControllerTest do
+  use Designator.ConnCase
 
-  alias Cellect.Workflow
+  alias Designator.Workflow
 
   setup %{conn: conn} do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}

@@ -1,4 +1,4 @@
-# Cellect
+# Designator
 
 To start your Phoenix app:
 

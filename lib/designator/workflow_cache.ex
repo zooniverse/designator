@@ -1,4 +1,4 @@
-defmodule Cellect.WorkflowCache do
+defmodule Designator.WorkflowCache do
   use Supervisor
 
   def start_link do
@@ -55,7 +55,7 @@ defmodule Cellect.WorkflowCache do
   end
 
   defp fetch_workflow(workflow_id) do
-    case Cellect.Workflow.find(workflow_id) do
+    case Designator.Workflow.find(workflow_id) do
       nil ->
         %__MODULE__{
           id: workflow_id,
@@ -65,7 +65,7 @@ defmodule Cellect.WorkflowCache do
       workflow ->
         %__MODULE__{
           id: workflow_id,
-          subject_set_ids: Cellect.Workflow.subject_set_ids(workflow_id),
+          subject_set_ids: Designator.Workflow.subject_set_ids(workflow_id),
           configuration: workflow.configuration
        }
     end

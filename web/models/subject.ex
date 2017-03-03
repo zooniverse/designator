@@ -1,4 +1,4 @@
-defmodule Cellect.Subject do
+defmodule Designator.Subject do
   import Ecto.Query, only: [from: 2]
 
   def unretired_ids(workflow_id) do
@@ -8,13 +8,13 @@ defmodule Cellect.Subject do
       left_join: swc in "subject_workflow_counts", on: s.id == swc.subject_id,
       where: sw.workflow_id == ^workflow_id and not(is_nil(swc.retired_at)),
       select: s.id
-    Cellect.Repo.all(query)
+    Designator.Repo.all(query)
   end
 
   def seen_ids(workflow_id, user_id) do
     query = from uss in "user_seen_subjects",
       where: uss.workflow_id == ^workflow_id and uss.user_id == ^user_id,
       select: uss.subject_ids
-    Cellect.Repo.all(query)
+    Designator.Repo.all(query)
   end
 end

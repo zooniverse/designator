@@ -1,12 +1,12 @@
-defmodule Cellect.Router do
-  use Cellect.Web, :router
+defmodule Designator.Router do
+  use Designator.Web, :router
   use Plug.ErrorHandler
 
   pipeline :api do
     plug :accepts, ["json"]
   end
 
-  scope "/api", Cellect do
+  scope "/api", Designator do
     pipe_through :api
 
     get "/", StatusController, :index

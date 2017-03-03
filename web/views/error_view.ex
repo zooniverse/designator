@@ -1,5 +1,5 @@
-defmodule Cellect.ErrorView do
-  use Cellect.Web, :view
+defmodule Designator.ErrorView do
+  use Designator.Web, :view
 
   def render("404.json", _assigns) do
     %{errors: %{detail: "Page not found"}}

@@ -1,4 +1,4 @@
-defmodule Cellect.Migrations.DefaultTablesForTesting do
+defmodule Designator.Migrations.DefaultTablesForTesting do
   use Ecto.Migration
 
   def change do

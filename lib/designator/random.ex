@@ -1,4 +1,4 @@
-defmodule Cellect.Random do
+defmodule Designator.Random do
   def seed(seed) do
     :rand.seed(:exs1024, seed)
   end

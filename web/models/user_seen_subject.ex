@@ -1,8 +1,8 @@
-defmodule Cellect.UserSeenSubject do
+defmodule Designator.UserSeenSubject do
   use Ecto.Schema
   import Ecto.Query, only: [from: 2]
 
-  use Cellect.Web, :model
+  use Designator.Web, :model
 
   schema "user_seen_subjects" do
     field :workflow_id, :integer
@@ -17,7 +17,7 @@ defmodule Cellect.UserSeenSubject do
       where: uss.workflow_id == ^workflow_id and uss.user_id == ^user_id,
       select: uss.subject_ids
 
-    Cellect.Repo.one(query) || []
+    Designator.Repo.one(query) || []
   end
 
   def changeset(struct, params \\ %{}) do

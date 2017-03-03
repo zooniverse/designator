@@ -6,18 +6,18 @@
 use Mix.Config
 
 # Configures the endpoint
-config :cellect, Cellect.Endpoint,
+config :designator, Designator.Endpoint,
   url: [host: "localhost"],
   root: Path.dirname(__DIR__),
   secret_key_base: "qWURxQTs1g7D3K54EzegsyFU/n1Srt4fT2qfUqguDW+AkWVuVhDxz3/WCqLWpX82",
   render_errors: [accepts: ~w(json)],
-  pubsub: [name: Cellect.PubSub,
+  pubsub: [name: Designator.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
-config :cellect,
-  namespace: Cellect,
-  ecto_repos: [Cellect.Repo],
-  reloader: Cellect.Reloader.Async
+config :designator,
+  namespace: Designator,
+  ecto_repos: [Designator.Repo],
+  reloader: Designator.Reloader.Async
 
 # Configures Elixir's Logger
 config :logger, :console,

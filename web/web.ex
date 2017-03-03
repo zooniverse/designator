@@ -1,12 +1,12 @@
-defmodule Cellect.Web do
+defmodule Designator.Web do
   @moduledoc """
   A module that keeps using definitions for controllers,
   views and so on.
 
   This can be used in your application as:
 
-      use Cellect.Web, :controller
-      use Cellect.Web, :view
+      use Designator.Web, :controller
+      use Designator.Web, :view
 
   The definitions below will be executed for every view,
   controller, etc, so keep them short and clean, focused
@@ -30,12 +30,12 @@ defmodule Cellect.Web do
     quote do
       use Phoenix.Controller
 
-      alias Cellect.Repo
+      alias Designator.Repo
       import Ecto
       import Ecto.Query, only: [from: 1, from: 2]
 
-      import Cellect.Router.Helpers
-      import Cellect.Gettext
+      import Designator.Router.Helpers
+      import Designator.Gettext
     end
   end
 
@@ -46,9 +46,9 @@ defmodule Cellect.Web do
       # Import convenience functions from controllers
       import Phoenix.Controller, only: [get_csrf_token: 0, get_flash: 2, view_module: 1]
 
-      import Cellect.Router.Helpers
-      import Cellect.ErrorHelpers
-      import Cellect.Gettext
+      import Designator.Router.Helpers
+      import Designator.ErrorHelpers
+      import Designator.Gettext
     end
   end
 
@@ -62,10 +62,10 @@ defmodule Cellect.Web do
     quote do
       use Phoenix.Channel
 
-      alias Cellect.Repo
+      alias Designator.Repo
       import Ecto
       import Ecto.Query, only: [from: 1, from: 2]
-      import Cellect.Gettext
+      import Designator.Gettext
     end
   end
 
