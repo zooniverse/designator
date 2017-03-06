@@ -1,6 +1,9 @@
 defmodule Designator.WorkflowControllerTest do
   use Designator.ConnCase
 
+  @username Application.fetch_env!(:designator, :api_auth)[:username]
+  @password Application.fetch_env!(:designator, :api_auth)[:password]
+
   alias Designator.Workflow
 
   setup %{conn: conn} do
@@ -19,7 +22,7 @@ defmodule Designator.WorkflowControllerTest do
   describe "reloading a workflow" do
     test "reloads a workflow", %{workflow: workflow, conn: conn} do
       conn = conn
-      |> http_basic_authenticate("username", "password")
+      |> http_basic_authenticate(@username, @password)
       |> post(workflow_path(conn, :reload, workflow))
       assert response(conn, 204) == ""
     end
@@ -34,7 +37,7 @@ defmodule Designator.WorkflowControllerTest do
   describe "unlocking reloads for a workflow" do
     test "unlocks a workflow reload", %{workflow: workflow, conn: conn} do
       conn = conn
-      |> http_basic_authenticate("username", "password")
+      |> http_basic_authenticate(@username, @password)
       |> post(workflow_path(conn, :unlock, workflow))
       assert response(conn, 204) == ""
     end
@@ -49,7 +52,7 @@ defmodule Designator.WorkflowControllerTest do
   describe "marking a subject as retired" do
     test "marks a subject as retired", %{workflow: workflow, conn: conn} do
       conn = conn
-      |> http_basic_authenticate("username", "password")
+      |> http_basic_authenticate(@username, @password)
       |> post(workflow_path(conn, :remove, workflow, subject_id: 123))
       assert response(conn, 204) == ""
     end

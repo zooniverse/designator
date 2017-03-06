@@ -32,5 +32,7 @@ services:
       - "POSTGRES_USER=designator"
       - "POSTGRES_PASS=designator"
       - "POSTGRES_HOST=pg"
+      - "DESIGNATOR_AUTH_USERNAME=username"
+      - "DESIGNATOR_AUTH_PASSWORD=password"
     links:
       - postgres:pg
