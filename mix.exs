@@ -43,7 +43,7 @@ defmodule Designator.Mixfile do
      {:mock, "~> 0.2.0", only: :test},
      {:mix_test_watch, "~> 0.3", only: :dev, runtime: false},
      {:con_cache, "~> 0.12.0"},
-     {:basic_auth, "~> 2.0.0"}]
+     {:basic_auth, "~> 2.1.1"}]
   end
 
   # Aliases are shortcut or tasks specific to the current project.
