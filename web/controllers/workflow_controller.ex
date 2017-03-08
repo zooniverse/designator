@@ -1,6 +1,8 @@
 defmodule Designator.WorkflowController do
   use Designator.Web, :controller
 
+  plug BasicAuth, [callback: &Designator.WorkflowController.authenticate/3] when action in [:reload, :unlock, :remove]
+
   def show(conn, %{"id" => workflow_id} = params) do
     {workflow_id, _} = Integer.parse(workflow_id)
     user_id = get_integer_param(params, "user_id", nil)
@@ -50,5 +52,17 @@ defmodule Designator.WorkflowController do
     Designator.WorkflowCache.reload(workflow_id)
     Designator.WorkflowCache.get(workflow_id).subject_set_ids
     |> Enum.each(fn subject_set_id -> Designator.SubjectSetCache.reload({workflow_id, subject_set_id}) end)
+  end
+
+  def authenticate(conn, username, password) do
+    desired_username = Application.fetch_env!(:designator, :api_auth)[:username]
+    desired_password = Application.fetch_env!(:designator, :api_auth)[:password]
+
+    if username == desired_username && password == desired_password do
+      conn
+    else
+      conn
+      |> Plug.Conn.halt
+    end
   end
 end

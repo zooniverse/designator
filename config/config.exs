@@ -19,6 +19,11 @@ config :designator,
   ecto_repos: [Designator.Repo],
   reloader: Designator.Reloader.Async
 
+config :designator, :api_auth,
+  username: System.get_env("DESIGNATOR_AUTH_USERNAME"),
+  password: System.get_env("DESIGNATOR_AUTH_PASSWORD"),
+  realm: "Designator"
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

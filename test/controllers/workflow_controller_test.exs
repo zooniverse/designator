@@ -1,33 +1,70 @@
 defmodule Designator.WorkflowControllerTest do
   use Designator.ConnCase
 
+  @username Application.fetch_env!(:designator, :api_auth)[:username]
+  @password Application.fetch_env!(:designator, :api_auth)[:password]
+
   alias Designator.Workflow
 
   setup %{conn: conn} do
-    {:ok, conn: put_req_header(conn, "accept", "application/json")}
+    workflow = Repo.insert! %Workflow{}
+    {:ok, [workflow: workflow, conn: put_req_header(conn, "accept", "application/json")]}
   end
 
-  test "shows chosen resource", %{conn: conn} do
-    workflow = Repo.insert! %Workflow{}
-    conn = get conn, workflow_path(conn, :show, workflow)
-    assert json_response(conn, 200) == []
+  describe "getting subjects" do
+    test "shows chosen resource", %{workflow: workflow, conn: conn} do
+      conn = conn
+      |> get(workflow_path(conn, :show, workflow))
+      assert json_response(conn, 200) == []
+    end
   end
 
-  test "reloads a workflow", %{conn: conn} do
-    workflow = Repo.insert! %Workflow{}
-    conn = post conn, workflow_path(conn, :reload, workflow)
-    assert response(conn, 204) == ""
+  describe "reloading a workflow" do
+    test "reloads a workflow", %{workflow: workflow, conn: conn} do
+      conn = conn
+      |> http_basic_authenticate(@username, @password)
+      |> post(workflow_path(conn, :reload, workflow))
+      assert response(conn, 204) == ""
+    end
+
+    test "requires authentication", %{workflow: workflow, conn: conn} do
+      conn = conn
+      |> post(workflow_path(conn, :reload, workflow))
+      assert response(conn, 401) == "401 Unauthorized"
+    end
   end
 
-  test "unlocks a workflow reload", %{conn: conn} do
-    workflow = Repo.insert! %Workflow{}
-    conn = post conn, workflow_path(conn, :unlock, workflow)
-    assert response(conn, 204) == ""
+  describe "unlocking reloads for a workflow" do
+    test "unlocks a workflow reload", %{workflow: workflow, conn: conn} do
+      conn = conn
+      |> http_basic_authenticate(@username, @password)
+      |> post(workflow_path(conn, :unlock, workflow))
+      assert response(conn, 204) == ""
+    end
+
+    test "requires authentication", %{workflow: workflow, conn: conn} do
+      conn = conn
+      |> post(workflow_path(conn, :unlock, workflow))
+      assert response(conn, 401) == "401 Unauthorized"
+    end
   end
 
-  test "marks a subject as retired", %{conn: conn} do
-    workflow = Repo.insert! %Workflow{}
-    conn = post conn, workflow_path(conn, :remove, workflow, subject_id: 123)
-    assert response(conn, 204) == ""
+  describe "marking a subject as retired" do
+    test "marks a subject as retired", %{workflow: workflow, conn: conn} do
+      conn = conn
+      |> http_basic_authenticate(@username, @password)
+      |> post(workflow_path(conn, :remove, workflow, subject_id: 123))
+      assert response(conn, 204) == ""
+    end
+
+    test "requires authentication", %{workflow: workflow, conn: conn} do
+      conn = conn
+      |> post(workflow_path(conn, :remove, workflow, subject_id: 123))
+      assert response(conn, 401) == "401 Unauthorized"
+    end
+  end
+
+  def http_basic_authenticate(conn, username, password) do
+    put_req_header(conn, "authorization", "Basic " <> Base.encode64(username <> ":" <> password))
   end
 end
