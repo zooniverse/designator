@@ -6,25 +6,6 @@ defmodule Designator.SelectionTest do
   alias Designator.UserSeenSubject
   alias Designator.SubjectSetCache
 
-  test "gold chance" do
-    assert Selection.gold_chance(0) == 0.4
-    assert Selection.gold_chance(1) == 0.4
-    assert Selection.gold_chance(19) == 0.4
-    assert Selection.gold_chance(20) == 0.4
-
-    assert Selection.gold_chance(21) == 0.3
-    assert Selection.gold_chance(39) == 0.3
-    assert Selection.gold_chance(40) == 0.3
-
-    assert Selection.gold_chance(41) == 0.2
-    assert Selection.gold_chance(59) == 0.2
-    assert Selection.gold_chance(60) == 0.2
-
-    assert Selection.gold_chance(61) == 0.1
-    assert Selection.gold_chance(70) == 0.1
-    assert Selection.gold_chance(1200) == 0.1
-  end
-
   test "gold standard weighting" do
     Designator.Random.seed({123, 123534, 345345})
     Designator.WorkflowCache.set(338, %{configuration: %{gold_standard_sets: [681, 1706]},
