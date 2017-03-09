@@ -1,10 +1,5 @@
 defmodule Designator.Selection do
-  alias Designator.StreamTools
-  alias Designator.SubjectStream
-
-  def select(style, workflow_id, user_id), do: select(style, workflow_id, user_id, 5)
-
-  def select("uniform", workflow_id, user_id, limit) do
+  def select(_style, workflow_id, user_id, limit \\ 5) do
     workflow = Designator.WorkflowCache.get(workflow_id)
     user = Designator.UserCache.get({workflow_id, user_id})
     seen_subject_ids = user.seen_ids
@@ -15,18 +10,7 @@ defmodule Designator.Selection do
     do_select(streams, amount, seen_subject_ids, limit, user)
   end
 
-  def select("weighted", workflow_id, user_id, limit) do
-    workflow = Designator.WorkflowCache.get(workflow_id)
-    user = Designator.UserCache.get({workflow_id, user_id})
-    seen_subject_ids = user.seen_ids
-
-    streams = get_streams(workflow, user)
-    amount = Enum.sum(Enum.map(streams, fn stream -> stream.amount end))
-
-    do_select(streams, amount, seen_subject_ids, limit, user)
-  end
-
-  def do_select(streams, stream_amount, seen_subject_ids, amount, user) do
+  defp do_select(streams, stream_amount, seen_subject_ids, amount, user) do
     seen_size = Enum.count(seen_subject_ids)
     max_streamable = stream_amount - seen_size
     amount = min(max_streamable, amount)
@@ -59,7 +43,7 @@ defmodule Designator.Selection do
     end
   end
 
-  def get_streams(workflow, user) do
+  defp get_streams(workflow, user) do
     configured_set_weights = workflow.configuration["subject_set_weights"] || %{}
 
     workflow.subject_set_ids
@@ -70,23 +54,23 @@ defmodule Designator.Selection do
     |> Designator.Streams.GoldStandard.apply_weights(workflow, user)
   end
 
-  def deduplicate(stream) do
+  defp deduplicate(stream) do
     Stream.uniq(stream)
   end
 
-  def reject_empty_sets(sets) do
+  defp reject_empty_sets(sets) do
     Enum.filter(sets, fn({_, subject_ids}) -> Designator.SubjectStream.get_amount(subject_ids) > 0 end)
   end
 
-  def reject_recently_retired(stream) do
+  defp reject_recently_retired(stream) do
     stream #TODO
   end
 
-  def reject_recently_selected(stream, user) do
+  defp reject_recently_selected(stream, user) do
     Stream.reject(stream, fn x -> MapSet.member?(user.recently_selected_ids, x) end)
   end
 
-  def reject_seen_subjects(stream, seen_subject_ids) do
+  defp reject_seen_subjects(stream, seen_subject_ids) do
     Stream.reject(stream, fn x -> MapSet.member?(seen_subject_ids, x) end)
   end
 end
