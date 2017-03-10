@@ -15,7 +15,7 @@ defmodule Designator.SelectionTest do
     SubjectSetCache.set({338, 1682}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1682, subject_ids: Array.from_list([3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3])})
     SubjectSetCache.set({338, 1681}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1681, subject_ids: Array.from_list([4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4])})
 
-    assert Selection.select("weighted", 338, 1, 4) == [4, 3, 1, 2]
+    assert Selection.select("weighted", 338, 1, 4) == [4, 3, 2, 1]
   end
 
   test "weighed selection for normal sets" do

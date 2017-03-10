@@ -22,4 +22,8 @@ defmodule Designator.RandomTest do
 
     assert indexes == [2, 5, 3, 1, 4, 4, 5, 0, 0, 5, 0, 0, 0, 0, 0, 4]
   end
+
+  test "get a random element without redrawing" do
+    assert Random.unique_element([1,2,3,4,5], MapSet.new([0,1,2,3])) == {4, 5}
+  end
 end

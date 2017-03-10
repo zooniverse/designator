@@ -28,3 +28,10 @@ Using Docker:
   * `docker-compose run web mix ecto.create`
   * `docker-compose run test mix test`
   * `docker-compose up` and `curl http://localhost:4000/api`
+
+Running a benchmark:
+
+  * First of all, compile a production-like version of the app, since the dev server will be doing code reloads and a whole bunch of other things:
+  * `MIX_ENV=bench PORT=4000 POSTGRES_USER=marten POSTGRES_HOST=localhost DESIGNATOR_AUTH_PASSWORD=foo elixir -pa _build/bench/consolidated -S mix phoenix.server`
+  * `brew install siege`
+  * `siege -d1 -c100 -t20s http://localhost:4000/api/workflows/338\?strategy\=weighted`
