@@ -44,14 +44,25 @@ defmodule Designator.Selection do
   end
 
   defp get_streams(workflow, user) do
+    workflow.subject_set_ids
+    |> get_subject_set_from_cache(workflow)
+    |> reject_empty_sets
+    |> convert_to_streams(workflow)
+    |> Designator.Streams.GoldStandard.apply_weights(workflow, user)
+  end
+
+  defp get_subject_set_from_cache(subject_set_ids, workflow) do
+    Enum.map(subject_set_ids, fn subject_set_id ->
+      Designator.SubjectSetCache.get({workflow.id, subject_set_id})
+    end)
+  end
+
+  def convert_to_streams(subject_sets, workflow) do
     configured_set_weights = workflow.configuration["subject_set_weights"] || %{}
 
-    workflow.subject_set_ids
-    |> Enum.map(fn subject_set_id -> Designator.SubjectSetCache.get({workflow.id, subject_set_id}) end)
-    |> Enum.map(fn subject_set -> {subject_set.subject_set_id, subject_set.subject_ids} end)
-    |> reject_empty_sets
-    |> Enum.map(fn subject_set -> Designator.SubjectStream.build(subject_set, configured_set_weights) end)
-    |> Designator.Streams.GoldStandard.apply_weights(workflow, user)
+    Enum.map(subject_sets, fn subject_set ->
+      Designator.SubjectStream.build(subject_set, configured_set_weights)
+    end)
   end
 
   defp deduplicate(stream) do
@@ -59,7 +70,7 @@ defmodule Designator.Selection do
   end
 
   defp reject_empty_sets(sets) do
-    Enum.filter(sets, fn({_, subject_ids}) -> Designator.SubjectStream.get_amount(subject_ids) > 0 end)
+    Enum.filter(sets, fn subject_set -> Designator.SubjectStream.get_amount(subject_set.subject_ids) > 0 end)
   end
 
   defp reject_recently_retired(stream) do

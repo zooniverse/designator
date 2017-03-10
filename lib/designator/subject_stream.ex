@@ -1,9 +1,7 @@
 defmodule Designator.SubjectStream do
   defstruct [:subject_set_id, :stream, :amount, :chance]
 
-  def build({subject_set_id, subject_ids}, configuration \\ %{}), do: build(subject_set_id, subject_ids, configuration)
-
-  def build(subject_set_id, subject_ids, configuration) do
+  def build(%{subject_set_id: subject_set_id, subject_ids: subject_ids}, configuration) do
     amount = get_amount(subject_ids)
     %Designator.SubjectStream{subject_set_id: subject_set_id, stream: build_stream(subject_ids), amount: amount, chance: amount * get_weight(subject_set_id, configuration)}
   end
@@ -11,7 +9,7 @@ defmodule Designator.SubjectStream do
   ###
 
   defp build_stream(subject_ids) do
-    Designator.RandomStream.shuffle(subject_ids) |> Stream.map(fn {idx, elm} -> elm end)
+    Designator.RandomStream.shuffle(subject_ids) |> Stream.map(fn {_idx, elm} -> elm end)
   end
 
   def get_amount(%Array{} = subject_ids) do
