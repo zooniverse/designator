@@ -21,6 +21,16 @@ defmodule Designator.Random do
     {index, element}
   end
 
+  def unique_element(enumerable, drawn) do
+    {index, element} = element(enumerable)
+
+    if MapSet.member?(drawn, index) do
+      unique_element(enumerable, drawn)
+    else
+      {index, element}
+    end
+  end
+
   def weighted(enumerable) do
     weights = Enum.map(enumerable, &elem(&1, 1))
     total   = Enum.sum(weights)

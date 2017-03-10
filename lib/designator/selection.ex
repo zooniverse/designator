@@ -12,7 +12,7 @@ defmodule Designator.Selection do
 
   defp do_select(streams, stream_amount, seen_subject_ids, amount, user) do
     seen_size = Enum.count(seen_subject_ids)
-    max_streamable = stream_amount - seen_size
+    max_streamable = stream_amount
     amount = min(max_streamable, amount)
 
     random_state = Process.get(:rand_seed)
@@ -26,7 +26,7 @@ defmodule Designator.Selection do
       |> reject_recently_retired
       |> reject_recently_selected(user)
       |> reject_seen_subjects(seen_subject_ids)
-      |> Enum.take(amount) # TODO: Breaks if not enough match
+      |> Enum.take(amount)
     end)
 
     case Task.yield(task, 1000) || Task.shutdown(task) do
