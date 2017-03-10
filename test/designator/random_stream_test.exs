@@ -4,6 +4,10 @@ defmodule Designator.RandomStreamTest do
   import Designator.RandomStream
 
   test "empty enum returns nothing" do
+    assert ([] |> shuffle |> Stream.take(5) |> Enum.sort) == []
+  end
+
+  test "returns data" do
     assert (1..5 |> shuffle |> Stream.take(5) |> Enum.sort) == [{0, 1}, {1, 2}, {2, 3}, {3, 4}, {4, 5}]
   end
 end
