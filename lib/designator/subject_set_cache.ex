@@ -43,10 +43,6 @@ defmodule Designator.SubjectSetCache do
       }
     end)
 
-    if Array.size(subject_set.subject_ids) == 0 do
-      reload(key)
-    end
-
     subject_set
   end
 
