@@ -35,19 +35,13 @@ defmodule Designator.SubjectSetCache do
   end
 
   def get({workflow_id, subject_set_id} = key) do
-    subject_set = ConCache.get_or_store(:subject_set_cache, key, fn() ->
+    ConCache.get_or_store(:subject_set_cache, key, fn() ->
       %__MODULE__{
         workflow_id: workflow_id,
         subject_set_id: subject_set_id,
         subject_ids: Array.new
       }
     end)
-
-    if Array.size(subject_set.subject_ids) == 0 do
-      reload(key)
-    end
-
-    subject_set
   end
 
   def set(key, subject_set) do
