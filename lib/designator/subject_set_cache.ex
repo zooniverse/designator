@@ -60,9 +60,9 @@ defmodule Designator.SubjectSetCache do
       case subject_set do
         %{reloading: true} ->
           {:error, :already_reloading}
-        val ->
+        _ ->
           @reloader.reload_subject_set(key)
-          {:ok, %__MODULE__{subject_set | reloading: true}}
+          {:ok, %__MODULE__{subject_set | not_loaded: false, reloading: true}}
       end
     end)
 
