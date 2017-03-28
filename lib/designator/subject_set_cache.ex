@@ -20,7 +20,7 @@ defmodule Designator.SubjectSetCache do
 
   ### Public API
 
-  defstruct [:workflow_id, :subject_set_id, :subject_ids, :reloading]
+  defstruct [:workflow_id, :subject_set_id, :subject_ids, :not_loaded, :reloading]
 
   def status do
     :subject_set_cache
@@ -35,13 +35,20 @@ defmodule Designator.SubjectSetCache do
   end
 
   def get({workflow_id, subject_set_id} = key) do
-    ConCache.get_or_store(:subject_set_cache, key, fn() ->
+    subject_set = ConCache.get_or_store(:subject_set_cache, key, fn() ->
       %__MODULE__{
         workflow_id: workflow_id,
         subject_set_id: subject_set_id,
-        subject_ids: Array.new
+        subject_ids: Array.new,
+        not_loaded: true
       }
     end)
+
+    if subject_set.not_loaded do
+      reload(key)
+    end
+
+    subject_set
   end
 
   def set(key, subject_set) do
@@ -53,9 +60,9 @@ defmodule Designator.SubjectSetCache do
       case subject_set do
         %{reloading: true} ->
           {:error, :already_reloading}
-        val ->
+        _ ->
           @reloader.reload_subject_set(key)
-          {:ok, %__MODULE__{subject_set | reloading: true}}
+          {:ok, %__MODULE__{subject_set | not_loaded: false, reloading: true}}
       end
     end)
 
