@@ -7,10 +7,10 @@ defmodule Designator.Selection do
     streams = get_streams(workflow, user)
     amount = Enum.sum(Enum.map(streams, fn stream -> stream.amount end))
 
-    do_select(streams, amount, seen_subject_ids, limit, user)
+    do_select(streams, amount, seen_subject_ids, limit, workflow, user)
   end
 
-  defp do_select(streams, stream_amount, seen_subject_ids, amount, user) do
+  defp do_select(streams, stream_amount, seen_subject_ids, amount, workflow, user) do
     seen_size = Enum.count(seen_subject_ids)
     max_streamable = stream_amount
     amount = min(max_streamable, amount)
@@ -23,7 +23,7 @@ defmodule Designator.Selection do
       streams
       |> Designator.StreamTools.interleave
       |> deduplicate
-      |> reject_recently_retired
+      |> reject_recently_retired(workflow)
       |> reject_recently_selected(user)
       |> reject_seen_subjects(seen_subject_ids)
       |> Enum.take(amount)
@@ -73,8 +73,8 @@ defmodule Designator.Selection do
     Enum.filter(sets, fn subject_set -> Designator.SubjectStream.get_amount(subject_set.subject_ids) > 0 end)
   end
 
-  defp reject_recently_retired(stream) do
-    stream #TODO
+  defp reject_recently_retired(stream, workflow) do
+    Stream.reject(stream, fn x -> MapSet.member?(workflow.recently_retired_subject_ids, x) end)
   end
 
   defp reject_recently_selected(stream, user) do

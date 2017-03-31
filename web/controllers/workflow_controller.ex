@@ -26,14 +26,13 @@ defmodule Designator.WorkflowController do
     send_resp(conn, 204, [])
   end
 
-  def remove(conn, %{"id" => workflow_id, "subject_id" => _}) do
-    # TODO: If this is too slow, implement a temporary in-memory list
+  def remove(conn, %{"id" => workflow_id, "subject_id" => subject_id}) do
     {workflow_id, _} = Integer.parse(workflow_id)
-    do_full_reload(workflow_id)
+    {subject_id, _} = Integer.parse(subject_id)
+    Designator.WorkflowCache.add_retired(workflow_id, subject_id)
     send_resp(conn, 204, [])
   end
   def remove(conn, %{"id" => workflow_id}) do
-    # TODO: If this is too slow, implement a temporary in-memory list
     {workflow_id, _} = Integer.parse(workflow_id)
     do_full_reload(workflow_id)
     send_resp(conn, 204, [])
