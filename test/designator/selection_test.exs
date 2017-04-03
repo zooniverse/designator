@@ -67,9 +67,9 @@ defmodule Designator.SelectionTest do
     Designator.WorkflowCache.set(338, %{configuration: %{gold_standard_sets: [681, 1706]},
                                         subject_set_ids: [681]})
     SubjectSetCache.set({338, 681},  %SubjectSetCache{workflow_id: 338, subject_set_id: 681, subject_ids: Array.from_list([1, 2, 3, 4])})
-    Designator.WorkflowCache.add_retired(338, 1)
-    Designator.WorkflowCache.add_retired(338, 2)
-    Designator.WorkflowCache.add_retired(338, 3)
+    Designator.RecentlyRetired.add(338, 1)
+    Designator.RecentlyRetired.add(338, 2)
+    Designator.RecentlyRetired.add(338, 3)
 
     assert Selection.select("weighted", 338, 1, 4) == [4]
   end

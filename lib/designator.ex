@@ -12,6 +12,7 @@ defmodule Designator do
       supervisor(Designator.WorkflowCache, []),
       supervisor(Designator.SubjectSetCache, []),
       supervisor(Designator.UserCache, []),
+      supervisor(Designator.RecentlyRetired, []),
       worker(@reloader, [])
     ]
 

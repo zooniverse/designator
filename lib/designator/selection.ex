@@ -74,7 +74,8 @@ defmodule Designator.Selection do
   end
 
   defp reject_recently_retired(stream, workflow) do
-    Stream.reject(stream, fn x -> MapSet.member?(workflow.recently_retired_subject_ids, x) end)
+    %{subject_ids: subject_ids} = Designator.RecentlyRetired.get(workflow.id)
+    Stream.reject(stream, fn id -> MapSet.member?(subject_ids, id) end)
   end
 
   defp reject_recently_selected(stream, user) do

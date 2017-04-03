@@ -55,6 +55,9 @@ defmodule Designator.WorkflowControllerTest do
       |> http_basic_authenticate(@username, @password)
       |> post(workflow_path(conn, :remove, workflow, subject_id: 123))
       assert response(conn, 204) == ""
+
+      cache = Designator.RecentlyRetired.get(workflow.id)
+      assert cache.subject_ids == MapSet.new([123])
     end
 
     test "requires authentication", %{workflow: workflow, conn: conn} do

@@ -18,7 +18,7 @@ defmodule Designator.WorkflowCache do
 
   ### Public API
 
-  defstruct [:id, :subject_set_ids, :configuration, recently_retired_subject_ids: MapSet.new]
+  defstruct [:id, :subject_set_ids, :configuration]
 
   def status do
     :workflow_cache
@@ -48,13 +48,6 @@ defmodule Designator.WorkflowCache do
     end)
   end
 
-  def add_retired(workflow_id, subject_id) do
-    ConCache.update_existing(:workflow_cache, workflow_id, fn(workflow) ->
-      recently_retired_subject_ids = MapSet.put(workflow.recently_retired_subject_ids, subject_id)
-      {:ok, %__MODULE__{workflow | recently_retired_subject_ids: recently_retired_subject_ids}}
-    end)
-  end
-
   def reload(workflow_id) do
     ConCache.update(:workflow_cache, workflow_id, fn(_old_workflow) ->
       {:ok, fetch_workflow(workflow_id)}
@@ -68,14 +61,12 @@ defmodule Designator.WorkflowCache do
           id: workflow_id,
           subject_set_ids: [],
           configuration: %{},
-          recently_retired_subject_ids: MapSet.new
         }
       workflow ->
         %__MODULE__{
           id: workflow_id,
           subject_set_ids: Designator.Workflow.subject_set_ids(workflow_id),
           configuration: workflow.configuration,
-          recently_retired_subject_ids: MapSet.new
        }
     end
   end
