@@ -26,20 +26,28 @@ defmodule Designator.WorkflowController do
     send_resp(conn, 204, [])
   end
 
-  def remove(conn, %{"id" => workflow_id, "subject_id" => subject_id}) do
+  def remove(conn, %{"id" => workflow_id, "subject_id" => subject_id}) when is_binary(subject_id) do
     {workflow_id, _} = Integer.parse(workflow_id)
     {subject_id, _} = Integer.parse(subject_id)
+    do_remove(conn, workflow_id, subject_id)
+  end
+  def remove(conn, %{"id" => workflow_id, "subject_id" => subject_id}) when is_integer(subject_id) do
+    {workflow_id, _} = Integer.parse(workflow_id)
+    do_remove(conn, workflow_id, subject_id)
+  end
+  def remove(conn, %{"id" => workflow_id}) do
+    {workflow_id, _} = Integer.parse(workflow_id)
+    do_full_reload(workflow_id)
+    send_resp(conn, 204, [])
+  end
+
+  defp do_remove(conn, workflow_id, subject_id) do
     Designator.RecentlyRetired.add(workflow_id, subject_id)
 
     if MapSet.size(Designator.RecentlyRetired.get(workflow_id).subject_ids) > 50 do
       do_full_reload(workflow_id)
     end
 
-    send_resp(conn, 204, [])
-  end
-  def remove(conn, %{"id" => workflow_id}) do
-    {workflow_id, _} = Integer.parse(workflow_id)
-    do_full_reload(workflow_id)
     send_resp(conn, 204, [])
   end
 
