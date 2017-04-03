@@ -24,7 +24,7 @@ defmodule Designator.RecentlyRetired do
     |> ConCache.ets
     |> :ets.tab2list
     |> Enum.map(fn({_, val}) ->
-      %{workflow_id: val.id, subject_ids_size: MapSet.size(val.subject_ids)}
+      %{workflow_id: val.workflow_id, subject_ids_size: MapSet.size(val.subject_ids)}
     end)
   end
 
