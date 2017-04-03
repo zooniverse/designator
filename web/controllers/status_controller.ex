@@ -5,7 +5,8 @@ defmodule Designator.StatusController do
     status = %{
       workflows: Designator.WorkflowCache.status,
       subject_sets: Designator.SubjectSetCache.status,
-      users: Designator.UserCache.status
+      users: Designator.UserCache.status,
+      recently_retired: Designator.RecentlyRetired.status
     }
 
     render conn, "index.json", status: status

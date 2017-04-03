@@ -27,6 +27,7 @@ defmodule Designator.CacheCase do
     clear_cache(:workflow_cache)
     clear_cache(:user_cache)
     clear_cache(:subject_set_cache)
+    clear_cache(:recently_retired_cache)
 
     :ok
   end

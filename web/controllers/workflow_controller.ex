@@ -26,14 +26,18 @@ defmodule Designator.WorkflowController do
     send_resp(conn, 204, [])
   end
 
-  def remove(conn, %{"id" => workflow_id, "subject_id" => _}) do
-    # TODO: If this is too slow, implement a temporary in-memory list
+  def remove(conn, %{"id" => workflow_id, "subject_id" => subject_id}) do
     {workflow_id, _} = Integer.parse(workflow_id)
-    do_full_reload(workflow_id)
+    {subject_id, _} = Integer.parse(subject_id)
+    Designator.RecentlyRetired.add(workflow_id, subject_id)
+
+    if MapSet.size(Designator.RecentlyRetired.get(workflow_id).subject_ids) > 50 do
+      do_full_reload(workflow_id)
+    end
+
     send_resp(conn, 204, [])
   end
   def remove(conn, %{"id" => workflow_id}) do
-    # TODO: If this is too slow, implement a temporary in-memory list
     {workflow_id, _} = Integer.parse(workflow_id)
     do_full_reload(workflow_id)
     send_resp(conn, 204, [])
@@ -49,6 +53,7 @@ defmodule Designator.WorkflowController do
   end
 
   defp do_full_reload(workflow_id) do
+    Designator.RecentlyRetired.clear(workflow_id)
     Designator.WorkflowCache.reload(workflow_id)
     Designator.WorkflowCache.get(workflow_id).subject_set_ids
     |> Enum.each(fn subject_set_id -> Designator.SubjectSetCache.reload({workflow_id, subject_set_id}) end)
