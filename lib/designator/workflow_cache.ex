@@ -10,7 +10,7 @@ defmodule Designator.WorkflowCache do
       supervisor(ConCache, [[ttl_check: :timer.seconds(5),
                              ttl: :timer.minutes(15),
                              touch_on_read: false],
-                            [name: :workflow_cache]]),
+                            [name: :workflow_cache]])
     ]
 
     supervise(children, strategy: :one_for_one)
@@ -60,7 +60,7 @@ defmodule Designator.WorkflowCache do
         %__MODULE__{
           id: workflow_id,
           subject_set_ids: [],
-          configuration: %{},
+          configuration: %{}
         }
       workflow ->
         %__MODULE__{
