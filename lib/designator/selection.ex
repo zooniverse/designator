@@ -43,11 +43,13 @@ defmodule Designator.Selection do
     end
   end
 
-  defp get_streams(workflow, user) do
+  def get_streams(workflow, user) do
     workflow.subject_set_ids
     |> get_subject_set_from_cache(workflow)
     |> reject_empty_sets
     |> convert_to_streams(workflow)
+    |> Designator.Streams.ConfiguredWeights.apply_weights(workflow, user)
+    |> Designator.Streams.ConfiguredChances.apply_weights(workflow, user)
     |> Designator.Streams.GoldStandard.apply_weights(workflow, user)
   end
 
@@ -58,10 +60,8 @@ defmodule Designator.Selection do
   end
 
   def convert_to_streams(subject_sets, workflow) do
-    configured_set_weights = workflow.configuration["subject_set_weights"] || %{}
-
     Enum.map(subject_sets, fn subject_set ->
-      Designator.SubjectStream.build(subject_set, configured_set_weights)
+      Designator.SubjectStream.build(subject_set)
     end)
   end
 
