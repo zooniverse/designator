@@ -7,7 +7,7 @@ before_install:
 script:
 - docker-compose run -e MIX_ENV=test test mix test
 after_success:
-- if [ "$TRAVIS_BRANCH" == "master" ]; then docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+- if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ]; then docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
   docker push zooniverse/cellect_ex; fi
 env:
   global:
