@@ -10,6 +10,7 @@ defmodule Designator.WorkflowController do
     limit = get_integer_param(params, "limit", 5)
 
     subjects = Designator.Selection.select(strategy, workflow_id, user_id, limit)
+    Logger.metadata(%{selected_ids: Enum.join(subjects, ",")})
     render conn, "show.json", subjects: subjects
   end
 
