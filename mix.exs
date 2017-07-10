@@ -18,7 +18,7 @@ defmodule Designator.Mixfile do
   # Type `mix help compile.app` for more information.
   def application do
     [mod: {Designator, []},
-     applications: [:phoenix, :phoenix_pubsub, :cowboy, :logger, :gettext,
+     applications: [:phoenix, :phoenix_pubsub, :cowboy, :logger, :gettext, :timex,
                     :phoenix_ecto, :postgrex, :logster, :rollbax, :con_cache]]
   end
 
@@ -34,7 +34,7 @@ defmodule Designator.Mixfile do
      {:phoenix_pubsub, "~> 1.0"},
      {:postgrex, ">= 0.0.0"},
      {:phoenix_ecto, "~> 3.0-rc"},
-     {:gettext, "~> 0.9"},
+     {:gettext, "~> 0.10"},
      {:cowboy, "~> 1.0"},
      {:array, git: "https://github.com/mhib/elixir-array.git"},
      {:logster, "~> 0.4"},
@@ -43,7 +43,8 @@ defmodule Designator.Mixfile do
      {:mock, "~> 0.2.0", only: :test},
      {:mix_test_watch, "~> 0.3", only: :dev, runtime: false},
      {:con_cache, "~> 0.12.0"},
-     {:basic_auth, "~> 2.1.1"}]
+     {:basic_auth, "~> 2.1.1"},
+     {:timex, "~> 3.1.21"}]
   end
 
   # Aliases are shortcut or tasks specific to the current project.
