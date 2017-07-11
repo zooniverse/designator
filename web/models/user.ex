@@ -6,8 +6,8 @@ defmodule Designator.User do
   def configuration(_workflow_id, nil), do: %{}
   def configuration(workflow_id, user_id) do
     with %{project_id: project_id} <- Workflow.find(workflow_id),
-         %{settings: settings} <- UserProjectPreference.find(project_id, user_id),
-         {:ok, designator_config} <- Map.fetch(settings, "designator"),
+         %{preferences: preferences} <- UserProjectPreference.find(project_id, user_id),
+         {:ok, designator_config} <- Map.fetch(preferences, "designator"),
          {:ok, workflow_config} <- Map.fetch(designator_config, Integer.to_string(workflow_id)) do
       workflow_config
     else

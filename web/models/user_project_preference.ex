@@ -6,7 +6,7 @@ defmodule Designator.UserProjectPreference do
   schema "user_project_preferences" do
     field :project_id, :integer
     field :user_id, :integer
-    field :settings, :map
+    field :preferences, :map
   end
 
   def find(project_id, user_id) do

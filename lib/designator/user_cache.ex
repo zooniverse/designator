@@ -52,10 +52,22 @@ defmodule Designator.UserCache do
       %__MODULE__{
         workflow_id: workflow_id,
         user_id: user_id,
+        configuration: configuration,
         seen_ids: seen_ids,
         recently_selected_ids: MapSet.new,
         reloading: false
       }
+    end)
+  end
+
+  def set({workflow_id, user_id} = workflow_user, user_cache) do
+    ConCache.update(:user_cache, workflow_user, fn(old_user_cache) ->
+      case old_user_cache do
+        nil ->
+          {:ok , Map.merge(%__MODULE__{workflow_id: workflow_id, user_id: user_id}, user_cache)}
+        val ->
+          {:ok, Map.merge(val, user_cache)}
+      end
     end)
   end
 

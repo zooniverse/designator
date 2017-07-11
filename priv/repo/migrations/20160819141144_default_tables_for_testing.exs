@@ -36,7 +36,7 @@ defmodule Designator.Migrations.DefaultTablesForTesting do
     create table(:user_project_preferences) do
       add :user_id, :integer
       add :project_id, :integer
-      add :settings, :map
+      add :preferences, :map
       timestamps inserted_at: :created_at
     end
 
