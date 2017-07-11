@@ -1,0 +1,26 @@
+defmodule Designator.User do
+  import Ecto.Query, only: [from: 2]
+  alias Designator.Workflow
+
+  def configuration(workflow_id, nil), do: %{}
+  def configuration(workflow_id, user_id) do
+    %{project_id: project_id} = Workflow.find(workflow_id)
+
+    query = from upp in "user_project_preferences",
+      where: upp.project_id == ^project_id and upp.user_id == ^user_id,
+      select: upp.settings
+    upp = Designator.Repo.one(query)
+
+    upp.settings["designator"][workflow_id] || %{}
+  end
+
+  def seen_subject_ids(workflow_id, nil), do: []
+  def seen_subject_ids(workflow_id, user_id) do
+    query = from uss in "user_seen_subjects",
+      where: uss.workflow_id == ^workflow_id and uss.user_id == ^user_id,
+      select: uss.subject_ids
+
+    Designator.Repo.one(query) || []
+  end
+
+end

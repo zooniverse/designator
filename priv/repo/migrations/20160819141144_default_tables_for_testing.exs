@@ -33,6 +33,13 @@ defmodule Designator.Migrations.DefaultTablesForTesting do
       timestamps inserted_at: :created_at
     end
 
+    create table(:user_project_preferences) do
+      add :user_id, :integer
+      add :project_id, :integer
+      add :settings, :map
+      timestamps inserted_at: :created_at
+    end
+
     create table(:user_seen_subjects) do
       add :user_id, :integer
       add :workflow_id, :integer

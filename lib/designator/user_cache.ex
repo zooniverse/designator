@@ -18,7 +18,7 @@ defmodule Designator.UserCache do
 
   ### Public API
 
-  defstruct [:workflow_id, :user_id, :seen_ids, :recently_selected_ids, :reloading]
+  defstruct [:workflow_id, :user_id, :configuration, :seen_ids, :recently_selected_ids, :reloading]
 
   def status do
     :user_cache
@@ -37,6 +37,7 @@ defmodule Designator.UserCache do
     %__MODULE__{
       workflow_id: workflow_id,
       user_id: nil,
+      configuration: %{},
       seen_ids: MapSet.new,
       recently_selected_ids: MapSet.new,
       reloading: false
@@ -45,6 +46,7 @@ defmodule Designator.UserCache do
 
   def get({workflow_id, user_id} = workflow_user) do
     ConCache.get_or_store(:user_cache, workflow_user, fn() ->
+      configuration = Designator.User.configuration(workflow_id, user_id)
       seen_ids = Designator.User.seen_subject_ids(workflow_id, user_id) |> Enum.into(MapSet.new)
 
       %__MODULE__{
