@@ -20,11 +20,14 @@ defmodule Designator.SelectionTest do
 
   test "weighed selection for normal sets" do
     Designator.Random.seed({123, 100020, 345345})
-    Designator.WorkflowCache.set(338, %{configuration: %{subject_set_weights: %{"1000" => 900,
+    Designator.WorkflowCache.set(338, %{configuration: %{subject_set_weights: %{"1000" => 1,
                                                                              "1001" => 99,
                                                                              "1002" => 9.9,
                                                                              "1003" => 0.1}},
                                      subject_set_ids: [1000, 1001, 1002, 1003]})
+    Designator.UserCache.set({338, 1}, %{seen_ids: MapSet.new,
+                                         recently_selected_ids: MapSet.new,
+                                         configuration: %{subject_set_weights: %{"1000" => 900}}})
     SubjectSetCache.set({338, 1000}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1000, subject_ids: Array.from_list([1, 2, 3])})
     SubjectSetCache.set({338, 1001}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1001, subject_ids: Array.from_list([4])})
     SubjectSetCache.set({338, 1002}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1002, subject_ids: Array.from_list([5])})

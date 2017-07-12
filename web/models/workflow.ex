@@ -5,6 +5,7 @@ defmodule Designator.Workflow do
   use Designator.Web, :model
 
   schema "workflows" do
+    field :project_id, :integer
     field :configuration, :map
 
     timestamps inserted_at: :created_at
