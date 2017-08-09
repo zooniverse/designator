@@ -1,5 +1,5 @@
 defmodule Designator.SubjectSetCacheTest do
-  use Designator.ConnCase
+  use DesignatorWeb.ConnCase
   use Designator.CacheCase
 
   alias Designator.SubjectSetCache

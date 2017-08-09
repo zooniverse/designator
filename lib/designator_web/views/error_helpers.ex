@@ -1,4 +1,4 @@
-defmodule Designator.ErrorHelpers do
+defmodule DesignatorWeb.ErrorHelpers do
   @moduledoc """
   Conveniences for translating and building error messages.
   """
@@ -18,9 +18,9 @@ defmodule Designator.ErrorHelpers do
     #     dgettext "errors", "is invalid"
     #
     if count = opts[:count] do
-      Gettext.dngettext(MyApp.Gettext, "errors", msg, msg, count, opts)
+      Gettext.dngettext(DesignatorWeb.Gettext, "errors", msg, msg, count, opts)
     else
-      Gettext.dgettext(MyApp.Gettext, "errors", msg, opts)
+      Gettext.dgettext(DesignatorWeb.Gettext, "errors", msg, opts)
     end
   end
 end

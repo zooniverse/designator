@@ -1,5 +1,5 @@
 defmodule Designator.WorkflowControllerTest do
-  use Designator.ConnCase
+  use DesignatorWeb.ConnCase
 
   @username Application.fetch_env!(:designator, :api_auth)[:username]
   @password Application.fetch_env!(:designator, :api_auth)[:password]

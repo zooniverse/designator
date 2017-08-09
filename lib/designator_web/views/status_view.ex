@@ -1,5 +1,5 @@
-defmodule Designator.StatusView do
-  use Designator.Web, :view
+defmodule DesignatorWeb.StatusView do
+  use DesignatorWeb, :view
 
   def render("index.json", %{status: status}) do
     status

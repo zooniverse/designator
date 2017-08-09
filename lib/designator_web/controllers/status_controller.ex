@@ -1,5 +1,5 @@
-defmodule Designator.StatusController do
-  use Designator.Web, :controller
+defmodule DesignatorWeb.StatusController do
+  use DesignatorWeb, :controller
 
   def index(conn, _params) do
     status = %{

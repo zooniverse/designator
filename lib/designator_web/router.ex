@@ -1,12 +1,12 @@
-defmodule Designator.Router do
-  use Designator.Web, :router
+defmodule DesignatorWeb.Router do
+  use DesignatorWeb, :router
   use Plug.ErrorHandler
 
   pipeline :api do
     plug :accepts, ["json"]
   end
 
-  scope "/api", Designator do
+  scope "/api", DesignatorWeb do
     pipe_through :api
 
     get "/", StatusController, :index
@@ -27,4 +27,3 @@ defmodule Designator.Router do
     end
   end
 end
-

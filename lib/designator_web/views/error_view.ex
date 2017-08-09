@@ -1,5 +1,5 @@
 defmodule Designator.ErrorView do
-  use Designator.Web, :view
+  use DesignatorWeb, :view
 
   def render("404.json", _assigns) do
     %{errors: %{detail: "Page not found"}}

@@ -1,5 +1,5 @@
-defmodule Designator.WorkflowView do
-  use Designator.Web, :view
+defmodule DesignatorWeb.WorkflowView do
+  use DesignatorWeb, :view
 
   def render("show.json", %{subjects: subjects}) do
     subjects

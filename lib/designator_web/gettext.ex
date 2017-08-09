@@ -1,4 +1,4 @@
-defmodule Designator.Gettext do
+defmodule DesignatorWeb.Gettext do
   @moduledoc """
   A module providing Internationalization with a gettext-based API.
 

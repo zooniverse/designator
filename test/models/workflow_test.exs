@@ -1,5 +1,5 @@
 defmodule Designator.WorkflowTest do
-  use Designator.ConnCase
+  use DesignatorWeb.ConnCase
 
   describe "subject_set_ids" do
     test "returns linked subject set ids" do

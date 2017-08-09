@@ -1,5 +1,5 @@
 defmodule Designator.WorkflowCacheTest do
-  use Designator.ConnCase
+  use DesignatorWeb.ConnCase
   use Designator.CacheCase
 
   describe "reloading" do

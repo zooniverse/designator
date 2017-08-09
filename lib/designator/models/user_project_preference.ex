@@ -1,6 +1,7 @@
 defmodule Designator.UserProjectPreference do
   use Ecto.Schema
   import Ecto.Query, only: [from: 2]
+
   alias Designator.Repo
 
   schema "user_project_preferences" do
@@ -16,4 +17,3 @@ defmodule Designator.UserProjectPreference do
     Repo.one(query)
   end
 end
-

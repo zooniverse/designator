@@ -17,14 +17,14 @@ defmodule Designator.Mixfile do
   #
   # Type `mix help compile.app` for more information.
   def application do
-    [mod: {Designator, []},
+    [mod: {Designator.Application, []},
      applications: [:phoenix, :phoenix_pubsub, :cowboy, :logger, :gettext, :timex,
                     :phoenix_ecto, :postgrex, :logster, :rollbax, :con_cache]]
   end
 
   # Specifies which paths to compile per environment.
-  defp elixirc_paths(:test), do: ["lib", "web", "test/support"]
-  defp elixirc_paths(_),     do: ["lib", "web"]
+  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(_),     do: ["lib"]
 
   # Specifies your project dependencies.
   #

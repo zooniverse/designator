@@ -1,5 +1,5 @@
 defmodule Designator.SelectionTest do
-  use Designator.ConnCase
+  use DesignatorWeb.ConnCase
   use Designator.CacheCase
   alias Designator.Selection
   alias Designator.Repo

@@ -1,5 +1,5 @@
-defmodule Designator.ChangesetView do
-  use Designator.Web, :view
+defmodule DesignatorWeb.ChangesetView do
+  use DesignatorWeb, :view
 
   @doc """
   Traverses and translates changeset errors.

@@ -1,8 +1,9 @@
 defmodule Designator.UserSeenSubject do
   use Ecto.Schema
-  import Ecto.Query, only: [from: 2]
 
-  use Designator.Web, :model
+  import Ecto
+  import Ecto.Changeset
+  import Ecto.Query, only: [from: 1, from: 2]
 
   schema "user_seen_subjects" do
     field :workflow_id, :integer

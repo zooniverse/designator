@@ -1,7 +1,7 @@
-defmodule Designator.Endpoint do
+defmodule DesignatorWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :designator
 
-  # socket "/socket", Designator.UserSocket
+  # socket "/socket", DesignatorWeb.UserSocket
 
   # Serve at "/" the static files from "priv/static" directory.
   #
@@ -35,5 +35,5 @@ defmodule Designator.Endpoint do
     key: "_designator_key",
     signing_salt: "icsXy9AG"
 
-  plug Designator.Router
+  plug DesignatorWeb.Router
 end

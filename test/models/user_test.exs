@@ -1,5 +1,5 @@
 defmodule Designator.UserTest do
-  use Designator.ConnCase
+  use DesignatorWeb.ConnCase
 
   describe "configuration" do
     test "returns the per-workflow user configuration" do

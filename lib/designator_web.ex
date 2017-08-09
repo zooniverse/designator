@@ -1,12 +1,12 @@
-defmodule Designator.Web do
+defmodule DesignatorWeb do
   @moduledoc """
   A module that keeps using definitions for controllers,
   views and so on.
 
   This can be used in your application as:
 
-      use Designator.Web, :controller
-      use Designator.Web, :view
+      use DesignatorWeb, :controller
+      use DesignatorWeb, :view
 
   The definitions below will be executed for every view,
   controller, etc, so keep them short and clean, focused
@@ -28,27 +28,28 @@ defmodule Designator.Web do
 
   def controller do
     quote do
-      use Phoenix.Controller
+      use Phoenix.Controller, namespace: DesignatorWeb
 
       alias Designator.Repo
       import Ecto
       import Ecto.Query, only: [from: 1, from: 2]
 
-      import Designator.Router.Helpers
-      import Designator.Gettext
+      import DesignatorWeb.Router.Helpers
+      import DesignatorWeb.Gettext
     end
   end
 
   def view do
     quote do
-      use Phoenix.View, root: "web/templates"
+      use Phoenix.View, root: "lib/designator_web/templates",
+        namespace: DesignatorWeb
 
       # Import convenience functions from controllers
       import Phoenix.Controller, only: [get_csrf_token: 0, get_flash: 2, view_module: 1]
 
-      import Designator.Router.Helpers
-      import Designator.ErrorHelpers
-      import Designator.Gettext
+      import DesignatorWeb.Router.Helpers
+      import DesignatorWeb.ErrorHelpers
+      import DesignatorWeb.Gettext
     end
   end
 
@@ -65,7 +66,7 @@ defmodule Designator.Web do
       alias Designator.Repo
       import Ecto
       import Ecto.Query, only: [from: 1, from: 2]
-      import Designator.Gettext
+      import DesignatorWeb.Gettext
     end
   end
 

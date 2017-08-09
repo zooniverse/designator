@@ -1,4 +1,4 @@
-defmodule Designator do
+defmodule Designator.Application do
   use Application
 
   @reloader Application.get_env(:designator, :reloader)
@@ -7,7 +7,7 @@ defmodule Designator do
     import Supervisor.Spec, warn: false
 
     children = [
-      supervisor(Designator.Endpoint, []),
+      supervisor(DesignatorWeb.Endpoint, []),
       supervisor(Designator.Repo, []),
       supervisor(Designator.WorkflowCache, []),
       supervisor(Designator.SubjectSetCache, []),

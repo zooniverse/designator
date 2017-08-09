@@ -6,7 +6,7 @@
 use Mix.Config
 
 # Configures the endpoint
-config :designator, Designator.Endpoint,
+config :designator, DesignatorWeb.Endpoint,
   url: [host: "localhost"],
   root: Path.dirname(__DIR__),
   secret_key_base: "qWURxQTs1g7D3K54EzegsyFU/n1Srt4fT2qfUqguDW+AkWVuVhDxz3/WCqLWpX82",
@@ -48,4 +48,3 @@ else
       environment: to_string(Mix.env),
       enabled: :log
 end
-

@@ -1,7 +1,7 @@
-defmodule Designator.WorkflowController do
-  use Designator.Web, :controller
+defmodule DesignatorWeb.WorkflowController do
+  use DesignatorWeb, :controller
 
-  plug BasicAuth, [callback: &Designator.WorkflowController.authenticate/3] when action in [:reload, :unlock, :remove]
+  plug BasicAuth, [callback: &DesignatorWeb.WorkflowController.authenticate/3] when action in [:reload, :unlock, :remove]
 
   def show(conn, %{"id" => workflow_id} = params) do
     {workflow_id, _} = Integer.parse(workflow_id)
