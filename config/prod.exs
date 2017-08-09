@@ -16,7 +16,7 @@ config :designator, Designator.Endpoint,
   https: [port: {:system, "PORT"},
           keyfile: "/app/config/ssl_key.pem",
           certfile: "/app/config/ssl_cert.pem"],
-  cache_static_manifest: "priv/static/manifest.json"
+  cache_static_manifest: "priv/static/cache_manifest.json"
 
 # Do not print debug messages in production
 config :logger, level: :info
