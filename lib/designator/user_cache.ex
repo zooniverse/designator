@@ -7,8 +7,8 @@ defmodule Designator.UserCache do
 
   def init([]) do
     children = [
-      supervisor(ConCache, [[ttl_check: :timer.seconds(1),
-                             ttl: :timer.minutes(5),
+      supervisor(ConCache, [[ttl_check: :timer.seconds(30),
+                             ttl: :timer.minutes(15),
                              touch_on_read: true],
                             [name: :user_cache]]),
     ]
