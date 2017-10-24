@@ -2,8 +2,8 @@ defmodule Designator.Streams.ConfiguredChances do
   alias Designator.SubjectStream
 
   def apply_weights(streams, workflow, user) do
-    workflow_config = workflow.configuration["subject_set_weights"] || %{}
-    user_config = user.configuration["subject_set_weights"] || %{}
+    workflow_config = workflow.configuration["subject_set_chances"] || %{}
+    user_config = user.configuration["subject_set_chances"] || %{}
 
     Enum.map streams, fn (stream) ->
       case get_config(stream.subject_set_id, workflow_config, user_config) do
