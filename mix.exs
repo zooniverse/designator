@@ -19,7 +19,7 @@ defmodule Designator.Mixfile do
   def application do
     [mod: {Designator, []},
      applications: [:phoenix, :phoenix_pubsub, :cowboy, :logger, :gettext, :timex,
-                    :phoenix_ecto, :postgrex, :logster, :rollbax, :con_cache]]
+                    :phoenix_ecto, :postgrex, :logster, :rollbax, :con_cache, :httpoison]]
   end
 
   # Specifies which paths to compile per environment.
@@ -44,6 +44,7 @@ defmodule Designator.Mixfile do
      {:mix_test_watch, "~> 0.3", only: :dev, runtime: false},
      {:con_cache, "~> 0.12.0"},
      {:basic_auth, "~> 2.1.1"},
+     {:httpoison, "~> 0.13"},
      {:timex, "~> 3.1.21"}]
   end
 

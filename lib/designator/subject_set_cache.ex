@@ -76,8 +76,13 @@ defmodule Designator.SubjectSetCache do
   end
 
   def set_subject_ids(key, subject_ids) do
+    {workflow_id, subject_set_id} = key
     ConCache.update(:subject_set_cache, key, fn(subject_set) ->
-      {:ok, %__MODULE__{subject_set | subject_ids: subject_ids, loaded_at: DateTime.utc_now, reloading_since: nil}}
+      new_value = case subject_set do
+                    nil -> %__MODULE__{workflow_id: workflow_id, subject_set_id: subject_set_id, subject_ids: subject_ids, loaded_at: DateTime.utc_now, reloading_since: nil}
+                    _ -> %__MODULE__{subject_set | subject_ids: subject_ids, loaded_at: DateTime.utc_now, reloading_since: nil}
+      end
+      {:ok, new_value}
     end)
   end
 end
