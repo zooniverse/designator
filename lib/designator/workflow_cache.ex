@@ -7,8 +7,8 @@ defmodule Designator.WorkflowCache do
 
   def init([]) do
     children = [
-      supervisor(ConCache, [[ttl_check: :timer.seconds(5),
-                             ttl: :timer.minutes(15),
+      supervisor(ConCache, [[ttl_check: :timer.seconds(30),
+                             ttl: :timer.minutes(30),
                              touch_on_read: false],
                             [name: :workflow_cache]]),
     ]
