@@ -32,6 +32,8 @@ config :designator, Designator.Repo,
   database: System.get_env("POSTGRES_DB"),
   hostname: System.get_env("POSTGRES_HOST"),
   pool_size: String.to_integer(System.get_env("POSTGRES_POOL_SIZE") || "5"),
+  timeout: 120000,
+  pool_timeout: 120000,
   ssl: true
 
 # ## SSL Support
