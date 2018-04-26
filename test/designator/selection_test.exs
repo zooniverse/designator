@@ -18,6 +18,18 @@ defmodule Designator.SelectionTest do
     assert Selection.select("weighted", 338, 1, 4) == [4, 3, 2, 1]
   end
 
+  test "spacewarps weighting" do
+    Designator.Random.seed({123, 123534, 345345})
+    Designator.WorkflowCache.set(338, %{configuration: %{spacewarps_training_sets: [681, 1706]},
+                                     subject_set_ids: [681, 1706, 1682, 1681]})
+    SubjectSetCache.set({338, 681},  %SubjectSetCache{workflow_id: 338, subject_set_id: 681, subject_ids: Array.from_list([1])})
+    SubjectSetCache.set({338, 1706}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1706, subject_ids: Array.from_list([2])})
+    SubjectSetCache.set({338, 1682}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1682, subject_ids: Array.from_list([3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3])})
+    SubjectSetCache.set({338, 1681}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1681, subject_ids: Array.from_list([4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4])})
+
+    assert Selection.select("weighted", 338, 1, 4) == [4, 3, 2, 1]
+  end
+
   test "weighed selection for normal sets" do
     Designator.Random.seed({123, 100020, 345345})
     Designator.WorkflowCache.set(338, %{configuration: %{subject_set_weights: %{"1000" => 1,
