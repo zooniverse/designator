@@ -40,7 +40,7 @@ defmodule Designator.Mixfile do
      {:logster, "~> 0.4"},
      {:credo, "~> 0.6", only: [:dev, :test]},
      {:rollbax, "~> 0.8"},
-     {:mock, "~> 0.2.0", only: :test},
+     {:mock, "~> 0.3.1", only: :test},
      {:mix_test_watch, "~> 0.3", only: :dev, runtime: false},
      {:con_cache, "~> 0.12.0"},
      {:basic_auth, "~> 2.1.1"},
