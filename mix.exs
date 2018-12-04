@@ -43,7 +43,7 @@ defmodule Designator.Mixfile do
      {:mock, "~> 0.3.1", only: :test},
      {:mix_test_watch, "~> 0.3", only: :dev, runtime: false},
      {:con_cache, "~> 0.12.0"},
-     {:basic_auth, "~> 2.1.1"},
+     {:basic_auth, "~> 2.2.4"},
      {:timex, "~> 3.1.21"}]
   end
 
