@@ -1,7 +1,7 @@
 defmodule Designator.Mixfile do
   use Mix.Project
 
-  def project do
+  def project() do
     [app: :designator,
      version: "0.0.1",
      elixir: "~> 1.3",
@@ -16,7 +16,7 @@ defmodule Designator.Mixfile do
   # Configuration for the OTP application.
   #
   # Type `mix help compile.app` for more information.
-  def application do
+  def application() do
     [mod: {Designator, []},
      applications: [:phoenix, :phoenix_pubsub, :cowboy, :logger, :gettext, :timex,
                     :phoenix_ecto, :postgrex, :logster, :rollbax, :con_cache]]
@@ -29,7 +29,7 @@ defmodule Designator.Mixfile do
   # Specifies your project dependencies.
   #
   # Type `mix help deps` for examples and options.
-  defp deps do
+  defp deps() do
     [{:phoenix, "~> 1.2.0"},
      {:phoenix_pubsub, "~> 1.0"},
      {:postgrex, ">= 0.0.0"},
@@ -53,7 +53,7 @@ defmodule Designator.Mixfile do
   #     $ mix ecto.setup
   #
   # See the documentation for `Mix` for more info on aliases.
-  defp aliases do
+  defp aliases() do
     ["ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
      "ecto.reset": ["ecto.drop", "ecto.setup"],
      "test":       ["ecto.create --quiet", "ecto.migrate", "test"]]
