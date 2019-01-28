@@ -42,7 +42,7 @@ defmodule Designator.Mixfile do
      {:rollbax, "~> 0.8"},
      {:mock, "~> 0.3.1", only: :test},
      {:mix_test_watch, "~> 0.3", only: :dev, runtime: false},
-     {:con_cache, "~> 0.12.0"},
+     {:con_cache, "~> 0.13.0"},
      {:basic_auth, "~> 2.1.1"},
      {:timex, "~> 3.1.21"}]
   end
