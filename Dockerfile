@@ -1,4 +1,4 @@
-FROM elixir:1.4
+FROM elixir:1.8
 
 # ENV LANG en_US.UTF-8
 # ENV LANGUAGE en_US:en
