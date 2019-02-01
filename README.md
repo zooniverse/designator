@@ -58,3 +58,16 @@ Some routes are protected to ensure only authenticated users can request them, i
     + Remove the subject_id from the available subject_ids for selection (retire it)
     + The subject ID can be sent as a JSON payload or a query param
     + This will force a full reload after 50 requests to ensure the system has the latest known state of the data available for selection.
+
+### Internal selection pipeline
+
+Once a HTTP request is received via the API the `Designator.Selection.select` function is invoked with the selection params.
+
+This will call `get_streams` after loading data from relevant caches (Workflow, User seens). Get Streams is important as it creates a pipe of known selection builders that combine to:
+  1. Get Subjects from cache
+  0. reject empty data sets
+  0. filter the streams based on rule sets of the known implementations (apply weights, select with chance, add gold standard)
+
+After data from the streams is compiled it's passed to `do_select` to extract the data as well as reject specific subject ids i.e. seen, retired, recently selected.
+
+The `do_select` function uses `Designator.StreamTools.interleave`, this is a an engine to pluck items (up to a limit) from a set of enums. This should not really have to be touched and is an optimized version (lazily evaluated) of get all items and take up to a limit.
