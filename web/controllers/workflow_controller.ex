@@ -36,11 +36,6 @@ defmodule Designator.WorkflowController do
     {workflow_id, _} = Integer.parse(workflow_id)
     do_remove(conn, workflow_id, subject_id)
   end
-  def remove(conn, %{"id" => workflow_id}) do
-    {workflow_id, _} = Integer.parse(workflow_id)
-    do_full_reload(workflow_id)
-    send_resp(conn, 204, [])
-  end
 
   defp do_remove(conn, workflow_id, subject_id) do
     Designator.RecentlyRetired.add(workflow_id, subject_id)
