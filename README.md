@@ -29,6 +29,13 @@ Using Docker:
   * `docker-compose run test mix test`
   * `docker-compose up` and `curl http://localhost:4000/api`
 
+  Interactively debug the tests
+  ```
+  docker-compose run test bash`
+  iex -S mix test
+  mix test --only wip
+  ```
+
 Running a benchmark:
 
   * First of all, compile a production-like version of the app, since the dev server will be doing code reloads and a whole bunch of other things:

@@ -1,5 +1,5 @@
 defmodule Designator.Selection do
-  def select(_style, workflow_id, user_id, limit \\ 5) do
+  def select(_style, workflow_id, user_id, subject_set_id, limit \\ 5) do
     workflow = Designator.WorkflowCache.get(workflow_id)
     user = Designator.UserCache.get({workflow_id, user_id})
     seen_subject_ids = user.seen_ids
