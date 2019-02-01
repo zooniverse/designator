@@ -27,11 +27,13 @@ defmodule Designator.WorkflowController do
     send_resp(conn, 204, [])
   end
 
+  # subject_id can be a URL query param (byte sequence)
   def remove(conn, %{"id" => workflow_id, "subject_id" => subject_id}) when is_binary(subject_id) do
     {workflow_id, _} = Integer.parse(workflow_id)
     {subject_id, _} = Integer.parse(subject_id)
     do_remove(conn, workflow_id, subject_id)
   end
+  # subject_id can be come from POST JSON payload
   def remove(conn, %{"id" => workflow_id, "subject_id" => subject_id}) when is_integer(subject_id) do
     {workflow_id, _} = Integer.parse(workflow_id)
     do_remove(conn, workflow_id, subject_id)
@@ -45,6 +47,9 @@ defmodule Designator.WorkflowController do
   defp do_remove(conn, workflow_id, subject_id) do
     Designator.RecentlyRetired.add(workflow_id, subject_id)
 
+    # Refresh the current known state from the source datastore
+    # to ensure the system is operating efficiently on updated lists of
+    # available subject_ids and retired subject_ids
     if MapSet.size(Designator.RecentlyRetired.get(workflow_id).subject_ids) > 50 do
       do_full_reload(workflow_id)
     end
