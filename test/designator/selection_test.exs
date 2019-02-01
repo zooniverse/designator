@@ -15,7 +15,7 @@ defmodule Designator.SelectionTest do
     SubjectSetCache.set({338, 1682}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1682, subject_ids: Array.from_list([3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3])})
     SubjectSetCache.set({338, 1681}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1681, subject_ids: Array.from_list([4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4])})
 
-    assert Selection.select("weighted", 338, 1, [limit: 4]) == [4, 2, 1, 3]
+    assert Selection.select(338, 1, [limit: 4]) == [4, 2, 1, 3]
   end
 
   test "spacewarps weighting" do
@@ -27,7 +27,7 @@ defmodule Designator.SelectionTest do
     SubjectSetCache.set({338, 1682}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1682, subject_ids: Array.from_list([3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3])})
     SubjectSetCache.set({338, 1681}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1681, subject_ids: Array.from_list([4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4])})
 
-    assert Selection.select("weighted", 338, 1, [limit: 4]) == [4, 2, 3, 1]
+    assert Selection.select(338, 1, [limit: 4]) == [4, 2, 3, 1]
   end
 
   test "weighed selection for normal sets" do
@@ -42,7 +42,7 @@ defmodule Designator.SelectionTest do
     SubjectSetCache.set({338, 1002}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1002, subject_ids: Array.from_list([5])})
     SubjectSetCache.set({338, 1003}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1003, subject_ids: Array.from_list([6])})
 
-    assert Selection.select("weighted", 338, 1, [limit: 6]) == [4, 5, 1, 2, 3, 6]
+    assert Selection.select(338, 1, [limit: 6]) == [4, 5, 1, 2, 3, 6]
   end
 
   @tag timeout: 1000
@@ -58,7 +58,7 @@ defmodule Designator.SelectionTest do
 
     assert Designator.UserCache.get({338, 1}).seen_ids == MapSet.new([1,2,3,4])
 
-    assert Selection.select("weighted", 338, 1) == []
+    assert Selection.select(338, 1) == []
   end
 
   test "selects subjects from a supplied subject_set_id" do
@@ -67,7 +67,7 @@ defmodule Designator.SelectionTest do
     SubjectSetCache.set({338, 681},  %SubjectSetCache{workflow_id: 338, subject_set_id: 681, subject_ids: Array.from_list([1])})
     SubjectSetCache.set({338, 1706}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1706, subject_ids: Array.from_list([2])})
 
-    assert Selection.select("weighted", 338, 1, [subject_set_id: 681, limit: 2]) == [1]
+    assert Selection.select(338, 1, [subject_set_id: 681, limit: 2]) == [1]
   end
 
   test "selects subjects from all subject sets if an unknown subject_set_id" do
@@ -76,7 +76,7 @@ defmodule Designator.SelectionTest do
     SubjectSetCache.set({338, 681},  %SubjectSetCache{workflow_id: 338, subject_set_id: 681, subject_ids: Array.from_list([1])})
     SubjectSetCache.set({338, 1706}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1706, subject_ids: Array.from_list([2])})
 
-    assert Selection.select("weighted", 338, 1, [subject_set_id: 1, limit: 2]) == [2,1]
+    assert Selection.select(338, 1, [subject_set_id: 1, limit: 2]) == [2,1]
   end
 
   test "does not select recently handed out subject ids" do
@@ -89,7 +89,7 @@ defmodule Designator.SelectionTest do
     SubjectSetCache.set({338, 1681}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1681, subject_ids: Array.from_list([4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4])})
 
     run_selection_to_setup_cache = Selection.select("weighted", 338, 1, [limit: 4])
-    assert Selection.select("weighted", 338, 1, [limit: 4]) == []
+    assert Selection.select(338, 1, [limit: 4]) == []
   end
 
   test "does not select recently retired subject ids" do
@@ -101,12 +101,11 @@ defmodule Designator.SelectionTest do
     Designator.RecentlyRetired.add(338, 2)
     Designator.RecentlyRetired.add(338, 3)
 
-    assert Selection.select("weighted", 338, 1, [limit: 4]) == [4]
+    assert Selection.select(338, 1, [limit: 4]) == [4]
   end
 
   test "workflow that does not exist" do
-    assert Selection.select("uniform", 404, 1) == []
-    assert Selection.select("weighted", 404, 1) == []
+    assert Selection.select(404, 1) == []
   end
 
   test "empty subject set" do
@@ -118,6 +117,6 @@ defmodule Designator.SelectionTest do
     SubjectSetCache.set({338, 1682},%SubjectSetCache{workflow_id: 338, subject_set_id: 1002, subject_ids: Array.from_list([3])})
     SubjectSetCache.set({338, 1681},%SubjectSetCache{workflow_id: 338, subject_set_id: 1003, subject_ids: Array.from_list([4])})
 
-    assert Selection.select("weighted", 338, 1, [limit: 2]) == [4, 3]
+    assert Selection.select(338, 1, [limit: 2]) == [4, 3]
   end
 end

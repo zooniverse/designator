@@ -1,5 +1,5 @@
 defmodule Designator.Selection do
-  def select(_style, workflow_id, user_id, options \\ []) do
+  def select(workflow_id, user_id, options \\ []) do
     selection_options = options_with_defaults(options)
 
     workflow = Designator.WorkflowCache.get(workflow_id)
