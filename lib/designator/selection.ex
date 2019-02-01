@@ -4,7 +4,7 @@ defmodule Designator.Selection do
     user = Designator.UserCache.get({workflow_id, user_id})
     seen_subject_ids = user.seen_ids
 
-    streams = get_streams(workflow, user)
+    streams = get_streams(workflow, user, subject_set_id)
     amount = Enum.sum(Enum.map(streams, fn stream -> stream.amount end))
 
     do_select(streams, amount, seen_subject_ids, limit, workflow, user)
@@ -43,8 +43,8 @@ defmodule Designator.Selection do
     end
   end
 
-  def get_streams(workflow, user) do
-    workflow.subject_set_ids
+  def get_streams(workflow, user, subject_set_id) do
+    selection_subject_set_ids(workflow.subject_set_ids, subject_set_id)
     |> get_subject_set_from_cache(workflow)
     |> reject_empty_sets
     |> convert_to_streams(workflow)
@@ -86,5 +86,13 @@ defmodule Designator.Selection do
 
   defp reject_seen_subjects(stream, seen_subject_ids) do
     Stream.reject(stream, fn x -> MapSet.member?(seen_subject_ids, x) end)
+  end
+
+  defp selection_subject_set_ids(all_subject_set_ids, subject_set_id) do
+    if Enum.member?(all_subject_set_ids, subject_set_id) do
+      [ subject_set_id ]
+    else
+      all_subject_set_ids
+    end
   end
 end

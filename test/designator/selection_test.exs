@@ -61,14 +61,13 @@ defmodule Designator.SelectionTest do
     assert Selection.select("weighted", 338, 1, 4) == []
   end
 
-  @tag :wip
   test "selects subjects from a supplied subject_set_id" do
     Designator.Random.seed({123, 123534, 345345})
     Designator.WorkflowCache.set(338, %{ configuration: %{}, subject_set_ids: [681, 1706]})
     SubjectSetCache.set({338, 681},  %SubjectSetCache{workflow_id: 338, subject_set_id: 681, subject_ids: Array.from_list([1])})
     SubjectSetCache.set({338, 1706}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1706, subject_ids: Array.from_list([2])})
 
-    assert Selection.select("weighted", 338, 1, 4, 681) == [1]
+    assert Selection.select("weighted", 338, 1, 681, 2) == [1]
   end
 
   test "does not select recently handed out subject ids" do
