@@ -63,7 +63,7 @@ defmodule Designator.Selection do
     end)
   end
 
-  def convert_to_streams(subject_sets, workflow) do
+  def convert_to_streams(subject_sets, _workflow) do
     Enum.map(subject_sets, fn subject_set ->
       Designator.SubjectStream.build(subject_set)
     end)

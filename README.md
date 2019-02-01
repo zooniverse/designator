@@ -24,6 +24,7 @@ Local installation:
 
 Using Docker:
 
+  * `docker-compose down --rmi all -v --remove-orphans`
   * `docker-compose build`
   * `docker-compose run web mix ecto.create`
   * `docker-compose run test mix test`

@@ -36,8 +36,11 @@ defmodule Designator.SubjectSetCache do
     end)
   end
 
+  @spec get({integer, integer}) :: SubjectSetCache.t
   def get({workflow_id, subject_set_id} = key) do
     subject_set = ConCache.get_or_store(:subject_set_cache, key, fn() ->
+      # This module is also a struct to store the data. See defstruct above
+      # for which fields it supports.
       %__MODULE__{
         workflow_id: workflow_id,
         subject_set_id: subject_set_id,

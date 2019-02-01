@@ -15,3 +15,6 @@ erl_crash.dump
 # variables.
 /config/prod.secret.exs
 /config/*.pem
+
+# Editor artifacts
+/.elixir_ls
