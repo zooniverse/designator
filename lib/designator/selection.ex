@@ -1,13 +1,15 @@
 defmodule Designator.Selection do
-  def select(_style, workflow_id, user_id, subject_set_id, limit \\ 5) do
+  def select(_style, workflow_id, user_id, options \\ []) do
+    selection_options = options_with_defaults(options)
+
     workflow = Designator.WorkflowCache.get(workflow_id)
     user = Designator.UserCache.get({workflow_id, user_id})
     seen_subject_ids = user.seen_ids
 
-    streams = get_streams(workflow, user, subject_set_id)
+    streams = get_streams(workflow, user, selection_options.subject_set_id)
     amount = Enum.sum(Enum.map(streams, fn stream -> stream.amount end))
 
-    do_select(streams, amount, seen_subject_ids, limit, workflow, user)
+    do_select(streams, amount, seen_subject_ids, selection_options.limit, workflow, user)
   end
 
   defp do_select(streams, stream_amount, seen_subject_ids, amount, workflow, user) do
@@ -94,5 +96,10 @@ defmodule Designator.Selection do
     else
       all_subject_set_ids
     end
+  end
+
+  defp options_with_defaults(options) do
+    defaults = [subject_set_id: nil, limit: 5]
+    Keyword.merge(defaults, options) |> Enum.into(%{})
   end
 end
