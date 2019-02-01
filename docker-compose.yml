@@ -7,6 +7,11 @@ services:
       - "POSTGRES_USER=designator"
       - "POSTGRES_PASSWORD=designator"
 
+  build_cache:
+    image: busybox
+    volumes:
+      - /build_cache
+
   web:
     build: ./
     image: zooniverse/cellect_ex
@@ -27,6 +32,8 @@ services:
     image: zooniverse/cellect_ex
     volumes:
       - ./:/app
+    volumes_from:
+      - build_cache
     environment:
       - "MIX_ENV=test"
       - "POSTGRES_USER=designator"
