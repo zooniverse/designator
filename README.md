@@ -70,4 +70,10 @@ This will call `get_streams` after loading data from relevant caches (Workflow, 
 
 After data from the streams is compiled it's passed to `do_select` to extract the data as well as reject specific subject ids i.e. seen, retired, recently selected.
 
-The `do_select` function uses `Designator.StreamTools.interleave`, this is a an engine to pluck items (up to a limit) from a set of enums. This should not really have to be touched and is an optimized version (lazily evaluated) of get all items and take up to a limit.
+The `do_select` function uses `Designator.StreamTools.interleave`, this is a an engine to iterate through a set of streams and pluck items (up to a limit) using the wired. This should not really have to be touched and is an optimized version (lazily evaluated) of get all items and take up to a limit.
+
+Once the `Designator.StreamTools.interleave` functions are wired up other functions are added to ensure we don't return, duplicate subject_ids or data that is retired or recently seen.
+
+At the end of the function pipe is `Enum.take(amount)` to control the signalling of the `Designator.StreamTools.interleave` engine for extracting data from a stream. This is done by tracking a known limit being reached and signalling via the enum protocol that `Designator.StreamTools.interleave` implements.
+
+Finally `do_select` uses a async task timeout to run selection to allow the selection from the streams to be killed if it doesn't perform quickly enough.
