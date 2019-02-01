@@ -12,6 +12,7 @@ services:
     image: zooniverse/cellect_ex
     volumes:
       - ./:/app
+      - build_cache:/app/_build
     ports:
       - "4000:4000"
     environment:
@@ -27,6 +28,7 @@ services:
     image: zooniverse/cellect_ex
     volumes:
       - ./:/app
+      - build_cache:/app/_build
     environment:
       - "MIX_ENV=test"
       - "POSTGRES_USER=designator"
@@ -36,3 +38,6 @@ services:
       - "DESIGNATOR_AUTH_PASSWORD=password"
     links:
       - postgres:pg
+
+volumes:
+    build_cache:
