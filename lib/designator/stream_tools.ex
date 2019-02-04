@@ -1,3 +1,8 @@
+# Reader beware: you might not need to fully understand this file. This code is
+# optimized for execution rather than comprehension.
+# 
+# See docs/streamtools.md for a guide on how this works. Most of the execution
+# happens in do_interleave, which has step-by-step comments as well.
 defmodule Designator.StreamTools do
   def interleave(streams) do
     step = fn x, acc -> { :suspend, [x | acc] } end
