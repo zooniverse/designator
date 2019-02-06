@@ -1,5 +1,5 @@
 defmodule Designator.Selection do
-  def select(_style, workflow_id, user_id, options \\ []) do
+  def select(workflow_id, user_id, options \\ []) do
     selection_options = options_with_defaults(options)
 
     workflow = Designator.WorkflowCache.get(workflow_id)
@@ -12,6 +12,7 @@ defmodule Designator.Selection do
     do_select(streams, amount, seen_subject_ids, selection_options.limit, workflow, user)
   end
 
+  @spec do_select([SubjectStream.t], integer, [integer], integer, WorkflowCache.t, UserCache.t) :: [integer]
   defp do_select(streams, stream_amount, seen_subject_ids, amount, workflow, user) do
     seen_size = Enum.count(seen_subject_ids)
     max_streamable = stream_amount
@@ -45,13 +46,21 @@ defmodule Designator.Selection do
     end
   end
 
+  @spec get_streams(WorkflowCache.t, UserCache.t, integer) :: [SubjectSetStream.t]
   def get_streams(workflow, user, subject_set_id) do
-    selection_subject_set_ids(workflow.subject_set_ids, subject_set_id)
+    streams = selection_subject_set_ids(workflow.subject_set_ids, subject_set_id)
     |> get_subject_set_from_cache(workflow)
     |> reject_empty_sets
     |> convert_to_streams(workflow)
+
+    # Now that data is loaded into a list of streams with weights,
+    # fiddle with those chances/weights dependent on workflow-specific configuration.
+    streams = streams
     |> Designator.Streams.ConfiguredWeights.apply_weights(workflow, user)
     |> Designator.Streams.ConfiguredChances.apply_weights(workflow, user)
+
+    # Finally, these following functions can modify streams in more intricate ways.
+    streams
     |> Designator.Streams.GoldStandard.apply_weights(workflow, user)
     |> Designator.Streams.Spacewarps.apply_weights(workflow, user)
     |> Designator.Streams.PlanetHunters.apply_weights(workflow, user)
@@ -63,7 +72,8 @@ defmodule Designator.Selection do
     end)
   end
 
-  def convert_to_streams(subject_sets, workflow) do
+  @spec convert_to_streams([SubjectSetCache.t], Workflow.t) :: [SubjectStream.t]
+  def convert_to_streams(subject_sets, _workflow) do
     Enum.map(subject_sets, fn subject_set ->
       Designator.SubjectStream.build(subject_set)
     end)

@@ -6,12 +6,10 @@ defmodule Designator.WorkflowController do
   def show(conn, %{"id" => workflow_id} = params) do
     {workflow_id, _} = Integer.parse(workflow_id)
     user_id = get_integer_param(params, "user_id", nil)
-    strategy = Map.get(params, "strategy", "uniform")
     subject_set_id = get_integer_param(params, "subject_set_id", nil)
     limit = get_integer_param(params, "limit", 5)
 
     subjects = Designator.Selection.select(
-      strategy,
       workflow_id,
       user_id,
       [ subject_set_id: subject_set_id, limit: limit ]
