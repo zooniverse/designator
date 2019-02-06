@@ -10,7 +10,6 @@ defmodule Designator.WorkflowController do
     limit = get_integer_param(params, "limit", 5)
 
     subjects = Designator.Selection.select(
-      strategy,
       workflow_id,
       user_id,
       [ subject_set_id: subject_set_id, limit: limit ]

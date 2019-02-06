@@ -48,7 +48,7 @@ defmodule Designator.Selection do
 
   @spec get_streams(WorkflowCache.t, UserCache.t, integer) :: [SubjectSetStream.t]
   def get_streams(workflow, user, subject_set_id) do
-    selection_subject_set_ids(workflow.subject_set_ids, subject_set_id)
+    streams = selection_subject_set_ids(workflow.subject_set_ids, subject_set_id)
     |> get_subject_set_from_cache(workflow)
     |> reject_empty_sets
     |> convert_to_streams(workflow)
