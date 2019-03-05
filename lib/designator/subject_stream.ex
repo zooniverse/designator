@@ -9,7 +9,7 @@ defmodule Designator.SubjectStream do
   ###
 
   defp build_stream(subject_ids) do
-    Designator.RandomStream.shuffle(subject_ids) |> Stream.map(fn {_idx, elm} -> elm end)
+    Designator.RandomStream.apply_to(subject_ids) |> Stream.map(fn {_idx, elm} -> elm end)
   end
 
   def get_amount(%Array{} = subject_ids) do
