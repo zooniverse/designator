@@ -1,7 +1,7 @@
-defmodule Designator.SequentialStreamTest do
+defmodule Designator.SubjectSetIterators.SequentiallyTest do
   use ExUnit.Case
 
-  import Designator.SequentialStream
+  import Designator.SubjectSetIterators.Sequentially
 
   test "empty enum returns nothing" do
     assert ([] |> apply_to |> Stream.take(5) |> Enum.sort) == []

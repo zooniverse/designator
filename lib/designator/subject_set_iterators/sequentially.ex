@@ -1,4 +1,4 @@
-defmodule Designator.SequentialStream do
+defmodule Designator.SubjectSetIterators.Sequentially do
 
   @spec apply_to(Enumerable.t) :: Enumerable.t
   def apply_to(enum) do

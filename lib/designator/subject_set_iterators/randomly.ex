@@ -1,4 +1,4 @@
-defmodule Designator.RandomStream do
+defmodule Designator.SubjectSetIterators.Randomly do
   alias Designator.Random
 
   @spec apply_to(Enumerable.t) :: Enumerable.t
