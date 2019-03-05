@@ -7,6 +7,7 @@ defmodule Designator.Workflow do
   schema "workflows" do
     field :project_id, :integer
     field :configuration, :map
+    field :prioritized, :boolean
 
     timestamps inserted_at: :created_at
   end
