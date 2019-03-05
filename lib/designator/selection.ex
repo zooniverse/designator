@@ -64,6 +64,7 @@ defmodule Designator.Selection do
     |> Designator.Streams.GoldStandard.apply_weights(workflow, user)
     |> Designator.Streams.Spacewarps.apply_weights(workflow, user)
     |> Designator.Streams.PlanetHunters.apply_weights(workflow, user)
+    |> Designator.Streams.Training.apply_weights(workflow, user)
   end
 
   defp get_subject_set_from_cache(subject_set_ids, workflow) do
