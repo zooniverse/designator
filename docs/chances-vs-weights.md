@@ -4,11 +4,11 @@ The chance is the absolute chance that the selection will choose a certain subje
 
 For instance, if you have 3 SubjectSets:
 
-* [1,2,3,4]
+* [1,2,3]
 * [5]
 * [6]
 
-The chances applied to them would be `4`, `1`, and `1`. The first SubjectSet would be four times as likely to have a subject selected from, which ultimately results in a uniform distribution at the per-subject level, every subject ends up with an equal probability of getting selected. (Note that only the relative value of chances to eachother is important, values of `0.8, 0.2, 0.2` would have the exact same result.)
+The chances applied to them would be `3`, `1`, and `1`. The first SubjectSet would be three times as likely to have a subject selected from, which ultimately results in a uniform distribution at the per-subject level, every subject ends up with an equal probability of getting selected. Note that only the relative value of chances to each other is important, values of `0.6 (3/5), 0.2 (1/5), 0.2 (1/5)` would have the exact same result.
 
 It is possible to configure the `chance` directly in the workflow configuration. This will effectively say "I don't care how many subjects there are, always have this distribution between SubjectSets". For instance, if you have two sets, one with cats and one with dogs, and you want to present them at a 50/50 ratio even if you only have 20 cat images, and 80 dog images, you would configure the chances to be explicitly equal on both.
 
