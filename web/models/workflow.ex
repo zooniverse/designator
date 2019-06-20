@@ -4,6 +4,8 @@ defmodule Designator.Workflow do
 
   use Designator.Web, :model
 
+  require IEx
+
   schema "workflows" do
     field :project_id, :integer
     field :configuration, :map
@@ -28,8 +30,11 @@ defmodule Designator.Workflow do
     query = from sms in "set_member_subjects",
       left_join: swc in "subject_workflow_counts", on: (sms.subject_id == swc.subject_id and swc.workflow_id == ^workflow_id),
       where: sms.subject_set_id == ^subject_set_id and is_nil(swc.retired_at),
-      select: sms.subject_id
+      select: {sms.subject_id, sms.priority}
+
     Designator.Repo.all(query)
+    |> List.keysort(1)
+    |> Enum.map(fn {k, v}->k end)
   end
 
   def changeset(struct, params \\ %{}) do
