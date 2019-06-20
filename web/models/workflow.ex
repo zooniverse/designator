@@ -4,8 +4,6 @@ defmodule Designator.Workflow do
 
   use Designator.Web, :model
 
-  require IEx
-
   schema "workflows" do
     field :project_id, :integer
     field :configuration, :map
