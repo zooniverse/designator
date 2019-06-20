@@ -33,7 +33,7 @@ Using Docker:
   Interactively debug the tests
   ```
   docker-compose run test bash
-  iex -S mix test
+  iex -S mix test --trace
   mix test --only wip
   ```
 
