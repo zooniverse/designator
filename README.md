@@ -27,6 +27,7 @@ Using Docker:
   * `docker-compose down --rmi all -v --remove-orphans`
   * `docker-compose build`
   * `docker-compose run web mix ecto.create`
+  * `docker-compose run test mix deps.get`
   * `docker-compose run test mix test`
   * `docker-compose up` and `curl http://localhost:4000/api`
 
