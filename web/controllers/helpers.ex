@@ -17,4 +17,13 @@ defmodule Designator.Controllers.Helpers do
       |> Plug.Conn.halt
     end
   end
+
+  defp get_integer_param(params, key, default) do
+    case Map.get(params, key) do
+      nil -> default
+      value ->
+        {int, _} = Integer.parse(value)
+        int
+    end
+  end
 end

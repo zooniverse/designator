@@ -56,15 +56,6 @@ defmodule Designator.WorkflowController do
     send_resp(conn, 204, [])
   end
 
-  defp get_integer_param(params, key, default) do
-    case Map.get(params, key) do
-      nil -> default
-      value ->
-        {int, _} = Integer.parse(value)
-        int
-    end
-  end
-
   defp do_full_reload(workflow_id) do
     Designator.RecentlyRetired.clear(workflow_id)
     Designator.WorkflowCache.reload(workflow_id)
