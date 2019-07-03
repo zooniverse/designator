@@ -18,3 +18,5 @@ erl_crash.dump
 
 # Editor artifacts
 /.elixir_ls
+
+.DS_Store
