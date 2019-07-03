@@ -15,6 +15,8 @@ defmodule Designator.Router do
     post "/workflows/:id/reload", WorkflowController, :reload
     post "/workflows/:id/unlock", WorkflowController, :unlock
     post "/workflows/:id/remove", WorkflowController, :remove
+
+    put "/users/:id/add_seen_subjects", UserController, :add_seen_subjects
   end
 
   defp handle_errors(conn, %{kind: kind, reason: reason, stack: stacktrace}) do
