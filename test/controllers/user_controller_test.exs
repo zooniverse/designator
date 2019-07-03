@@ -20,7 +20,7 @@ defmodule Designator.UserControllerTest do
   end
 
   def add_seens_path(user_id) do
-    "/users/#{:user_id}/add_seen_subjects"
+    "/api/users/#{:user_id}/add_seen_subjects"
   end
 
   def http_basic_authenticate(conn, username, password) do
