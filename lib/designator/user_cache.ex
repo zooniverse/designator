@@ -71,6 +71,7 @@ defmodule Designator.UserCache do
     end)
   end
 
+  def add_recently_selected(%{workflow_id: workflow_id, user_id: user_id}, subject_ids), do: add_recently_selected({workflow_id, user_id}, subject_ids)
   def add_recently_selected({_, nil}, _), do: :ok
   def add_recently_selected(key, subject_ids) do
     ConCache.update_existing(:user_cache, key, fn (user) ->
