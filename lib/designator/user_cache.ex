@@ -71,13 +71,21 @@ defmodule Designator.UserCache do
     end)
   end
 
-  def add_recently_selected(%{workflow_id: workflow_id, user_id: user_id}, subject_ids), do: add_recently_selected({workflow_id, user_id}, subject_ids)
   def add_recently_selected({_, nil}, _), do: :ok
   def add_recently_selected(key, subject_ids) do
     ConCache.update_existing(:user_cache, key, fn (user) ->
       recently_selected_ids = MapSet.union(user.recently_selected_ids, MapSet.new(subject_ids))
 
       {:ok, %__MODULE__{user | recently_selected_ids: recently_selected_ids}}
+    end)
+  end
+
+  def add_seen_ids({_, nil}, _), do: :ok
+  def add_seen_ids(key, subject_ids) do
+    ConCache.update_existing(:user_cache, key, fn (user) ->
+      recently_seen_ids = MapSet.union(user.seen_ids, MapSet.new(subject_ids))
+
+      {:ok, %__MODULE__{user | seen_ids: recently_seen_ids}}
     end)
   end
 end
