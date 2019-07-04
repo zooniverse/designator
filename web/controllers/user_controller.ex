@@ -13,11 +13,10 @@ defmodule Designator.UserController do
     # {subject_ids, _} = subject_ids
     # |> Enum.map(&(Integer.parse(&1)))
     # require IEx; IEx.pry
-    # Designator.UserCache.get(user_cache_key)
 
     response_code =
       case Designator.UserCache.add_seen_ids(user_cache_key, subject_ids) do
-        {:error, :not_existing} -> # user not loaded, ignoring
+        {:error, :not_existing} -> # user not loaded ignore
           201
         :ok -> # update the existing user data
           204
