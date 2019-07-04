@@ -5,13 +5,26 @@ defmodule Designator.UserControllerTest do
   @password Application.fetch_env!(:designator, :api_auth)[:password]
 
   setup %{conn: conn} do
-    workflow_id =  1
-    user_id = 2
+    workflow_id = 2
+    user_id = 1
+    user_cache_key = { workflow_id, user_id }
+    # initialize / reset the user cache data
+    # couldn't get the cache store to reset as per
+    # https://github.com/sasa1977/con_cache#testing-in-your-application
+    Designator.UserCache.set(
+      user_cache_key,
+      %{
+        seen_ids: MapSet.new([]),
+        recently_selected_ids: MapSet.new,
+        configuration: %{}
+      }
+    )
+    user = Designator.UserCache.get(user_cache_key)
     {
       :ok,
       [
-        user: Designator.UserCache.get({workflow_id, user_id}),
-        workflow_id: workflow_id,
+        user: user,
+        workflow_id: 2,
         conn: put_req_header(conn, "accept", "application/json")
       ]
     }
@@ -37,30 +50,26 @@ defmodule Designator.UserControllerTest do
     test "requires authentication", %{user: user, workflow_id: workflow_id, conn: conn} do
       conn_response = conn
       |> put(add_seens_path(user.user_id), workflow_id: workflow_id, subject_ids: [1])
-      assert json_response(conn_response, 401) == "401 Unauthorized"
+      assert response(conn_response, 401) == "401 Unauthorized"
     end
 
-    test "respons with a 201 created response code for an not loaded users", %{user: user, workflow_id: workflow_id, conn: conn} do
+    test "respons with a 201 created response code for an not loaded users", %{workflow_id: workflow_id, conn: conn} do
       conn_response = put_req(conn, "99", workflow_id, [1])
-      assert json_response(conn_response, 201) == ""
+      assert response(conn_response, 201) == ""
     end
 
     test "respons with a 204 no-content response code for loaded users", %{user: user, workflow_id: workflow_id, conn: conn} do
       Designator.UserCache.set(
         { workflow_id, user.user_id },
-        %{
-          seen_ids: MapSet.new([9]),
-          recently_selected_ids: MapSet.new,
-          configuration: %{}
-        }
+        %{seen_ids: MapSet.new([9])}
       )
       conn_response = put_req(conn, user.user_id, workflow_id, [1])
-      assert json_response(conn_response, 204) == ""
+      assert response(conn_response, 204) == ""
     end
 
     test "adds the subject ids", %{user: user, workflow_id: workflow_id, conn: conn} do
       conn_response = put_req(conn, user.user_id, workflow_id, [3,2,1])
-      assert json_response(conn_response, 204) == ""
+      assert response(conn_response, 204) == ""
       user = Designator.UserCache.get({workflow_id, user.user_id})
       assert user.seen_ids == MapSet.new([3,2,1])
     end
@@ -69,7 +78,7 @@ defmodule Designator.UserControllerTest do
       conn_response = conn
       |> http_basic_authenticate(@username, @password)
       |> put(add_seens_path(user.user_id), workflow_id: workflow_id, subject_id: 1432)
-      assert json_response(conn_response, 204) == ""
+      assert response(conn_response, 204) == ""
       user = Designator.UserCache.get({workflow_id, user.user_id})
       assert user.seen_ids == MapSet.new([1432])
     end
@@ -88,14 +97,7 @@ defmodule Designator.UserControllerTest do
       assert four_twenty_two["errors"] == "invalid subject id supplied, must be a valid integer"
     end
 
-    @tag :wip
-    test "rejects non integer workflow id", %{user: user, workflow_id: workflow_id, conn: conn} do
-      conn_response = put_req(conn, user.user_id, "workflow_1", [1])
-      require IEx; IEx.pry
-      assert json_response(conn_response, 422)["errors"] == "invalid workflow_id in payload"
-    end
-
-    test "does de-duplicates subject ids", %{user: user, workflow_id: workflow_id, conn: conn} do
+    test "does de-duplicate the incoming subject ids", %{user: user, workflow_id: workflow_id, conn: conn} do
       Designator.UserCache.set(
         { workflow_id, user.user_id },
         %{
@@ -104,8 +106,9 @@ defmodule Designator.UserControllerTest do
           configuration: %{}
         }
       )
-      conn_response = put_req(conn, user.user_id, workflow_id, '5,6,7,4')
-      assert json_response(conn_response, 204) == ""
+      conn_response = put_req(conn, user.user_id, workflow_id, [5,6,7,4])
+      assert response(conn_response, 204) == ""
+      user = Designator.UserCache.get({workflow_id, user.user_id})
       assert user.seen_ids == MapSet.new([4,5,6,7])
     end
   end
