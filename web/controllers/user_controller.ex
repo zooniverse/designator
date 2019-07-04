@@ -25,7 +25,7 @@ defmodule Designator.UserController do
     cache_key = user_cache_key(workflow_id, user_id)
     # ensure the subject ids are all valid integers
     try do
-      subject_ids
+      subject_ids = subject_ids
       |> Enum.map(&(convert_to_int(&1)))
 
       # attempt to add to the user cache seen_ids store

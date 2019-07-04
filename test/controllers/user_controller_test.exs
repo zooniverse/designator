@@ -97,6 +97,13 @@ defmodule Designator.UserControllerTest do
       assert four_twenty_two["errors"] == "invalid subject id supplied, must be a valid integer"
     end
 
+    test "casts the subject_ids to ints before storing", %{user: user, workflow_id: workflow_id, conn: conn} do
+      conn_response = put_req(conn, user.user_id, workflow_id, [3,"2",1])
+      assert response(conn_response, 204) == ""
+      user = Designator.UserCache.get({workflow_id, user.user_id})
+      assert user.seen_ids == MapSet.new([3,2,1])
+    end
+
     test "does de-duplicate the incoming subject ids", %{user: user, workflow_id: workflow_id, conn: conn} do
       Designator.UserCache.set(
         { workflow_id, user.user_id },
