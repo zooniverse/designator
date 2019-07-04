@@ -103,7 +103,7 @@ defmodule Designator.SelectionTest do
     SubjectSetCache.set({338, 1682}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1682, subject_ids: Array.from_list([3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3])})
     SubjectSetCache.set({338, 1681}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1681, subject_ids: Array.from_list([4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4])})
 
-    run_selection_to_setup_cache = Selection.select(338, 1, [limit: 4])
+    _run_selection_to_setup_cache = Selection.select(338, 1, [limit: 4])
     assert Selection.select(338, 1, [limit: 4]) == []
   end
 
