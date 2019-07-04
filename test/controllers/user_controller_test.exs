@@ -4,8 +4,6 @@ defmodule Designator.UserControllerTest do
   @username Application.fetch_env!(:designator, :api_auth)[:username]
   @password Application.fetch_env!(:designator, :api_auth)[:password]
 
-  alias Designator.User
-
   setup %{conn: conn} do
     workflow_id =  1
     user_id = 2
@@ -20,14 +18,21 @@ defmodule Designator.UserControllerTest do
   end
 
   def add_seens_path(user_id) do
-    "/api/users/#{:user_id}/add_seen_subjects"
+    "/api/users/#{user_id}/add_seen_subjects"
+  end
+
+  def put_req(conn, user_id, workflow_id, subject_ids) do
+    params = Poison.encode!(%{workflow_id: workflow_id, subject_ids: [1]})
+    conn
+    |> put_req_header("content-type", "application/json")
+    |> http_basic_authenticate(@username, @password)
+    |> put(add_seens_path(user_id), params)
   end
 
   def http_basic_authenticate(conn, username, password) do
     put_req_header(conn, "authorization", "Basic " <> Base.encode64(username <> ":" <> password))
   end
 
-  @tag :wip
   describe "adding a known user seen subjects for a workflow" do
     test "requires authentication", %{user: user, workflow_id: workflow_id, conn: conn} do
       conn_response = conn
@@ -42,18 +47,17 @@ defmodule Designator.UserControllerTest do
       assert response(conn_response, 201) == ""
     end
 
+    @tag :wip
     test "respons with a 204 no-content response code for loaded users", %{user: user, workflow_id: workflow_id, conn: conn} do
       Designator.UserCache.set(
         { workflow_id, user.user_id },
         %{
-          seen_ids: MapSet.new([1]),
+          seen_ids: MapSet.new([9]),
           recently_selected_ids: MapSet.new,
           configuration: %{}
         }
       )
-      conn_response = conn
-      |> http_basic_authenticate(@username, @password)
-      |> put(add_seens_path(user.user_id), workflow_id: workflow_id, subject_ids: '1')
+      conn_response = put_req(conn, user.user_id, workflow_id, [1])
       assert response(conn_response, 204) == ""
     end
 
