@@ -92,7 +92,7 @@ defmodule Designator.UserControllerTest do
     test "rejects non integer subject id", %{user: user, workflow_id: workflow_id, conn: conn} do
       conn_response = conn
       |> http_basic_authenticate(@username, @password)
-      |> put(add_seens_path(user.user_id), workflow_id: workflow_id, subject_id: "test")
+      |> put("/api/users/#{user.user_id}/add_seen_subject", workflow_id: workflow_id, subject_id: "test")
       four_twenty_two = json_response(conn_response, 422)
       assert four_twenty_two["errors"] == "invalid subject id supplied, must be a valid integer"
     end
