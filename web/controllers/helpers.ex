@@ -1,9 +1,4 @@
 defmodule Designator.Controllers.Helpers do
-
-  defmodule InvalidInteger do
-    defexception [:message]
-  end
-
   import Plug.Conn
 
   def render_json_response(conn, code, body) do
@@ -36,15 +31,16 @@ defmodule Designator.Controllers.Helpers do
   end
 
   def convert_to_int(value) when is_binary(value) do
-
     case Integer.parse(value) do
-      :error -> raise %InvalidInteger{message: "invalid integer value"}
+      :error -> :error
       {int_value, _} -> int_value
     end
   end
 
-  def convert_to_int(value) when is_list(value) do
-    {int_value, _} = Integer.parse(to_string(value))
-    int_value
+  def is_invalid_integer(value) do
+    case value do
+      :error -> true
+      _  -> false
+    end
   end
 end
