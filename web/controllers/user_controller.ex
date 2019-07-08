@@ -9,7 +9,7 @@ defmodule Designator.UserController do
     render_json_response(conn, response_code, body)
   end
 
-  def add_seen_subjects(conn, %{"id" => user_id, "workflow_id" => workflow_id, "subject_id" => subject_id}) do
+  def add_seen_subject(conn, %{"id" => user_id, "workflow_id" => workflow_id, "subject_id" => subject_id}) do
     { response_code, body} = process_request(workflow_id, user_id, [subject_id])
 
     render_json_response(conn, response_code, body)

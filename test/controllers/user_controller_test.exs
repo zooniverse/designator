@@ -74,10 +74,10 @@ defmodule Designator.UserControllerTest do
       assert user.seen_ids == MapSet.new([3,2,1])
     end
 
-    test "adds the subject ids when using the subject_id param", %{user: user, workflow_id: workflow_id, conn: conn} do
+    test "adds the subject id when using the subject_id param", %{user: user, workflow_id: workflow_id, conn: conn} do
       conn_response = conn
       |> http_basic_authenticate(@username, @password)
-      |> put(add_seens_path(user.user_id), workflow_id: workflow_id, subject_id: 1432)
+      |> put("/api/users/#{user.user_id}/add_seen_subject", workflow_id: workflow_id, subject_id: 1432)
       assert response(conn_response, 204) == ""
       user = Designator.UserCache.get({workflow_id, user.user_id})
       assert user.seen_ids == MapSet.new([1432])
