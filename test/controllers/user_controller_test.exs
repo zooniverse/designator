@@ -53,12 +53,12 @@ defmodule Designator.UserControllerTest do
       assert response(conn_response, 401) == "401 Unauthorized"
     end
 
-    test "respons with a 201 created response code for an not loaded users", %{workflow_id: workflow_id, conn: conn} do
+    test "responds with a 201 created response code for an not loaded users", %{workflow_id: workflow_id, conn: conn} do
       conn_response = put_req(conn, "99", workflow_id, [1])
       assert response(conn_response, 201) == ""
     end
 
-    test "respons with a 204 no-content response code for loaded users", %{user: user, workflow_id: workflow_id, conn: conn} do
+    test "responds with a 204 no-content response code for loaded users", %{user: user, workflow_id: workflow_id, conn: conn} do
       Designator.UserCache.set(
         { workflow_id, user.user_id },
         %{seen_ids: MapSet.new([9])}
