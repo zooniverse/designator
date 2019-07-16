@@ -118,5 +118,20 @@ defmodule Designator.UserControllerTest do
       user = Designator.UserCache.get({workflow_id, user.user_id})
       assert user.seen_ids == MapSet.new([4,5,6,7])
     end
+
+    test "ensure an ordered distinct union of existing and incoming subject ids", %{user: user, workflow_id: workflow_id, conn: conn} do
+      Designator.UserCache.set(
+        { workflow_id, user.user_id },
+        %{
+          seen_ids: MapSet.new([1,2,3]),
+          recently_selected_ids: MapSet.new,
+          configuration: %{}
+        }
+      )
+      conn_response = put_req(conn, user.user_id, workflow_id, [6,4,5])
+      assert response(conn_response, 204) == ""
+      user = Designator.UserCache.get({workflow_id, user.user_id})
+      assert user.seen_ids == MapSet.new([1,2,3,4,5,6])
+    end
   end
 end
