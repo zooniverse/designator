@@ -36,6 +36,7 @@ defmodule Designator.Web do
 
       import Designator.Router.Helpers
       import Designator.Gettext
+      import Designator.Controllers.Helpers
     end
   end
 

@@ -26,13 +26,14 @@ Using Docker:
 
   * `docker-compose down --rmi all -v --remove-orphans`
   * `docker-compose build`
-  * `docker-compose run web mix ecto.create`
-  * `docker-compose run test mix test`
+  * `docker-compose run --rm web mix ecto.create`
+  * `docker-compose run --rm test mix deps.get`
+  * `docker-compose run --rm test mix test`
   * `docker-compose up` and `curl http://localhost:4000/api`
 
   Interactively debug the tests
   ```
-  docker-compose run test bash
+  docker-compose run --rm test bash
   iex -S mix test --trace
   mix test --only wip
   ```
