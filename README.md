@@ -36,6 +36,8 @@ Using Docker:
   docker-compose run --rm test bash
   iex -S mix test --trace
   mix test --only wip
+  # debug wip tests using pry (require IEx IEx.pry)
+  iex -S mix test --only wip
   ```
 
 Running a benchmark:
