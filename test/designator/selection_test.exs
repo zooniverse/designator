@@ -6,19 +6,35 @@ defmodule Designator.SelectionTest do
   alias Designator.UserSeenSubject
   alias Designator.SubjectSetCache
 
-  test "training set weighting" do
-    Designator.Random.seed({123, 123534, 345345})
-    Designator.WorkflowCache.set(338, %{configuration: %{"training_set_ids" => [681, 1706], "training_chances" => [0.1, 0.1, 0.1, 0.1, 0.9]},
-                                     subject_set_ids: [681, 1706, 1682, 1681]})
-    Designator.UserCache.set({338, 1}, %{seen_ids: MapSet.new([5,6,7,8]),
-                                         recently_selected_ids: MapSet.new,
-                                         configuration: %{}})
-    SubjectSetCache.set({338, 681},  %SubjectSetCache{workflow_id: 338, subject_set_id: 681, subject_ids: Array.from_list([1])})
-    SubjectSetCache.set({338, 1706}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1706, subject_ids: Array.from_list([2])})
-    SubjectSetCache.set({338, 1682}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1682, subject_ids: Array.from_list(Enum.into(10..19, []))})
-    SubjectSetCache.set({338, 1681}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1681, subject_ids: Array.from_list(Enum.into(20..29, []))})
+  describe "training set weighting" do
+    setup do
+      Designator.Random.seed({123, 123534, 345345})
+      Designator.WorkflowCache.set(
+        338,
+        %{
+          configuration: %{
+            "training_set_ids" => [681, 1706],
+            "training_chances" => [0.1, 0.1, 0.1, 0.1, 0.9]},
+            subject_set_ids: [681, 1706, 1682, 1681]
+          }
+      )
 
-    assert Selection.select(338, 1, [limit: 202]) == [2, 1, 15, 13, 27, 18, 16, 25, 17, 24, 19, 20, 22, 10, 12, 11, 14, 21, 29, 28, 26, 23]
+      SubjectSetCache.set({338, 681},  %SubjectSetCache{workflow_id: 338, subject_set_id: 681, subject_ids: Array.from_list([1])})
+      SubjectSetCache.set({338, 1706}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1706, subject_ids: Array.from_list([2])})
+      SubjectSetCache.set({338, 1682}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1682, subject_ids: Array.from_list(Enum.into(10..19, []))})
+      SubjectSetCache.set({338, 1681}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1681, subject_ids: Array.from_list(Enum.into(20..29, []))})
+    end
+
+    test "logged in users" do
+      Designator.UserCache.set({338, 1}, %{seen_ids: MapSet.new([5,6,7,8]),
+                                          recently_selected_ids: MapSet.new,
+                                          configuration: %{}})
+      assert Selection.select(338, 1, [limit: 202]) == [2, 1, 15, 13, 27, 18, 16, 25, 17, 24, 19, 20, 22, 10, 12, 11, 14, 21, 29, 28, 26, 23]
+    end
+
+    test "non-logged in users" do
+      assert Selection.select(338, nil, [limit: 202]) == [29, 24, 21, 20, 15, 13, 18, 27, 12, 19, 16, 10, 17, 11, 14, 23, 25, 22, 26, 28, 2, 1]
+    end
   end
 
   test "gold standard weighting" do

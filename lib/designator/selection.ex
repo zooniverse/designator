@@ -59,12 +59,18 @@ defmodule Designator.Selection do
     |> Designator.Streams.ConfiguredWeights.apply_weights(workflow, user)
     |> Designator.Streams.ConfiguredChances.apply_weights(workflow, user)
 
-    # Finally, these following functions can modify streams in more intricate ways.
-    streams
-    |> Designator.Streams.GoldStandard.apply_weights(workflow, user)
-    |> Designator.Streams.Spacewarps.apply_weights(workflow, user)
-    |> Designator.Streams.PlanetHunters.apply_weights(workflow, user)
-    |> Designator.Streams.Training.apply_weights(workflow, user)
+    case user.user_id do
+      # ignore training directives for non-logged in users
+      nil ->
+        streams
+      _   ->
+        # wire up training directives if we know who the user is
+        streams
+          |> Designator.Streams.GoldStandard.apply_weights(workflow, user)
+          |> Designator.Streams.Spacewarps.apply_weights(workflow, user)
+          |> Designator.Streams.PlanetHunters.apply_weights(workflow, user)
+          |> Designator.Streams.Training.apply_weights(workflow, user)
+    end
   end
 
   defp get_subject_set_from_cache(subject_set_ids, workflow) do
