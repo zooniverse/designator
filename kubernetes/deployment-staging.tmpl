@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: designator-staging-app
+  labels:
+    app: designator-staging-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: designator-staging-app
+  template:
+    metadata:
+      labels:
+        app: designator-staging-app
+    spec:
+      containers:
+        - name: designator-staging-app
+          image: zooniverse/cellect_ex:__IMAGE_TAG__
+          env:
+            - name: MIX_ENV
+              value: staging
+            - name: POSTGRES_USER
+              value: cellect_ex
+            - name: POSTGRES_DB
+              value: panoptes
+            - name: POSTGRES_POOL_SIZE
+              value: 2
+            - name: APPSIGNAL_APP_NAME
+              value: cellect_ex-staging
+            - name: APPSIGNAL_APP_NAME
+              value: cellect_ex-staging
+            - name: APPSIGNAL_ENVIRONMENT
+              value: prod
+            - name: DESIGNATOR_AUTH_USERNAME
+              value: staging
+            - name: SECRET_KEY_BASE
+              valueFrom:
+                secretKeyRef:
+                  name: designator-staging-env
+                  key: SECRET_KEY_BASE
+            - name: POSTGRES_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: designator-staging-env
+                  key: POSTGRES_HOST
+            - name: POSTGRES_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: designator-staging-env
+                  key: POSTGRES_PASS
+            - name: ROLLBAR_ACCESS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: designator-staging-env
+                  key: ROLLBAR_ACCESS_TOKEN
+            - name: APPSIGNAL_PUSH_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: designator-staging-env
+                  key: APPSIGNAL_PUSH_API_KEY
+            - name: DESIGNATOR_AUTH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: designator-staging-env
+                  key: DESIGNATOR_AUTH_PASSWORD
+          ports:
+            - containerPort: 80
+      volumes:
+        - name: static-assets
+          emptyDir: {}
+        - name: designator-nginx-config
+          configMap:
+            name: designator-nginx-conf
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: designator-staging-app
+spec:
+  selector:
+    app: designator-staging-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: NodePort
