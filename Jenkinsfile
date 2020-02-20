@@ -12,7 +12,7 @@ pipeline {
       agent any
       steps {
         script {
-          def dockerRepoName = 'zooniverse/cellect_ex'
+          def dockerRepoName = 'zooniverse/designator'
           def dockerImageName = "${dockerRepoName}:${GIT_COMMIT}"
           def newImage = docker.build(dockerImageName)
 
