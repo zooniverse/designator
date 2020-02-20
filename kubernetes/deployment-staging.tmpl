@@ -66,12 +66,6 @@ spec:
                   key: DESIGNATOR_AUTH_PASSWORD
           ports:
             - containerPort: 80
-      volumes:
-        - name: static-assets
-          emptyDir: {}
-        - name: designator-nginx-config
-          configMap:
-            name: designator-nginx-conf
 ---
 apiVersion: v1
 kind: Service
