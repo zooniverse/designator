@@ -9,7 +9,7 @@ services:
 
   web:
     build: ./
-    image: zooniverse/cellect_ex
+    image: zooniverse/designator
     volumes:
       - ./:/app
       - build_cache:/app/_build
@@ -25,7 +25,7 @@ services:
       - postgres:pg
 
   test:
-    image: zooniverse/cellect_ex
+    image: zooniverse/designator
     volumes:
       - ./:/app
       - build_cache:/app/_build
