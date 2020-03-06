@@ -6,6 +6,12 @@ defmodule Designator.Router do
     plug :accepts, ["json"]
   end
 
+  scope "/", Designator do
+    pipe_through :api
+
+    get "/", RootController, :index
+  end
+
   scope "/api", Designator do
     pipe_through :api
 

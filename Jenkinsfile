@@ -10,11 +10,13 @@ pipeline {
   stages {
     stage('Build Docker image') {
       agent any
+
       steps {
         script {
           def dockerRepoName = 'zooniverse/designator'
           def dockerImageName = "${dockerRepoName}:${GIT_COMMIT}"
-          def newImage = docker.build(dockerImageName)
+          def buildArgs = "--build-arg REVISION='${GIT_COMMIT}' ."
+          def newImage = docker.build(dockerImageName, buildArgs)
 
           if (BRANCH_NAME == 'master') {
             stage('Update latest tag') {
