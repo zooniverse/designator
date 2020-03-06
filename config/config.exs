@@ -17,7 +17,8 @@ config :designator, Designator.Endpoint,
 config :designator,
   namespace: Designator,
   ecto_repos: [Designator.Repo],
-  reloader: Designator.Reloader.Async
+  reloader: Designator.Reloader.Async,
+  revision: System.get_env("REVISION")
 
 config :designator, :api_auth,
   username: System.get_env("DESIGNATOR_AUTH_USERNAME"),

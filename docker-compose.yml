@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 
 services:
   postgres:
@@ -8,7 +8,8 @@ services:
       - "POSTGRES_PASSWORD=designator"
 
   designator:
-    build: ./
+    build:
+      context: ./
     volumes:
       - ./:/app
       - build_cache:/app/_build
