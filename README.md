@@ -8,9 +8,9 @@ Opening a debug UI:
   * `iex --name observer@127.0.0.1 --cookie COOKIE_VALUE`
   * `:observer.start`
   * Menu Node -> Connect
-  * `cellectex@misc.panoptes.zooniverse.org`
+  * `erlang@designator.zooniverse.org` or use $ERLANG_NODE_NAME
 
-Now you can browse through and inspect the state of things through the Applications tab.
+Now you can browse through and inspect the state of things through the Applications tab. Noting, the node host will need the erlang distributed port ($ERLANG_DISTRIBUTED_PORT) open to your local machine.
 
 ## Development guide
 
@@ -26,16 +26,22 @@ Using Docker:
 
   * `docker-compose down --rmi all -v --remove-orphans`
   * `docker-compose build`
-  * `docker-compose run --rm web mix ecto.create`
-  * `docker-compose run --rm test mix deps.get`
-  * `docker-compose run --rm test mix test`
+  * `docker-compose run --rm designator mix ecto.create`
   * `docker-compose up` and `curl http://localhost:4000/api`
+
 
   Interactively debug the tests
   ```
-  docker-compose run --rm test bash
+  docker-compose run --rm -e MIX_ENV=test designator bash
+  # setup the env for testing (might not need these steps)
+  mix deps.get
+  mix ecto.create
+
+  # run the tests
+  mix test
   iex -S mix test --trace
   mix test --only wip
+
   # debug wip tests using pry (require IEx IEx.pry)
   iex -S mix test --only wip
   ```

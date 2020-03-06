@@ -2,38 +2,25 @@ version: '2'
 
 services:
   postgres:
-    image: postgres:9.4
+    image: postgres:9.5
     environment:
       - "POSTGRES_USER=designator"
       - "POSTGRES_PASSWORD=designator"
 
-  web:
+  designator:
     build: ./
-    image: zooniverse/designator
     volumes:
       - ./:/app
       - build_cache:/app/_build
     ports:
-      - "4000:4000"
+      - "4000:80"
     environment:
       - "MIX_ENV=dev"
+      - "PORT=80"
       - "POSTGRES_USER=designator"
       - "POSTGRES_PASS=designator"
       - "POSTGRES_HOST=pg"
       - "SECRET_KEY_BASE=secret"
-    links:
-      - postgres:pg
-
-  test:
-    image: zooniverse/designator
-    volumes:
-      - ./:/app
-      - build_cache:/app/_build
-    environment:
-      - "MIX_ENV=test"
-      - "POSTGRES_USER=designator"
-      - "POSTGRES_PASS=designator"
-      - "POSTGRES_HOST=pg"
       - "DESIGNATOR_AUTH_USERNAME=username"
       - "DESIGNATOR_AUTH_PASSWORD=password"
     links:
