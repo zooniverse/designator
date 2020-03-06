@@ -8,5 +8,6 @@ ERLANG_DISTRIBUTED_PORT=${ERLANG_DISTRIBUTED_PORT:-9001}
 ERLANG_SMP=${ERLANG_SMP:-auto}
 ERLANG_KERNEL_OPTS=${ERLANG_KERNEL_OPTS:-"inet_dist_listen_min ${ERLANG_DISTRIBUTED_PORT} inet_dist_listen_max ${ERLANG_DISTRIBUTED_PORT}"}
 ERLANG_OPTS="-smp ${ERLANG_SMP} -kernel ${ERLANG_KERNEL_OPTS}"
+PORT=${PORT:-80}
 # run the elixir app via Erlang VM
-exec elixir --name $ERLANG_NODE_NAME --cookie $SECRET_KEY_BASE --erl "${ERLANG_OPTS}" -S mix phoenix.server
+exec env PORT=$PORT elixir --name $ERLANG_NODE_NAME --cookie $SECRET_KEY_BASE --erl "${ERLANG_OPTS}" -S mix phoenix.server
