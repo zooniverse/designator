@@ -21,21 +21,20 @@ spec:
             - name: MIX_ENV
               value: prod
             - name: PORT
-              value: "4000"
+              value: "80"
             - name: POSTGRES_USER
               value: cellect_ex
             - name: POSTGRES_DB
               value: panoptes
             - name: POSTGRES_POOL_SIZE
               value: "2"
-            - name: APPSIGNAL_APP_NAME
-              value: cellect_ex-staging
-            - name: APPSIGNAL_APP_NAME
-              value: cellect_ex-staging
-            - name: APPSIGNAL_ENVIRONMENT
-              value: prod
             - name: DESIGNATOR_AUTH_USERNAME
               value: staging
+            - name: DESIGNATOR_AUTH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: designator-staging-env
+                  key: DESIGNATOR_AUTH_PASSWORD
             - name: SECRET_KEY_BASE
               valueFrom:
                 secretKeyRef:
@@ -56,16 +55,6 @@ spec:
                 secretKeyRef:
                   name: designator-staging-env
                   key: ROLLBAR_ACCESS_TOKEN
-            - name: APPSIGNAL_PUSH_API_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: designator-staging-env
-                  key: APPSIGNAL_PUSH_API_KEY
-            - name: DESIGNATOR_AUTH_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: designator-staging-env
-                  key: DESIGNATOR_AUTH_PASSWORD
           ports:
             - containerPort: 80
 ---
@@ -79,5 +68,5 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 4000
+      targetPort: 80
   type: NodePort
