@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: designator-production-app
+  labels:
+    app: designator-production-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: designator-production-app
+  template:
+    metadata:
+      labels:
+        app: designator-production-app
+    spec:
+      containers:
+        - name: designator-production-app
+          image: zooniverse/designator:__IMAGE_TAG__
+          env:
+            - name: MIX_ENV
+              value: prod
+            - name: PORT
+              value: "80"
+            - name: POSTGRES_USER
+              value: cellect_ex
+            - name: POSTGRES_DB
+              value: panoptes
+            - name: POSTGRES_POOL_SIZE
+              value: "2"
+            - name: APPSIGNAL_APP_NAME
+              value: cellect_ex-staging
+            - name: APPSIGNAL_APP_NAME
+              value: cellect_ex-staging
+            - name: APPSIGNAL_ENVIRONMENT
+              value: prod
+            - name: DESIGNATOR_AUTH_USERNAME
+              value: production
+            - name: SECRET_KEY_BASE
+              valueFrom:
+                secretKeyRef:
+                  name: designator-production-env
+                  key: SECRET_KEY_BASE
+            - name: POSTGRES_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: designator-production-env
+                  key: POSTGRES_HOST
+            - name: POSTGRES_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: designator-production-env
+                  key: POSTGRES_PASS
+            - name: ROLLBAR_ACCESS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: designator-production-env
+                  key: ROLLBAR_ACCESS_TOKEN
+            - name: APPSIGNAL_PUSH_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: designator-production-env
+                  key: APPSIGNAL_PUSH_API_KEY
+            - name: DESIGNATOR_AUTH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: designator-production-env
+                  key: DESIGNATOR_AUTH_PASSWORD
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: designator-production-app
+spec:
+  selector:
+    app: designator-production-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: NodePort
