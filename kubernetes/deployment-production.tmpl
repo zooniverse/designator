@@ -50,11 +50,6 @@ spec:
                 secretKeyRef:
                   name: designator-production-env
                   key: ROLLBAR_ACCESS_TOKEN
-            - name: APPSIGNAL_PUSH_API_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: designator-production-env
-                  key: APPSIGNAL_PUSH_API_KEY
             - name: DESIGNATOR_AUTH_PASSWORD
               valueFrom:
                 secretKeyRef:
