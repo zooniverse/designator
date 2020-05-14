@@ -17,6 +17,13 @@ spec:
       containers:
         - name: designator-production-app
           image: zooniverse/designator:__IMAGE_TAG__
+          resources:
+            requests:
+              memory: "500Mi"
+              cpu: "50m"
+            limits:
+              memory: "500Mi"
+              cpu: "500m"
           env:
             - name: MIX_ENV
               value: prod
