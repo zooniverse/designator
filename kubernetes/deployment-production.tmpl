@@ -77,3 +77,16 @@ spec:
       port: 80
       targetPort: 80
   type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: designator-production-app-lb
+spec:
+  selector:
+    app: designator-production-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer
