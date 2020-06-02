@@ -24,6 +24,11 @@ spec:
             limits:
               memory: "4000Mi"
               cpu: "2000m"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 10  
           env:
             - name: MIX_ENV
               value: prod
