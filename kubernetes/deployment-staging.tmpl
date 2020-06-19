@@ -29,6 +29,11 @@ spec:
               path: /
               port: 80
             initialDelaySeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
           env:
             - name: MIX_ENV
               value: prod
