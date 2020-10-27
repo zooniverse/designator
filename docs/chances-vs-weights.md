@@ -10,7 +10,8 @@ For instance, if you have 3 SubjectSets:
 
 The chances applied to them would be `3`, `1`, and `1`. The first SubjectSet would be three times as likely to have a subject selected from, which ultimately results in a uniform distribution at the per-subject level, every subject ends up with an equal probability of getting selected. Note that only the relative value of chances to each other is important, values of `0.6 (3/5), 0.2 (1/5), 0.2 (1/5)` would have the exact same result.
 
-It is possible to configure the `chance` directly in the workflow configuration. This will effectively say "I don't care how many subjects there are, always have this distribution between SubjectSets". For instance, if you have two sets, one with cats and one with dogs, and you want to present them at a 50/50 ratio even if you only have 20 cat images, and 80 dog images, you would configure the chances to be explicitly equal on both.
+It is possible to configure the `chance` directly in the workflow configuration. This will effectively say "I don't care how many subjects there are, always have this distribution between SubjectSets". For instance, if you have three sets and want to select from only two sets, one with cats and one with dogs, and you want to present them at a 50/50 ratio even if you only have 20 cat images, and 80 dog images, you would configure the chances to be explicitly equal on both. To ensure designator respects the ratios on these two sets you must configure a zero chance on the third set as well, without this the ratios will be skewed. Note you must configure a chance for each linked set for the workflow to ensure the set selection chances are correctly configured.
+
 
 Designator will then try to present images at that ratio, for as long as it's possible to do so. It is possible that you run into the situation where a user has seen all 20 cats already, and there are only dogs left, in which case it'd obviously only return dogs.
 
