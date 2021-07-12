@@ -53,7 +53,7 @@ defmodule Designator.WorkflowTest do
 
     test "maintains priority order" do
       Ecto.Adapters.SQL.query!(Designator.Repo, "INSERT INTO workflows (id, created_at, updated_at) VALUES (1, NOW(), NOW())")
-      Ecto.Adapters.SQL.query!(Designator.Repo, "INSERT INTO subject_set_workflows (workflow_id, subject_set_id) VALUES (1,1)")
+      Ecto.Adapters.SQL.query!(Designator.Repo, "INSERT INTO subject_sets_workflows (workflow_id, subject_set_id) VALUES (1,1)")
       Ecto.Adapters.SQL.query!(Designator.Repo, "INSERT INTO set_member_subjects (subject_set_id, subject_id, priority, random, created_at, updated_at) VALUES
       (1, 1, 3, 0.5, NOW(), NOW()),
       (1, 2, 2, 0.5, NOW(), NOW()),
