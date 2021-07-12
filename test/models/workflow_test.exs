@@ -57,7 +57,7 @@ defmodule Designator.WorkflowTest do
       Ecto.Adapters.SQL.query!(Designator.Repo, "INSERT INTO set_member_subjects (subject_set_id, subject_id, priority, random, created_at, updated_at) VALUES
       (1, 1, 3, 0.5, NOW(), NOW()),
       (1, 2, 2, 0.5, NOW(), NOW()),
-      (1, 2, 1, 0.5, NOW(), NOW())")
+      (1, 3, 1, 0.5, NOW(), NOW())")
       assert Designator.Workflow.subject_ids(1,1) === [3,2,1]
     end
   end
