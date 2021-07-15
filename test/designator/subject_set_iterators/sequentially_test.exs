@@ -1,4 +1,4 @@
-efmodule Designator.SubjectSetIterators.SequentiallyTest do
+defmodule Designator.SubjectSetIterators.SequentiallyTest do
   use ExUnit.Case
 
   import Designator.SubjectSetIterators.Sequentially
