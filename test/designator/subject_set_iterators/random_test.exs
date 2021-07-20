@@ -1,7 +1,7 @@
-defmodule Designator.SubjectSetIterators.RandomlyTest do
+defmodule Designator.SubjectSetIterators.RandomTest do
   use ExUnit.Case
 
-  import Designator.SubjectSetIterators.Randomly
+  import Designator.SubjectSetIterators.Random
 
   test "empty enum returns nothing" do
     assert ([] |> apply_to |> Stream.take(5) |> Enum.sort) == []

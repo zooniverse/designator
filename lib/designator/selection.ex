@@ -88,9 +88,9 @@ defmodule Designator.Selection do
 
   defp prepare_iterator(workflow) do
     if workflow.prioritized do
-      Designator.SubjectSetIterators.Sequentially
+      Designator.SubjectSetIterators.Sequential
     else
-      Designator.SubjectSetIterators.Randomly
+      Designator.SubjectSetIterators.Random
     end
   end
 
