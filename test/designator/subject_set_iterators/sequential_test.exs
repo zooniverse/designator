@@ -4,7 +4,7 @@ defmodule Designator.SubjectSetIterators.SequentialTest do
   import Designator.SubjectSetIterators.Sequential
 
   test "empty enum returns nothing" do
-    assert ([] |> apply_to |> Stream.take(5) |> Enum.sort) == []
+    assert ([] |> apply_to |> Stream.take(5) |> Enum.into([])) == []
   end
 
   test "returns data" do
