@@ -48,7 +48,7 @@ defmodule Designator.Selection do
 
   @spec get_streams(WorkflowCache.t, UserCache.t, integer) :: [SubjectSetStream.t]
   def get_streams(workflow, user, subject_set_id) do
-    streams = selection_subject_set_ids(workflow.subject_set_ids, subject_set_id)
+    streams = selection_subject_set_ids(workflow.grouped, workflow.subject_set_ids, subject_set_id)
     |> get_subject_set_from_cache(workflow)
     |> reject_empty_sets
     |> convert_to_streams(workflow)
@@ -123,12 +123,16 @@ defmodule Designator.Selection do
     Stream.reject(stream, fn x -> MapSet.member?(seen_subject_ids, x) end)
   end
 
-  defp selection_subject_set_ids(all_subject_set_ids, subject_set_id) do
-    if Enum.member?(all_subject_set_ids, subject_set_id) do
+  defp selection_subject_set_ids(true, subject_set_ids, subject_set_id) do
+    if Enum.member?(subject_set_ids, subject_set_id) do
       [ subject_set_id ]
     else
       []
     end
+  end
+
+  defp selection_subject_set_ids(_, subject_set_ids, subject_set_id) do
+    subject_set_ids
   end
 
   defp options_with_defaults(options) do
