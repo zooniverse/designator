@@ -20,6 +20,7 @@ defmodule Designator.WorkflowCacheTest do
     assert WorkflowCache.get(workflow_id_not_in_db) == %Designator.WorkflowCache{
       configuration: %{},
       id: 2,
+      grouped: false,
       prioritized: false,
       subject_set_ids: []
     }
