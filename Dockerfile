@@ -1,4 +1,4 @@
-FROM elixir:1.8
+FROM elixir:1.8-slim
 
 WORKDIR /app
 
