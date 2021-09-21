@@ -61,7 +61,13 @@ defmodule Designator.SubjectSetCache do
     ConCache.put(:subject_set_cache, key, subject_set)
   end
 
-  def reload(key) do
+  def reload({workflow_id, nil} = key) do
+    ConCache.update_existing(:subject_set_cache, key, fn(subject_set) ->
+      {:ok, %__MODULE__{subject_set | reloading_since: DateTime.utc_now}}
+    end)
+  end
+
+  def reload({workflow_id, subject_set_id} = key) do
     ConCache.update_existing(:subject_set_cache, key, fn(subject_set) ->
       if subject_set.reloading_since && Timex.after?(subject_set.reloading_since, Timex.shift(Timex.now, hours: -1)) do
         {:error, :already_reloading}
