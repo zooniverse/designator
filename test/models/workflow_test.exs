@@ -1,6 +1,15 @@
 defmodule Designator.WorkflowTest do
   use Designator.ConnCase
 
+  describe "grouped" do
+    test "loads the grouped attribute" do
+      wf = %Designator.Workflow{id: 1, grouped: true}
+      {:ok, inserted_wf} = Designator.Repo.insert(wf)
+
+      assert Designator.Workflow.find(inserted_wf.id).grouped == true
+    end
+  end
+
   describe "subject_set_ids" do
     test "returns linked subject set ids" do
       Ecto.Adapters.SQL.query!(Designator.Repo, "INSERT INTO workflows (id, created_at, updated_at) VALUES (1, NOW(), NOW())")
