@@ -29,7 +29,7 @@ defmodule Designator.SubjectSetCache do
     |> Enum.map(fn({_, val}) ->
       %{workflow_id: val.workflow_id,
         subject_set_id: val.subject_set_id,
-        available: Array.size(val.subject_ids),
+        available: Arrays.size(val.subject_ids),
         loaded_at: val.loaded_at,
         reloading_since: val.reloading_since
        }
@@ -44,7 +44,7 @@ defmodule Designator.SubjectSetCache do
       %__MODULE__{
         workflow_id: workflow_id,
         subject_set_id: subject_set_id,
-        subject_ids: Array.new,
+        subject_ids: Arrays.new,
         loaded_at: nil,
         reloading_since: nil
       }

@@ -14,8 +14,8 @@ defmodule Designator.SubjectSetIterators.Random do
     end)
   end
 
-  defp size(enum = %Array{}) do
-    Array.size(enum)
+  defp size(enum = %array{}) do
+    Arrays.size(enum)
   end
 
   defp size(enum) do

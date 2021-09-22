@@ -14,7 +14,7 @@ defmodule Designator.Reloader.Async do
   # Non-blocking Server (callbacks)
 
   def handle_cast({:reload_subject_set, workflow_id, subject_set_id}, state) do
-    subject_ids = Designator.Workflow.subject_ids(workflow_id, subject_set_id) |> Array.from_list
+    subject_ids = Designator.Workflow.subject_ids(workflow_id, subject_set_id) |> Enum.into(Arrays.new())
     Designator.SubjectSetCache.set_subject_ids({workflow_id, subject_set_id}, subject_ids)
     {:noreply, state}
   end

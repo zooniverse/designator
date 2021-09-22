@@ -3,12 +3,12 @@ defmodule Designator.Random do
     :rand.seed(:exs1024, seed)
   end
 
-  def element(%Array{} = enumerable) do
-    case Array.size enumerable do
+  def element(%array{} = enumerable) do
+    case Arrays.size enumerable do
       0 -> nil
       size ->
         index = :rand.uniform(size) - 1
-        element = Array.get(enumerable, index)
+        element = Arrays.get(enumerable, index)
         {index, element}
     end
   end

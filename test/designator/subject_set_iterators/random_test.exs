@@ -8,6 +8,6 @@ defmodule Designator.SubjectSetIterators.RandomTest do
   end
 
   test "returns data" do
-    assert (1..5 |> apply_to |> Stream.take(5) |> Enum.sort) == [{0, 1}, {1, 2}, {2, 3}, {3, 4}, {4, 5}]
+    assert (Arrays.new(Enum.into(1..5, [])) |> apply_to |> Stream.take(5) |> Enum.sort) == [{0, 1}, {1, 2}, {2, 3}, {3, 4}, {4, 5}]
   end
 end

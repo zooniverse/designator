@@ -12,8 +12,8 @@ defmodule Designator.SubjectStream do
     subject_set_iterator.apply_to(subject_ids) |> Stream.map(fn {_idx, elm} -> elm end)
   end
 
-  def get_amount(%Array{} = subject_ids) do
-    Array.size(subject_ids)
+  def get_amount(%array{} = subject_ids) do
+    Arrays.size(subject_ids)
   end
 
   def get_amount(subject_ids) do
