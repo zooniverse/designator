@@ -3,11 +3,14 @@ on:
   pull_request:
   push: { branches: master }
 env:
+  DESIGNATOR_AUTH_USERNAME: username
+  DESIGNATOR_AUTH_PASSWORD: password
+  MIX_ENV: test
   POSTGRES_USER: designator
   POSTGRES_PASS: password
   POSTGRES_DB: designator_test
   POSTGRES_HOST: localhost
-  MIX_ENV: test
+
 jobs:
   test:
     name: Run Tests OTP ${{matrix.otp}} / Elixir ${{matrix.elixir}}
