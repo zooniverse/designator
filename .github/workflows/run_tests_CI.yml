@@ -13,7 +13,7 @@ env:
 
 jobs:
   test:
-    name: Run Tests OTP ${{matrix.otp}} / Elixir ${{matrix.elixir}}
+    name: Run Tests
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -50,5 +50,5 @@ jobs:
         run: mix deps.get
       - name: Compile
         run: mix compile
-      - name: Run tests
+      - name: Run Tests OTP ${{matrix.otp}} / Elixir ${{matrix.elixir}}
         run: mix test
