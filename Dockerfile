@@ -22,6 +22,6 @@ ENV REVISION=$REVISION
 
 ENV MIX_ENV prod
 
-#RUN mix compile
+RUN mix compile
 
 CMD ["/app/start.sh"]
