@@ -10,7 +10,7 @@ env:
   MIX_ENV: test
 jobs:
   test:
-    name: Run Tests
+    name: Run Tests OTP ${{matrix.otp}} / Elixir ${{matrix.elixir}}
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -24,7 +24,6 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-    name: OTP ${{matrix.otp}} / Elixir ${{matrix.elixir}}
     strategy:
       matrix:
         otp: ['21']
