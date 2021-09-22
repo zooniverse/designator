@@ -36,7 +36,7 @@ defmodule Designator.Mixfile do
      {:phoenix_ecto, "~> 3.0-rc"},
      {:gettext, "~> 0.10"},
      {:cowboy, "~> 1.0"},
-     {:array, git: "https://github.com/mhib/elixir-array.git"},
+     {:array, github: "mhib/elixir-array", ref: "a670d8ba8c89521216f397b7970477ccb21e23c0"},
      {:logster, "~> 0.4"},
      {:credo, "~> 0.6", only: [:dev, :test]},
      {:rollbax, "~> 0.8"},
