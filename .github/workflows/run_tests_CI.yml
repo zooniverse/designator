@@ -3,11 +3,14 @@ on:
   pull_request:
   push: { branches: master }
 env:
+  DESIGNATOR_AUTH_USERNAME: username
+  DESIGNATOR_AUTH_PASSWORD: password
+  MIX_ENV: test
   POSTGRES_USER: designator
   POSTGRES_PASS: password
   POSTGRES_DB: designator_test
   POSTGRES_HOST: localhost
-  MIX_ENV: test
+
 jobs:
   test:
     name: Run Tests
@@ -24,7 +27,6 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-    name: OTP ${{matrix.otp}} / Elixir ${{matrix.elixir}}
     strategy:
       matrix:
         otp: ['21']
@@ -43,5 +45,10 @@ jobs:
           key: ${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-mix-${{ hashFiles('**/mix.lock') }}
           restore-keys: |
             ${{ runner.os }}-mix-
-      - run: mix deps.get
-      - run: mix test
+
+      - name: Install dependencies
+        run: mix deps.get
+      - name: Compile
+        run: mix compile
+      - name: Run Tests OTP ${{matrix.otp}} / Elixir ${{matrix.elixir}}
+        run: mix test
