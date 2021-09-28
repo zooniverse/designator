@@ -131,7 +131,7 @@ defmodule Designator.Selection do
     end
   end
 
-  defp selection_subject_set_ids(_, subject_set_ids, subject_set_id) do
+  defp selection_subject_set_ids(_, subject_set_ids, _subject_set_id) do
     subject_set_ids
   end
 
