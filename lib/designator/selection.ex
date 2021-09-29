@@ -37,10 +37,16 @@ defmodule Designator.Selection do
         Designator.UserCache.add_recently_selected(user, selected_ids)
         selected_ids
       :nil ->
-        Rollbax.report(:throw, :selection_timeout, System.stacktrace(),
+        try do
+          # throw an arbitrary run time error
+          raise "the task didn't respond on time"
+        rescue
+          _exception ->
+            Rollbax.report(:throw, :selection_timeout, System.stacktrace(),
           %{subject_set_ids: Enum.map(streams, &(&1.subject_set_id)),
             stream_amount: stream_amount,
             seen_size: seen_size})
+        end
 
         []
     end
