@@ -18,7 +18,7 @@ defmodule Designator.WorkflowCache do
 
   ### Public API
 
-  defstruct [:id, :subject_set_ids, :configuration, :prioritized]
+  defstruct [:id, :subject_set_ids, :configuration, :prioritized, :grouped]
 
   def status do
     :workflow_cache
@@ -61,14 +61,16 @@ defmodule Designator.WorkflowCache do
           id: workflow_id,
           subject_set_ids: [],
           configuration: %{},
-          prioritized: false
+          prioritized: false,
+          grouped: false
         }
       workflow ->
         %__MODULE__{
           id: workflow_id,
           subject_set_ids: Designator.Workflow.subject_set_ids(workflow_id),
           configuration: workflow.configuration,
-          prioritized: workflow.prioritized
+          prioritized: workflow.prioritized,
+          grouped: workflow.grouped
        }
     end
   end

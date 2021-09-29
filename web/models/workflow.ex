@@ -8,6 +8,7 @@ defmodule Designator.Workflow do
     field :project_id, :integer
     field :configuration, :map
     field :prioritized, :boolean
+    field :grouped, :boolean
 
     timestamps inserted_at: :created_at
   end
@@ -36,7 +37,7 @@ defmodule Designator.Workflow do
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:id, :configuration])
+    |> cast(params, [:id, :configuration, :grouped, :prioritized])
   end
 
 end

@@ -54,7 +54,7 @@ defmodule Designator.Selection do
 
   @spec get_streams(WorkflowCache.t, UserCache.t, integer) :: [SubjectSetStream.t]
   def get_streams(workflow, user, subject_set_id) do
-    streams = selection_subject_set_ids(workflow.subject_set_ids, subject_set_id)
+    streams = selection_subject_set_ids(workflow.grouped, workflow.subject_set_ids, subject_set_id)
     |> get_subject_set_from_cache(workflow)
     |> reject_empty_sets
     |> convert_to_streams(workflow)
@@ -80,9 +80,17 @@ defmodule Designator.Selection do
   end
 
   defp get_subject_set_from_cache(subject_set_ids, workflow) do
-    Enum.map(subject_set_ids, fn subject_set_id ->
-      Designator.SubjectSetCache.get({workflow.id, subject_set_id})
-    end)
+    case subject_set_ids do
+      # empty list, i.e. we didn't find the subject_set id linked to this workflow
+      # gaurd against the problem of returning other subject set data
+      # for a workflow as the subject may not make sense in this workflow contexts
+      [] ->
+        [ Designator.SubjectSetCache.get({workflow.id, nil}) ]
+      _   ->
+        Enum.map(subject_set_ids, fn subject_set_id ->
+          Designator.SubjectSetCache.get({workflow.id, subject_set_id})
+        end)
+    end
   end
 
   @spec convert_to_streams([SubjectSetCache.t], Workflow.t) :: [SubjectStream.t]
@@ -121,12 +129,16 @@ defmodule Designator.Selection do
     Stream.reject(stream, fn x -> MapSet.member?(seen_subject_ids, x) end)
   end
 
-  defp selection_subject_set_ids(all_subject_set_ids, subject_set_id) do
-    if Enum.member?(all_subject_set_ids, subject_set_id) do
+  defp selection_subject_set_ids(true, subject_set_ids, subject_set_id) do
+    if Enum.member?(subject_set_ids, subject_set_id) do
       [ subject_set_id ]
     else
-      all_subject_set_ids
+      []
     end
+  end
+
+  defp selection_subject_set_ids(_, subject_set_ids, _subject_set_id) do
+    subject_set_ids
   end
 
   defp options_with_defaults(options) do

@@ -101,13 +101,13 @@ defmodule Designator.SelectionTest do
     assert Selection.select(338, 1) == []
   end
 
-  test "selects subjects from a supplied subject_set_id" do
+  test "selects subjects from all subject sets if supplied with a linked subject_set_id" do
     Designator.Random.seed({123, 123534, 345345})
     Designator.WorkflowCache.set(338, %{ configuration: %{}, subject_set_ids: [681, 1706]})
     SubjectSetCache.set({338, 681},  %SubjectSetCache{workflow_id: 338, subject_set_id: 681, subject_ids: Array.from_list([1])})
     SubjectSetCache.set({338, 1706}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1706, subject_ids: Array.from_list([2])})
 
-    assert Selection.select(338, 1, [subject_set_id: 681, limit: 2]) == [1]
+    assert Selection.select(338, 1, [subject_set_id: 681, limit: 2]) == [2,1]
   end
 
   test "selects subjects from all subject sets if an unknown subject_set_id" do
@@ -158,5 +158,25 @@ defmodule Designator.SelectionTest do
     SubjectSetCache.set({338, 1681},%SubjectSetCache{workflow_id: 338, subject_set_id: 1003, subject_ids: Array.from_list([4])})
 
     assert Selection.select(338, 1, [limit: 2]) == [4, 3]
+  end
+
+  describe "with grouped workflow" do
+    test "selects subjects from a supplied subject_set_id" do
+      Designator.Random.seed({123, 123534, 345345})
+      Designator.WorkflowCache.set(338, %{ configuration: %{}, grouped: true, subject_set_ids: [681, 1706]})
+      SubjectSetCache.set({338, 681},  %SubjectSetCache{workflow_id: 338, subject_set_id: 681, subject_ids: Array.from_list([1])})
+      SubjectSetCache.set({338, 1706}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1706, subject_ids: Array.from_list([2])})
+
+      assert Selection.select(338, 1, [subject_set_id: 681, limit: 2]) == [1]
+    end
+
+    test "returns an empty list if selecting from an unknown subject_set_id" do
+      Designator.Random.seed({123, 123534, 345345})
+      Designator.WorkflowCache.set(338, %{ configuration: %{}, grouped: true, subject_set_ids: [681, 1706]})
+      SubjectSetCache.set({338, 681},  %SubjectSetCache{workflow_id: 338, subject_set_id: 681, subject_ids: Array.from_list([1])})
+      SubjectSetCache.set({338, 1706}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1706, subject_ids: Array.from_list([2])})
+
+      assert Selection.select(338, 1, [subject_set_id: 1, limit: 2]) == []
+    end
   end
 end
