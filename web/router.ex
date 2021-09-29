@@ -26,14 +26,20 @@ defmodule Designator.Router do
     put "/users/:id/add_seen_subject", UserController, :add_seen_subject
   end
 
+  # Ignore Phoenix routing errors
+  defp handle_errors(_conn, %{reason: %Phoenix.Router.NoRouteError{}}), do: :ok
+
+  # report other request errors to rollbar
   defp handle_errors(conn, %{kind: kind, reason: reason, stack: stacktrace}) do
     Rollbax.report(kind, reason, stacktrace)
-    case Poison.encode(%{kind: kind, reason: reason}) do
-      {:ok, json} ->
-        send_resp(conn, conn.status, json)
-      _ ->
-        send_resp(conn, conn.status, "Something went wrong")
-    end
+    # currently this reports to Rollbar and raises a standar 500 error message
+    # "Server internal error"
+    #
+    # uncomment the following to return a custom error message containing the error
+    # though take care not to leak information from internal messages
+    # use `debug_errors: true` for development error reporting
+    #
+    # message = reason.message || "Server internal error"
+    # json(conn, %{errors: %{detail: message}})
   end
 end
-
