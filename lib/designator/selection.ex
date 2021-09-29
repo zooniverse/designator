@@ -41,7 +41,7 @@ defmodule Designator.Selection do
           # throw an arbitrary run time error
           raise "the task didn't respond on time"
         rescue
-          exception ->
+          _exception ->
             Rollbax.report(:throw, :selection_timeout, System.stacktrace(),
           %{subject_set_ids: Enum.map(streams, &(&1.subject_set_id)),
             stream_amount: stream_amount,
