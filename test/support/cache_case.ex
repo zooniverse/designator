@@ -23,7 +23,7 @@ defmodule Designator.CacheCase do
     end
   end
 
-  setup tags do
+  setup do
     clear_cache(:workflow_cache)
     clear_cache(:user_cache)
     clear_cache(:subject_set_cache)
