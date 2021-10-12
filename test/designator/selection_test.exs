@@ -164,8 +164,8 @@ defmodule Designator.SelectionTest do
     test "selects subjects from a supplied subject_set_id" do
       Designator.Random.seed({123, 123534, 345345})
       Designator.WorkflowCache.set(338, %{ configuration: %{}, grouped: true, subject_set_ids: [681, 1706]})
-      SubjectSetCache.set({338, 681},  %SubjectSetCache{workflow_id: 338, subject_set_id: 681, subject_ids: Array.from_list([1])})
-      SubjectSetCache.set({338, 1706}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1706, subject_ids: Array.from_list([2])})
+      SubjectSetCache.set({338, 681},  %SubjectSetCache{workflow_id: 338, subject_set_id: 681, subject_ids: Arrays.new([1])})
+      SubjectSetCache.set({338, 1706}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1706, subject_ids: Arrays.new([2])})
 
       assert Selection.select(338, 1, [subject_set_id: 681, limit: 2]) == [1]
     end
@@ -173,8 +173,8 @@ defmodule Designator.SelectionTest do
     test "returns an empty list if selecting from an unknown subject_set_id" do
       Designator.Random.seed({123, 123534, 345345})
       Designator.WorkflowCache.set(338, %{ configuration: %{}, grouped: true, subject_set_ids: [681, 1706]})
-      SubjectSetCache.set({338, 681},  %SubjectSetCache{workflow_id: 338, subject_set_id: 681, subject_ids: Array.from_list([1])})
-      SubjectSetCache.set({338, 1706}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1706, subject_ids: Array.from_list([2])})
+      SubjectSetCache.set({338, 681},  %SubjectSetCache{workflow_id: 338, subject_set_id: 681, subject_ids: Arrays.new([1])})
+      SubjectSetCache.set({338, 1706}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1706, subject_ids: Arrays.new([2])})
 
       assert Selection.select(338, 1, [subject_set_id: 1, limit: 2]) == []
     end
