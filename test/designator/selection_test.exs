@@ -19,10 +19,10 @@ defmodule Designator.SelectionTest do
           }
       )
 
-      SubjectSetCache.set({338, 681},  %SubjectSetCache{workflow_id: 338, subject_set_id: 681, subject_ids: Array.from_list([1])})
-      SubjectSetCache.set({338, 1706}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1706, subject_ids: Array.from_list([2])})
-      SubjectSetCache.set({338, 1682}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1682, subject_ids: Array.from_list(Enum.into(10..19, []))})
-      SubjectSetCache.set({338, 1681}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1681, subject_ids: Array.from_list(Enum.into(20..29, []))})
+      SubjectSetCache.set({338, 681},  %SubjectSetCache{workflow_id: 338, subject_set_id: 681, subject_ids: Arrays.new([1])})
+      SubjectSetCache.set({338, 1706}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1706, subject_ids: Arrays.new([2])})
+      SubjectSetCache.set({338, 1682}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1682, subject_ids: Arrays.new(Enum.into(10..19, []))})
+      SubjectSetCache.set({338, 1681}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1681, subject_ids: Arrays.new(Enum.into(20..29, []))})
     end
 
     test "logged in users" do
@@ -41,10 +41,10 @@ defmodule Designator.SelectionTest do
     Designator.Random.seed({123, 123534, 345345})
     Designator.WorkflowCache.set(338, %{configuration: %{"gold_standard_sets" => [681, 1706]},
                                      subject_set_ids: [681, 1706, 1682, 1681]})
-    SubjectSetCache.set({338, 681},  %SubjectSetCache{workflow_id: 338, subject_set_id: 681, subject_ids: Array.from_list([1])})
-    SubjectSetCache.set({338, 1706}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1706, subject_ids: Array.from_list([2])})
-    SubjectSetCache.set({338, 1682}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1682, subject_ids: Array.from_list([3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3])})
-    SubjectSetCache.set({338, 1681}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1681, subject_ids: Array.from_list([4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4])})
+    SubjectSetCache.set({338, 681},  %SubjectSetCache{workflow_id: 338, subject_set_id: 681, subject_ids: Arrays.new([1])})
+    SubjectSetCache.set({338, 1706}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1706, subject_ids: Arrays.new([2])})
+    SubjectSetCache.set({338, 1682}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1682, subject_ids: Arrays.new([3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3])})
+    SubjectSetCache.set({338, 1681}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1681, subject_ids: Arrays.new([4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4])})
 
     assert Selection.select(338, 1, [limit: 4]) == [4, 2, 1, 3]
   end
@@ -53,10 +53,10 @@ defmodule Designator.SelectionTest do
     Designator.Random.seed({123, 123534, 345345})
     Designator.WorkflowCache.set(338, %{configuration: %{"spacewarps_training_sets" => [681, 1706]},
                                      subject_set_ids: [681, 1706, 1682, 1681]})
-    SubjectSetCache.set({338, 681},  %SubjectSetCache{workflow_id: 338, subject_set_id: 681, subject_ids: Array.from_list([1])})
-    SubjectSetCache.set({338, 1706}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1706, subject_ids: Array.from_list([2])})
-    SubjectSetCache.set({338, 1682}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1682, subject_ids: Array.from_list([3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3])})
-    SubjectSetCache.set({338, 1681}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1681, subject_ids: Array.from_list([4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4])})
+    SubjectSetCache.set({338, 681},  %SubjectSetCache{workflow_id: 338, subject_set_id: 681, subject_ids: Arrays.new([1])})
+    SubjectSetCache.set({338, 1706}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1706, subject_ids: Arrays.new([2])})
+    SubjectSetCache.set({338, 1682}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1682, subject_ids: Arrays.new([3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3])})
+    SubjectSetCache.set({338, 1681}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1681, subject_ids: Arrays.new([4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4])})
 
     assert Selection.select(338, 1, [limit: 4]) == [4, 2, 3, 1]
   end
@@ -65,7 +65,7 @@ defmodule Designator.SelectionTest do
     Designator.Random.seed({123, 100020, 345345})
     Designator.WorkflowCache.set(338, %{configuration: %{}, prioritized: true, subject_set_ids: [1000]})
     Designator.UserCache.set({338, 1}, %{seen_ids: MapSet.new, recently_selected_ids: MapSet.new, configuration: %{}})
-    SubjectSetCache.set({338, 1000}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1000, subject_ids: Array.from_list([98, 99, 10])})
+    SubjectSetCache.set({338, 1000}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1000, subject_ids: Arrays.new([98, 99, 10])})
 
     assert Selection.select(338, 1, [limit: 6]) == [98, 99, 10]
   end
@@ -77,10 +77,10 @@ defmodule Designator.SelectionTest do
     Designator.UserCache.set({338, 1}, %{seen_ids: MapSet.new,
                                          recently_selected_ids: MapSet.new,
                                          configuration: %{subject_set_weights: %{"1000" => 900}}})
-    SubjectSetCache.set({338, 1000}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1000, subject_ids: Array.from_list([1, 2, 3])})
-    SubjectSetCache.set({338, 1001}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1001, subject_ids: Array.from_list([4])})
-    SubjectSetCache.set({338, 1002}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1002, subject_ids: Array.from_list([5])})
-    SubjectSetCache.set({338, 1003}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1003, subject_ids: Array.from_list([6])})
+    SubjectSetCache.set({338, 1000}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1000, subject_ids: Arrays.new([1, 2, 3])})
+    SubjectSetCache.set({338, 1001}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1001, subject_ids: Arrays.new([4])})
+    SubjectSetCache.set({338, 1002}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1002, subject_ids: Arrays.new([5])})
+    SubjectSetCache.set({338, 1003}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1003, subject_ids: Arrays.new([6])})
 
     assert Selection.select(338, 1, [limit: 6]) == [4, 5, 1, 2, 3, 6]
   end
@@ -90,10 +90,10 @@ defmodule Designator.SelectionTest do
     Designator.Random.seed({123, 123534, 345345})
     Designator.WorkflowCache.set(338, %{configuration: %{"gold_standard_sets" => [681, 1706]},
                                      subject_set_ids: [681, 1706, 1682, 1681]})
-    SubjectSetCache.set({338, 681},  %SubjectSetCache{workflow_id: 338, subject_set_id: 1000, subject_ids: Array.from_list([1])})
-    SubjectSetCache.set({338, 1706}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1001, subject_ids: Array.from_list([2])})
-    SubjectSetCache.set({338, 1682}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1002, subject_ids: Array.from_list([3])})
-    SubjectSetCache.set({338, 1681}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1003, subject_ids: Array.from_list([4])})
+    SubjectSetCache.set({338, 681},  %SubjectSetCache{workflow_id: 338, subject_set_id: 1000, subject_ids: Arrays.new([1])})
+    SubjectSetCache.set({338, 1706}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1001, subject_ids: Arrays.new([2])})
+    SubjectSetCache.set({338, 1682}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1002, subject_ids: Arrays.new([3])})
+    SubjectSetCache.set({338, 1681}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1003, subject_ids: Arrays.new([4])})
     Designator.UserSeenSubject.changeset(%UserSeenSubject{}, %{user_id: 1, workflow_id: 338, subject_ids: [1,2,3,4]}) |> Repo.insert!
 
     assert Designator.UserCache.get({338, 1}).seen_ids == MapSet.new([1,2,3,4])
@@ -104,8 +104,8 @@ defmodule Designator.SelectionTest do
   test "selects subjects from all subject sets if supplied with a linked subject_set_id" do
     Designator.Random.seed({123, 123534, 345345})
     Designator.WorkflowCache.set(338, %{ configuration: %{}, subject_set_ids: [681, 1706]})
-    SubjectSetCache.set({338, 681},  %SubjectSetCache{workflow_id: 338, subject_set_id: 681, subject_ids: Array.from_list([1])})
-    SubjectSetCache.set({338, 1706}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1706, subject_ids: Array.from_list([2])})
+    SubjectSetCache.set({338, 681},  %SubjectSetCache{workflow_id: 338, subject_set_id: 681, subject_ids: Arrays.new([1])})
+    SubjectSetCache.set({338, 1706}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1706, subject_ids: Arrays.new([2])})
 
     assert Selection.select(338, 1, [subject_set_id: 681, limit: 2]) == [2,1]
   end
@@ -113,8 +113,8 @@ defmodule Designator.SelectionTest do
   test "selects subjects from all subject sets if an unknown subject_set_id" do
     Designator.Random.seed({123, 123534, 345345})
     Designator.WorkflowCache.set(338, %{ configuration: %{}, subject_set_ids: [681, 1706]})
-    SubjectSetCache.set({338, 681},  %SubjectSetCache{workflow_id: 338, subject_set_id: 681, subject_ids: Array.from_list([1])})
-    SubjectSetCache.set({338, 1706}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1706, subject_ids: Array.from_list([2])})
+    SubjectSetCache.set({338, 681},  %SubjectSetCache{workflow_id: 338, subject_set_id: 681, subject_ids: Arrays.new([1])})
+    SubjectSetCache.set({338, 1706}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1706, subject_ids: Arrays.new([2])})
 
     assert Selection.select(338, 1, [subject_set_id: 1, limit: 2]) == [2,1]
   end
@@ -123,10 +123,10 @@ defmodule Designator.SelectionTest do
     Designator.Random.seed({123, 123534, 345345})
     Designator.WorkflowCache.set(338, %{configuration: %{"gold_standard_sets" => [681, 1706]},
                                      subject_set_ids: [681, 1706, 1682, 1681]})
-    SubjectSetCache.set({338, 681},  %SubjectSetCache{workflow_id: 338, subject_set_id: 681, subject_ids: Array.from_list([1])})
-    SubjectSetCache.set({338, 1706}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1706, subject_ids: Array.from_list([2])})
-    SubjectSetCache.set({338, 1682}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1682, subject_ids: Array.from_list([3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3])})
-    SubjectSetCache.set({338, 1681}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1681, subject_ids: Array.from_list([4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4])})
+    SubjectSetCache.set({338, 681},  %SubjectSetCache{workflow_id: 338, subject_set_id: 681, subject_ids: Arrays.new([1])})
+    SubjectSetCache.set({338, 1706}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1706, subject_ids: Arrays.new([2])})
+    SubjectSetCache.set({338, 1682}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1682, subject_ids: Arrays.new([3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3])})
+    SubjectSetCache.set({338, 1681}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1681, subject_ids: Arrays.new([4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4])})
 
     _run_selection_to_setup_cache = Selection.select(338, 1, [limit: 4])
     assert Selection.select(338, 1, [limit: 4]) == []
@@ -136,7 +136,7 @@ defmodule Designator.SelectionTest do
     Designator.Random.seed({123, 123534, 345345})
     Designator.WorkflowCache.set(338, %{configuration: %{"gold_standard_sets" => [681, 1706]},
                                         subject_set_ids: [681]})
-    SubjectSetCache.set({338, 681},  %SubjectSetCache{workflow_id: 338, subject_set_id: 681, subject_ids: Array.from_list([1, 2, 3, 4])})
+    SubjectSetCache.set({338, 681},  %SubjectSetCache{workflow_id: 338, subject_set_id: 681, subject_ids: Arrays.new([1, 2, 3, 4])})
     Designator.RecentlyRetired.add(338, 1)
     Designator.RecentlyRetired.add(338, 2)
     Designator.RecentlyRetired.add(338, 3)
@@ -152,10 +152,10 @@ defmodule Designator.SelectionTest do
     Designator.Random.seed({123, 123534, 345345})
     Designator.WorkflowCache.set(338, %{configuration: %{"gold_standard_sets" => [681, 1706]},
                                      subject_set_ids: [681, 1706, 1682, 1681]})
-    SubjectSetCache.set({338, 681}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1000, subject_ids: Array.from_list([])})
-    SubjectSetCache.set({338, 1706},%SubjectSetCache{workflow_id: 338, subject_set_id: 1001, subject_ids: Array.from_list([])})
-    SubjectSetCache.set({338, 1682},%SubjectSetCache{workflow_id: 338, subject_set_id: 1002, subject_ids: Array.from_list([3])})
-    SubjectSetCache.set({338, 1681},%SubjectSetCache{workflow_id: 338, subject_set_id: 1003, subject_ids: Array.from_list([4])})
+    SubjectSetCache.set({338, 681}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1000, subject_ids: Arrays.new([])})
+    SubjectSetCache.set({338, 1706},%SubjectSetCache{workflow_id: 338, subject_set_id: 1001, subject_ids: Arrays.new([])})
+    SubjectSetCache.set({338, 1682},%SubjectSetCache{workflow_id: 338, subject_set_id: 1002, subject_ids: Arrays.new([3])})
+    SubjectSetCache.set({338, 1681},%SubjectSetCache{workflow_id: 338, subject_set_id: 1003, subject_ids: Arrays.new([4])})
 
     assert Selection.select(338, 1, [limit: 2]) == [4, 3]
   end

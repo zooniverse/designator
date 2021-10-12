@@ -20,7 +20,7 @@ defmodule Designator.Reloader.Sync do
   # can be started into the process tree at boot, but after that we can't have it be used as a GenServer
   # in terms of sending messages.
   def reload_subject_set({workflow_id, subject_set_id}) do
-    subject_ids = Designator.Workflow.subject_ids(workflow_id, subject_set_id) |> Array.from_list
+    subject_ids = Designator.Workflow.subject_ids(workflow_id, subject_set_id) |> Enum.into(Arrays.new())
     Designator.SubjectSetCache.set_subject_ids({workflow_id, subject_set_id}, subject_ids)
     :ok
   end
