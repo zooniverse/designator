@@ -12,6 +12,11 @@ defmodule Designator.RandomTest do
     assert Random.element([:a, :b, :c, :d, :e]) == {4, :e}
   end
 
+  test "get a random element using array type" do
+    array_enum = Arrays.new([:a, :b, :c, :d, :e])
+    assert Random.element(array_enum) == {0, :a}
+  end
+
   test "get a random element with weights" do
     assert Random.weighted([{:a, 0}, {:b, 1}]) == {1, {:b, 1}}
 
