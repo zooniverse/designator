@@ -50,3 +50,14 @@ else
       enabled: :log
 end
 
+# custom configuration of the specific implementation type of the Arrays package
+#   https://github.com/Qqwy/elixir-arrays#rationale
+#
+#   default: %Arrays.Implementations.MapArray{}
+#   alternative: %Arrays.Implementations.ErlangArray{}
+#
+# choose one over another for different performance characteristics etc,
+#   https://github.com/Qqwy/elixir-arrays#benchmarks
+#
+# config :arrays,
+#   default_array_implementation: Arrays.Implementations.ErlangArray
