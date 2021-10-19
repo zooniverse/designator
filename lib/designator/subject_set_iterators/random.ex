@@ -14,7 +14,9 @@ defmodule Designator.SubjectSetIterators.Random do
     end)
   end
 
-  defp size(enum = %array{}) do
+  # %_array_struct{contents: _array} is the struct sig of both array implementation types
+  # see arrays package for details on the types
+  defp size(%_array_struct{contents: _array} = enum) do
     Arrays.size(enum)
   end
 

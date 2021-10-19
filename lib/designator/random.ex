@@ -3,7 +3,9 @@ defmodule Designator.Random do
     :rand.seed(:exs1024, seed)
   end
 
-  def element(%array{} = enumerable) do
+  # %_array_struct{contents: _array} is the struct sig of both array implementation types
+  # see arrays package for details on the types
+  def element(%_array_struct{contents: _array} = enumerable) do
     case Arrays.size enumerable do
       0 -> nil
       size ->
