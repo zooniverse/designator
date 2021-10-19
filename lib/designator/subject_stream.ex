@@ -12,7 +12,9 @@ defmodule Designator.SubjectStream do
     subject_set_iterator.apply_to(subject_ids) |> Stream.map(fn {_idx, elm} -> elm end)
   end
 
-  def get_amount(%array{} = subject_ids) do
+  # %_array_struct{contents: _array} is the struct sig of both array implementation types
+  # see arrays package for details on the types
+  def get_amount(%_array_struct{contents: _array} = subject_ids) do
     Arrays.size(subject_ids)
   end
 
