@@ -41,6 +41,7 @@ Using Docker:
   # run the tests
   mix test
   iex -S mix test --trace
+  # run WIP tests (add the @tag :wip to the test(s) in question)
   mix test --only wip
 
   # debug wip tests using pry (require IEx IEx.pry)

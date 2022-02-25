@@ -27,7 +27,7 @@ defmodule Designator.Selection do
       |> Designator.StreamTools.interleave
       |> deduplicate
       |> reject_recently_retired(workflow)
-      |> reject_recently_selected(user)
+      |> reject_recently_selected(user, workflow.prioritized)
       |> reject_seen_subjects(seen_subject_ids)
       |> Enum.take(amount)
     end)
@@ -123,7 +123,11 @@ defmodule Designator.Selection do
     Stream.reject(stream, fn id -> MapSet.member?(subject_ids, id) end)
   end
 
-  defp reject_recently_selected(stream, user) do
+  defp reject_recently_selected(stream, user, true) do
+    stream
+  end
+
+  defp reject_recently_selected(stream, user, _) do
     Stream.reject(stream, fn x -> MapSet.member?(user.recently_selected_ids, x) end)
   end
 
