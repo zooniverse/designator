@@ -119,17 +119,27 @@ defmodule Designator.SelectionTest do
     assert Selection.select(338, 1, [subject_set_id: 1, limit: 2]) == [2,1]
   end
 
-  test "does not select recently handed out subject ids" do
+  test "does not select recently selected subject ids" do
     Designator.Random.seed({123, 123534, 345345})
-    Designator.WorkflowCache.set(338, %{configuration: %{"gold_standard_sets" => [681, 1706]},
-                                     subject_set_ids: [681, 1706, 1682, 1681]})
+    Designator.WorkflowCache.set(338, %{configuration: %{}, subject_set_ids: [681, 1706, 1682, 1681]})
     SubjectSetCache.set({338, 681},  %SubjectSetCache{workflow_id: 338, subject_set_id: 681, subject_ids: Arrays.new([1])})
     SubjectSetCache.set({338, 1706}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1706, subject_ids: Arrays.new([2])})
-    SubjectSetCache.set({338, 1682}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1682, subject_ids: Arrays.new([3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3])})
-    SubjectSetCache.set({338, 1681}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1681, subject_ids: Arrays.new([4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4])})
+    SubjectSetCache.set({338, 1682}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1682, subject_ids: Arrays.new([3])})
+    SubjectSetCache.set({338, 1681}, %SubjectSetCache{workflow_id: 338, subject_set_id: 1681, subject_ids: Arrays.new([4])})
+    Designator.UserCache.set({338, 1}, %{seen_ids: MapSet.new, recently_selected_ids: MapSet.new([1,2,3,4]), configuration: %{}})
 
     _run_selection_to_setup_cache = Selection.select(338, 1, [limit: 4])
     assert Selection.select(338, 1, [limit: 4]) == []
+  end
+
+  test "does select recently selected subject ids for prioritized workflows" do
+    Designator.Random.seed({123, 123534, 345345})
+    Designator.WorkflowCache.set(338, %{configuration: %{}, prioritized: true, subject_set_ids: [681]})
+    SubjectSetCache.set({338, 681},  %SubjectSetCache{workflow_id: 338, subject_set_id: 681, subject_ids: Arrays.new([4,3,2,1])})
+    Designator.UserCache.set({338, 1}, %{seen_ids: MapSet.new, recently_selected_ids: MapSet.new([1,2,3,4]), configuration: %{}})
+
+    _run_selection_to_setup_cache = Selection.select(338, 1, [limit: 4])
+    assert Selection.select(338, 1, [limit: 4]) == [4,3,2,1]
   end
 
   test "does not select recently retired subject ids" do
