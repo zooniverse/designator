@@ -10,7 +10,9 @@ RUN mix deps.get
 
 ADD . /app
 
-ARG REVISION=''
+# Check for a commit_id.txt file: if missing, use default
+RUN export COMMIT_ID=$(cat commit_id.txt)
+RUN REVISION="${COMMIT_ID:-asdf123jkl456}"
 ENV REVISION=$REVISION
 
 ENV MIX_ENV prod
