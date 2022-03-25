@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # set REVISION env var from commit_id.txt or default
-COMMIT_ID=$(cat commit_id.txt 2> /dev/null)
-REVISION="${COMMIT_ID:-asdf123jkl456}"
+export COMMIT_ID=$(cat commit_id.txt 2> /dev/null)
+export REVISION="${COMMIT_ID:-asdf123jkl456}"
 
 # ensure we stop on error (-e) and log cmds (-x)
 set -ex
