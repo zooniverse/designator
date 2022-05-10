@@ -70,6 +70,17 @@ defmodule Designator.WorkflowTest do
       assert Designator.Workflow.subject_ids(1,1) === [3,1,2]
     end
 
+    test "maintains priority order priority decimals" do
+      Ecto.Adapters.SQL.query!(Designator.Repo, "INSERT INTO workflows (id, created_at, updated_at) VALUES (1, NOW(), NOW())")
+      Ecto.Adapters.SQL.query!(Designator.Repo, "INSERT INTO subject_sets_workflows (workflow_id, subject_set_id) VALUES (1,1)")
+      Ecto.Adapters.SQL.query!(Designator.Repo, "INSERT INTO set_member_subjects (subject_set_id, subject_id, priority, random, created_at, updated_at) VALUES
+      (1, 1, 1.02, 0.5, NOW(), NOW()),
+      (1, 2, 0.03, 0.5, NOW(), NOW()),
+      (1, 4, 1.1, 0.5, NOW(), NOW()),
+      (1, 3, 0.1, 0.5, NOW(), NOW())")
+      assert Designator.Workflow.subject_ids(1,1) === [2,3,1,4]
+    end
+
     test "returns subject_ids when priority values are null" do
       Ecto.Adapters.SQL.query!(Designator.Repo, "INSERT INTO workflows (id, created_at, updated_at) VALUES (1, NOW(), NOW())")
       Ecto.Adapters.SQL.query!(Designator.Repo, "INSERT INTO subject_sets_workflows (workflow_id, subject_set_id) VALUES (1, 1)")
