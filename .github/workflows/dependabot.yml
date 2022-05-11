@@ -1,9 +1,0 @@
-version: 2
-updates:
-  # Enable version updates for npm
-  - package-ecosystem: "mix"
-    # Look for `mix.exs` and `lock` files in the `root` directory
-    directory: "/"
-    # Check for updates every day (weekdays)
-    schedule:
-      interval: "weekly"
