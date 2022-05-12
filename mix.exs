@@ -33,7 +33,7 @@ defmodule Designator.Mixfile do
     [{:phoenix, "~> 1.2.0"},
      {:phoenix_pubsub, "~> 1.0"},
      {:postgrex, ">= 0.0.0"},
-     {:phoenix_ecto, "~> 3.0-rc"},
+     {:phoenix_ecto, "~> 4.3"},
      {:gettext, "~> 0.10"},
      {:cowboy, "~> 1.0"},
      {:arrays, "~> 2.0"},
