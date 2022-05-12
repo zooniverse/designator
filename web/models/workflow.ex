@@ -29,9 +29,9 @@ defmodule Designator.Workflow do
     query = from sms in "set_member_subjects",
       left_join: swc in "subject_workflow_counts", on: (sms.subject_id == swc.subject_id and swc.workflow_id == ^workflow_id),
       where: sms.subject_set_id == ^subject_set_id and is_nil(swc.retired_at),
-      select: {sms.subject_id, sms.priority}
+      select: { sms.subject_id, fragment("CASE WHEN priority IS NULL THEN 0 ELSE priority END") }
     Designator.Repo.all(query)
-    |> List.keysort(1)
+    |> sort_decimal_values
     |> Enum.map(fn {k, _v} -> k end)
   end
 
@@ -39,5 +39,15 @@ defmodule Designator.Workflow do
     struct
     |> cast(params, [:id, :configuration, :grouped, :prioritized])
   end
+
+  def sort_decimal_values(result_tuples) do
+    # sort_by/3 takes the following params
+    # result set param for sorting
+    # a mapper function to unpack the tuple index [1] decimal values
+    # and a comparison function to sort on ensuring ascending order (elem 1 < elem 2)
+    # https://hexdocs.pm/decimal/1.9.0/readme.html#comparisons
+    Enum.sort_by(result_tuples, &elem(&1, 1), &Decimal.cmp(&1, &2) != :gt)
+  end
+
 
 end
