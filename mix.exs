@@ -38,7 +38,7 @@ defmodule Designator.Mixfile do
      {:cowboy, "~> 1.0"},
      {:arrays, "~> 2.0"},
      {:logster, "~> 0.4"},
-     {:credo, "~> 0.6", only: [:dev, :test]},
+     {:credo, "~> 1.7", only: [:dev, :test]},
      {:rollbax, "~> 0.8"},
      {:mock, "~> 0.3.1", only: :test},
      {:mix_test_watch, "~> 0.3", only: :dev, runtime: false},
