@@ -29,8 +29,8 @@ jobs:
           --health-retries 5
     strategy:
       matrix:
-        otp: ['21']
-        elixir: ['1.8']
+        otp: ['21.1']
+        elixir: ['1.8.2']
     steps:
       - uses: actions/checkout@v2
       - uses: erlef/setup-beam@v1
