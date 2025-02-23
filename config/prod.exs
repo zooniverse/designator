@@ -24,7 +24,6 @@ config :designator, Designator.Endpoint,
 
 # Configure your database
 config :designator, Designator.Repo,
-  adapter: Ecto.Adapters.Postgres,
   username: System.get_env("POSTGRES_USER"),
   password: System.get_env("POSTGRES_PASS"),
   database: System.get_env("POSTGRES_DB"),
