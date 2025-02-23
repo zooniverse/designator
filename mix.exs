@@ -4,7 +4,7 @@ defmodule Designator.Mixfile do
   def project() do
     [app: :designator,
      version: "0.0.1",
-     elixir: "~> 1.3",
+     elixir: "~> 1.11",
      elixirc_paths: elixirc_paths(Mix.env),
      compilers: [:phoenix, :gettext] ++ Mix.compilers,
      build_embedded: (Mix.env == :prod || Mix.env == :bench),
@@ -33,7 +33,8 @@ defmodule Designator.Mixfile do
     [{:phoenix, "~> 1.2.0"},
      {:phoenix_pubsub, "~> 1.0"},
      {:postgrex, ">= 0.0.0"},
-     {:phoenix_ecto, "~> 3.0-rc"},
+     {:phoenix_ecto, "~> 4.0"},
+     {:ecto_sql, "~> 3.12"},
      {:gettext, "~> 0.10"},
      {:cowboy, "~> 1.0"},
      {:arrays, "~> 2.0"},
